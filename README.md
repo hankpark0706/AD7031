@@ -15,11 +15,11 @@ demos, and Colab-ready notebooks, updated weekly as the course progresses.
 
 ## Weekly materials
 
-| Week | Topic | Notebook | Video |
-|---|---|:---:|:---:|
-| 1 | Optimization is everywhere; LPs and IPs, graphically | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/OL7014/blob/main/notebooks/week1_knapsack.ipynb) | [▶ Watch](https://www.youtube.com/watch?v=lPBPbGmw1_4) |
-| 2 | | | |
-| 3 | | | |
-| ... | | | |
+| Week | Topic | Lecture note | Notebook | Video |
+|---|---|:---:|:---:|:---:|
+| 1 | Optimization is everywhere; what is a convex problem | [📄 PDF](lecture-notes/week01-note.pdf) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/OL7014/blob/main/notebooks/week1_knapsack.ipynb) | [▶ Watch](https://www.youtube.com/watch?v=lPBPbGmw1_4) |
+| 2 | | | | |
+| 3 | | | | |
+| ... | | | | |
 
 This table fills in week by week — check back after each lecture.
