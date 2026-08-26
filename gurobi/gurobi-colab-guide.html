@@ -1,0 +1,312 @@
+<title>Gurobi Colab 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    /* KNDU Purple: Pantone 2617C, #491176 */
+    --bg: #F8F7FA;
+    --surface: #FFFFFF;
+    --ink: #221E29;
+    --muted: #6A6472;
+    --accent: #491176;
+    --accent-soft: #EEE6F7;
+    --line: #E4E1EA;
+    --code-bg: #251B33;
+    --code-ink: #EDEAF3;
+    --code-muted: #9D93AC;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151218;
+      --surface: #1E1A24;
+      --ink: #ECE8F2;
+      --muted: #9C93A8;
+      --accent: #B593E6;
+      --accent-soft: #2E2140;
+      --line: #322B3D;
+      --code-bg: #100D14;
+      --code-ink: #ECE8F2;
+      --code-muted: #8A8096;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #151218;
+    --surface: #1E1A24;
+    --ink: #ECE8F2;
+    --muted: #9C93A8;
+    --accent: #B593E6;
+    --accent-soft: #2E2140;
+    --line: #322B3D;
+    --code-bg: #100D14;
+    --code-ink: #ECE8F2;
+    --code-muted: #8A8096;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0 1.25rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 4rem 0 5rem;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', 'Consolas', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+  .lede {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin: 0 0 1rem;
+    max-width: 36em;
+  }
+  header { padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+
+  section.step {
+    display: grid;
+    grid-template-columns: 3.2rem 1fr;
+    gap: 0 0;
+    padding: 2.5rem 0 2.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .step-no {
+    font-family: 'IBM Plex Mono', 'Consolas', monospace;
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1.35;
+  }
+  .step-body { min-width: 0; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.6rem;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+  p { margin: 0 0 0.9rem; }
+  p:last-child { margin-bottom: 0; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .muted { color: var(--muted); }
+  strong { font-weight: 700; }
+
+  .codeblock {
+    position: relative;
+    background: var(--code-bg);
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+  .codeblock pre {
+    margin: 0;
+    padding: 1.05rem 1.2rem;
+    overflow-x: auto;
+    font-family: 'IBM Plex Mono', 'Consolas', monospace;
+    font-size: 0.84rem;
+    line-height: 1.65;
+    color: var(--code-ink);
+  }
+  .codeblock .cm { color: var(--code-muted); }
+  .copy-btn {
+    position: absolute;
+    top: 0.55rem;
+    right: 0.55rem;
+    font-family: 'IBM Plex Mono', 'Consolas', monospace;
+    font-size: 0.72rem;
+    padding: 0.28rem 0.65rem;
+    border: 1px solid var(--code-muted);
+    border-radius: 5px;
+    background: transparent;
+    color: var(--code-muted);
+    cursor: pointer;
+  }
+  .copy-btn:hover, .copy-btn:focus-visible { color: var(--code-ink); border-color: var(--code-ink); outline: none; }
+
+  .callout {
+    background: var(--accent-soft);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    margin: 1rem 0 0;
+    font-size: 0.93rem;
+  }
+  .callout .label {
+    font-family: 'IBM Plex Mono', 'Consolas', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .qa { padding: 2.5rem 0 0; }
+  .qa h2 { margin-bottom: 1.2rem; }
+  .qa dt { font-weight: 700; margin-top: 1.1rem; }
+  .qa dd { margin: 0.2rem 0 0; color: var(--muted); }
+  .qa dl { margin: 0; }
+  code {
+    font-family: 'IBM Plex Mono', 'Consolas', monospace;
+    font-size: 0.86em;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.08em 0.35em;
+  }
+  .qa dt code, h2 code { font-size: 0.82em; }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+</style>
+
+<main>
+  <header>
+    <p class="eyebrow">OL7014 · Integer Programming</p>
+    <h1>Google Colab에서 Gurobi 사용하기</h1>
+    <p class="lede">수업용 Gurobi 라이선스(WLS)로 Colab에서 사용하는 방법입니다.
+    컴퓨터에는 아무것도 설치하지 않아도 됩니다. 인터넷 접속만 가능하면 됩니다.</p>
+  </header>
+
+  <section class="step">
+    <div class="step-no">1</div>
+    <div class="step-body">
+      <h2>Gurobi 계정 만들기 <span class="muted">(한 번만)</span></h2>
+      <p><a href="https://portal.gurobi.com" target="_blank" rel="noopener">portal.gurobi.com</a>에서 무료 계정을 만드세요.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-no">2</div>
+    <div class="step-body">
+      <h2>새 Colab 노트북 열기</h2>
+      <p><a href="https://colab.research.google.com" target="_blank" rel="noopener">colab.research.google.com</a>에서 <strong>새 노트북</strong>을 만드세요.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-no">3</div>
+    <div class="step-body">
+      <h2>gurobipy 설치하기</h2>
+      <p>첫 번째 셀에 넣고 실행하세요.</p>
+      <div class="codeblock">
+        <button class="copy-btn" type="button">복사</button>
+        <pre>!pip install gurobipy</pre>
+      </div>
+      <p class="muted">세션이 초기화되면 이 셀부터 다시 실행하면 됩니다.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-no">4</div>
+    <div class="step-body">
+      <h2>라이선스 입력하기</h2>
+      <p>본인에게 배정된 세 값을 넣고 실행하세요.</p>
+      <div class="codeblock">
+        <button class="copy-btn" type="button">복사</button>
+        <pre>import gurobipy as gp
+from gurobipy import GRB
+
+params = {
+    "WLSACCESSID": "여기에 ACCESSID 붙여넣기",
+    "WLSSECRET":   "여기에 SECRET 붙여넣기",
+    "LICENSEID":   123456,   <span class="cm"># 숫자 그대로, 따옴표 없이</span>
+}
+env = gp.Env(params=params)</pre>
+      </div>
+      <div class="callout">
+        <span class="label">주의</span>
+        <code>LICENSEID</code>는 숫자입니다 — 따옴표 없이 넣으세요. 라이선스 값은 외부에 공유하지 마세요.
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-no">5</div>
+    <div class="step-body">
+      <h2>예제 모델 실행하기</h2>
+      <p>배낭 문제(knapsack) 예제로 확인해 보세요.</p>
+      <div class="codeblock">
+        <button class="copy-btn" type="button">복사</button>
+        <pre><span class="cm"># 예제: 0-1 배낭 문제</span>
+value  = [10, 13, 18, 31, 7, 15]   <span class="cm"># 물건의 가치</span>
+weight = [ 2,  3,  4,  5, 1,  3]   <span class="cm"># 물건의 무게</span>
+W = 10                             <span class="cm"># 배낭 용량</span>
+n = len(value)
+
+m = gp.Model("knapsack", env=env)
+x = m.addVars(n, vtype=GRB.BINARY, name="x")
+m.setObjective(gp.quicksum(value[i] * x[i] for i in range(n)), GRB.MAXIMIZE)
+m.addConstr(gp.quicksum(weight[i] * x[i] for i in range(n)) &lt;= W)
+m.optimize()
+
+print(f"\n최적값: {m.ObjVal:g}")
+print("선택한 물건:", [i for i in range(n) if x[i].X &gt; 0.5])</pre>
+      </div>
+      <p><strong>최적값 56</strong>이 나오면 성공입니다.</p>
+    </div>
+  </section>
+
+  <section class="qa">
+    <h2>안 될 때는</h2>
+    <dl>
+      <dt><code>No module named 'gurobipy'</code></dt>
+      <dd>세션이 초기화된 것입니다. 설치 셀부터 다시 실행하세요.</dd>
+      <dt>라이선스 오류</dt>
+      <dd>세 값에 오타나 앞뒤 공백이 없는지, <code>LICENSEID</code>에 따옴표를 붙이지 않았는지 확인하세요.</dd>
+    </dl>
+  </section>
+
+  <footer>
+    참고: <a href="https://support.gurobi.com/hc/en-us/articles/4409582394769-Google-Colab-Installation-and-Licensing" target="_blank" rel="noopener">Gurobi 공식 Colab 설치 안내</a> ·
+    <a href="https://docs.gurobi.com/projects/optimizer/en/current/reference/python.html" target="_blank" rel="noopener">gurobipy 문서</a>
+  </footer>
+</main>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('pre').innerText;
+      function done() {
+        btn.textContent = '복사됨';
+        setTimeout(function () { btn.textContent = '복사'; }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        done();
+      }
+    });
+  });
+</script>
