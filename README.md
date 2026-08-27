@@ -1,10 +1,10 @@
-# AD7031 Optimization under Uncertainty
+# AD7031 Optimization Under Uncertainty
 
 <p align="center">
   <img src="assets/qrcode.png" alt="Repository QR code" width="220"/>
 </p>
 
-Course materials for **AD7031 불확실성하 의사결정 (Decision Making under Uncertainty)** — lecture notes, interactive
+Course materials for **AD7031 불확실성하 의사결정 (Optimization Under Uncertainty)** — lecture notes, interactive
 dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 
 📄 [Syllabus (PDF)](syllabus/%5B%EA%B0%95%EC%9D%98%EA%B3%84%ED%9A%8D%EC%84%9C%5D%EB%B6%88%ED%99%95%EC%8B%A4%EC%84%B1%ED%95%98%20%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95%28AD7031%29_26_2.pdf)
