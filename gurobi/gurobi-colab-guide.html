@@ -187,7 +187,7 @@
 
 <main>
   <header>
-    <p class="eyebrow">OL7014 · Integer Programming</p>
+    <p class="eyebrow">AD7031 · Optimization under Uncertainty</p>
     <h1>Google Colab에서 Gurobi 사용하기</h1>
     <p class="lede">수업용 Gurobi 라이선스(WLS)로 Colab에서 사용하는 방법입니다.
     컴퓨터에는 아무것도 설치하지 않아도 됩니다. 인터넷 접속만 가능하면 됩니다.</p>
@@ -250,25 +250,30 @@ env = gp.Env(params=params)</pre>
     <div class="step-no">5</div>
     <div class="step-body">
       <h2>예제 모델 실행하기</h2>
-      <p>배낭 문제(knapsack) 예제로 확인해 보세요.</p>
+      <p>마코위츠(Markowitz) 포트폴리오 예제로 확인해 보세요.
+      목표 기대수익률을 만족하면서 위험(분산)을 최소화합니다.</p>
       <div class="codeblock">
         <button class="copy-btn" type="button">복사</button>
-        <pre><span class="cm"># 예제: 0-1 배낭 문제</span>
-value  = [10, 13, 18, 31, 7, 15]   <span class="cm"># 물건의 가치</span>
-weight = [ 2,  3,  4,  5, 1,  3]   <span class="cm"># 물건의 무게</span>
-W = 10                             <span class="cm"># 배낭 용량</span>
-n = len(value)
+        <pre><span class="cm"># 예제: 마코위츠 평균-분산 포트폴리오</span>
+mu    = [0.06, 0.10, 0.15]        <span class="cm"># 자산별 기대수익률</span>
+Sigma = [[0.010, 0.001, 0.000],
+         [0.001, 0.040, 0.015],
+         [0.000, 0.015, 0.090]]   <span class="cm"># 수익률 공분산행렬</span>
+r = 0.10                          <span class="cm"># 목표 기대수익률</span>
+n = len(mu)
 
-m = gp.Model("knapsack", env=env)
-x = m.addVars(n, vtype=GRB.BINARY, name="x")
-m.setObjective(gp.quicksum(value[i] * x[i] for i in range(n)), GRB.MAXIMIZE)
-m.addConstr(gp.quicksum(weight[i] * x[i] for i in range(n)) &lt;= W)
+m = gp.Model("markowitz", env=env)
+x = m.addVars(n, lb=0.0, name="x")   <span class="cm"># 자산별 투자비중</span>
+risk = gp.quicksum(Sigma[i][j] * x[i] * x[j] for i in range(n) for j in range(n))
+m.setObjective(risk, GRB.MINIMIZE)
+m.addConstr(gp.quicksum(mu[i] * x[i] for i in range(n)) &gt;= r)   <span class="cm"># 기대수익률 제약</span>
+m.addConstr(x.sum() == 1)                                       <span class="cm"># 비중 합 = 1</span>
 m.optimize()
 
-print(f"\n최적값: {m.ObjVal:g}")
-print("선택한 물건:", [i for i in range(n) if x[i].X &gt; 0.5])</pre>
+print(f"\n최소 위험(분산): {m.ObjVal:.4f}")
+print("최적 투자비중:", [round(x[i].X, 2) for i in range(n)])</pre>
       </div>
-      <p><strong>최적값 56</strong>이 나오면 성공입니다.</p>
+      <p><strong>최소 위험(분산) 0.0169</strong>, 투자비중 <strong>[0.39, 0.29, 0.31]</strong>이 나오면 성공입니다.</p>
     </div>
   </section>
 
