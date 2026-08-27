@@ -9,6 +9,9 @@ venv/
 # built demo executables -- distributed via GitHub Releases, not git
 dist/
 
+# Gurobi license files -- never publish credentials
+*.lic
+
 # LaTeX build artifacts
 *.aux
 *.log
