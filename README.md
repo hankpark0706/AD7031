@@ -8,6 +8,7 @@ Course materials for **AD7031 불확실성하 의사결정 (Optimization Under U
 dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 
 📄 [Syllabus (PDF)](syllabus/%5B%EA%B0%95%EC%9D%98%EA%B3%84%ED%9A%8D%EC%84%9C%5D%EB%B6%88%ED%99%95%EC%8B%A4%EC%84%B1%ED%95%98%20%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95%28AD7031%29_26_2.pdf)
+🌐 [Course page](https://hankpark0706.github.io/AD7031/)
 
 ---
 
@@ -15,7 +16,7 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 
 | Week | Date | Topic | Lecture note | Notebook | Video | Misc |
 |---|---|---|:---:|:---:|:---:|---|
-| 1 | 8/29 | Intro: optimization under uncertainty (OUU) is everywhere; optimization theory review 1 — convex optimization | [week01](lecture-notes/OUU_week01_slide.pdf) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week1_markowitz.ipynb) | [Optimization: A Bootcamp for Machine Learning, Inverse Problems, and Control](https://www.youtube.com/watch?v=lPBPbGmw1_4) | [읽을거리](lecture-notes/OUU_week01_reading.pdf) |
+| 1 | 8/29 | Intro: optimization under uncertainty (OUU) is everywhere; optimization theory review 1 — convex optimization | [week01](lecture-notes/OUU_week01_slide.pdf) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week1_markowitz.ipynb) *markowitz*<br>[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week01_topiary_occupancy.ipynb) *topiary* | [Optimization: A Bootcamp for Machine Learning, Inverse Problems, and Control](https://www.youtube.com/watch?v=lPBPbGmw1_4) | [읽을거리](https://hankpark0706.github.io/AD7031/week01_reading.html) ([PDF](lecture-notes/OUU_week01_reading.pdf)) |
 | 2 | 9/5 | Optimization theory review 2 — convex optimization (cont.), duality | | | | **HW#1 out** (due 9/19) |
 | 3 | 9/12 | Probability theory review; competing paradigms for OUU | | | | |
 | 4 | 9/19 | Risk measures 1 — CVaR vs VaR; portfolio optimization | | | | |
