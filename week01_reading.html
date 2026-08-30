@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전장의 불확실성</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;900&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #F6F5F0;
+    --card: #FFFFFF;
+    --ink: #1C232E;
+    --muted: #5A6472;
+    --line: #D9D6CB;
+    --blue: #2D5F8A;      /* 아군 / SP / 1단계 결정 */
+    --blue-soft: #E4EBF2;
+    --red: #A8402F;       /* 적군 / RO / 최악의 경우 */
+    --red-soft: #F3E5E1;
+    --violet: #6E4E8E;    /* DRO */
+    --violet-soft: #ECE5F2;
+    --amber: #B9791E;     /* CVaR / 위험측도 */
+    --amber-soft: #F4EADA;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #131922;
+      --card: #1B2330;
+      --ink: #E6E4DB;
+      --muted: #9AA3B0;
+      --line: #2E3846;
+      --blue: #85B2D9;
+      --blue-soft: #22364A;
+      --red: #DB8D77;
+      --red-soft: #45241D;
+      --violet: #B49AD4;
+      --violet-soft: #372B47;
+      --amber: #D9A65E;
+      --amber-soft: #42311F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #131922;
+    --card: #1B2330;
+    --ink: #E6E4DB;
+    --muted: #9AA3B0;
+    --line: #2E3846;
+    --blue: #85B2D9;
+    --blue-soft: #22364A;
+    --red: #DB8D77;
+    --red-soft: #45241D;
+    --violet: #B49AD4;
+    --violet-soft: #372B47;
+    --amber: #D9A65E;
+    --amber-soft: #42311F;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-size: 16.5px;
+    line-height: 1.85;
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 740px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: "Noto Serif KR", serif;
+    font-weight: 900;
+    font-size: clamp(30px, 5.4vw, 44px);
+    line-height: 1.28;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .lede {
+    font-size: 18px;
+    color: var(--muted);
+    margin: 0 0 8px;
+    max-width: 62ch;
+  }
+  .keyline { border: none; border-top: 1px solid var(--line); margin: 36px 0; }
+
+  h2 {
+    font-family: "Noto Serif KR", serif;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 1.4;
+    margin: 52px 0 6px;
+    text-wrap: balance;
+  }
+  h2 .no {
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--blue);
+    letter-spacing: .1em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  h3 {
+    font-family: "Noto Serif KR", serif;
+    font-weight: 700;
+    font-size: 18.5px;
+    margin: 34px 0 4px;
+  }
+  p { margin: 14px 0; max-width: 68ch; }
+  strong { font-weight: 700; }
+  em { font-style: normal; font-weight: 500; color: var(--blue); }
+
+  .tag {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    padding: 1px 9px 2px;
+    border-radius: 3px;
+    white-space: nowrap;
+    vertical-align: 1px;
+  }
+  .tag.sp  { background: var(--blue-soft);   color: var(--blue); }
+  .tag.ro  { background: var(--red-soft);    color: var(--red); }
+  .tag.dro { background: var(--violet-soft); color: var(--violet); }
+  .tag.rm  { background: var(--amber-soft);  color: var(--amber); }
+
+  .formula {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 20px 22px 16px;
+    margin: 22px 0;
+    overflow-x: auto;
+  }
+  .formula .math {
+    font-family: Georgia, "Noto Serif KR", serif;
+    font-size: 19px;
+    text-align: center;
+    white-space: nowrap;
+    letter-spacing: .01em;
+  }
+  .formula .math i { font-style: italic; }
+  .formula .math sub, .formula .math sup { font-size: 12px; }
+  .formula .gloss {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 10px;
+    line-height: 1.7;
+    white-space: normal;
+  }
+  .c-blue { color: var(--blue); }
+  .c-red { color: var(--red); }
+  .c-violet { color: var(--violet); }
+  .c-amber { color: var(--amber); }
+  .formula .math sub sub, .formula .math sub .acc { font-size: 10px; }
+
+  .acc { display: inline-block; position: relative; line-height: 1; }
+  .acc .a {
+    position: absolute;
+    top: -0.3em;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: .72em;
+    line-height: 1;
+  }
+
+  .notation {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 22px 0;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 9px 22px;
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .notation .s {
+    font-family: Georgia, "Noto Serif KR", serif;
+    font-size: 16.5px;
+    white-space: nowrap;
+  }
+  .notation .s sub { font-size: 11px; }
+
+  .spectrum { margin: 30px 0 8px; }
+  .spectrum .bar {
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--blue), var(--amber) 52%, var(--red));
+  }
+  .spectrum .stops {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 12px;
+  }
+  .spectrum .stop { flex: 1; }
+  .spectrum .stop:nth-child(2) { text-align: center; }
+  .spectrum .stop:last-child { text-align: right; }
+  .spectrum .stop .m {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: 700;
+    display: block;
+  }
+  .spectrum .stop .d {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    display: block;
+  }
+  .spectrum .stop:first-child .m { color: var(--blue); }
+  .spectrum .stop:nth-child(2) .m { color: var(--amber); }
+  .spectrum .stop:last-child .m { color: var(--red); }
+
+  .tablewrap { overflow-x: auto; margin: 24px 0; border: 1px solid var(--line); border-radius: 6px; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; background: var(--card); }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    color: var(--muted);
+    text-align: left;
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td {
+    font-size: 14.5px;
+    line-height: 1.65;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 700; white-space: nowrap; }
+
+  ol.refs { padding-left: 0; margin: 24px 0; list-style: none; counter-reset: ref; }
+  ol.refs li {
+    counter-increment: ref;
+    position: relative;
+    padding: 14px 16px 14px 52px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  ol.refs li::before {
+    content: counter(ref, decimal-leading-zero);
+    position: absolute;
+    left: 16px;
+    top: 15px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  ol.refs .t { font-weight: 700; }
+  ol.refs .w { color: var(--muted); }
+  a { color: var(--blue); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 2px; }
+
+  .qs { margin: 24px 0; padding: 0; list-style: none; }
+  .qs li {
+    padding: 16px 18px;
+    border-left: 3px solid var(--blue);
+    background: var(--card);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+  .qs li .q {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: .12em;
+    color: var(--blue);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  figure { margin: 28px 0; }
+  figure svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  figcaption {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    margin: 10px auto 0;
+    line-height: 1.65;
+    max-width: 56ch;
+  }
+
+  .note {
+    font-size: 13.5px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    margin-top: 56px;
+    padding-top: 16px;
+  }
+</style>
+<style>body { margin: 0; }</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="eyebrow">OUU · 읽기 자료 · Optimization Under Uncertainty</p>
+  <h1>전장의 불확실성</h1>
+  <p class="lede">군사 문제로 배우는 확률계획법(SP)·강건최적화(RO)·분포강건최적화(DRO), 그리고 위험측도의 스펙트럼</p>
+
+  <hr class="keyline">
+
+  <h2><span class="no">01</span>왜 군사 문제인가</h2>
+  <p>군사 작전의 거의 모든 결정은 <strong>정보가 불완전한 상태</strong>에서 내려집니다. 적이 어느 항구를 공격할지, 요격 미사일이 명중할지, 보급로가 내일도 열려 있을지, 부상자 후송 요청이 언제 어디서 들어올지 — 결정을 내리는 시점에는 아무것도 확정되어 있지 않습니다.</p>
+  <p>그래서 최적화 역사상 <strong>불확실성 하의 최적화(OUU)는 군사 문제에서 태어났습니다.</strong> 이 분야의 출발점으로 꼽히는 Dantzig의 1955년 논문은 RAND 연구소에서 공군 수송기 배정 문제를 고민하다 나온 결과입니다. "수요를 모르는 채로 지금 항공기를 노선에 배정해야 한다"는 문제 설정이, 여러분이 이번 학기에 배우는 확률계획법의 원형입니다.</p>
+  <p>군사 문제가 특히 좋은 교재인 이유가 하나 더 있습니다. 불확실성의 <strong>성격이 두 종류</strong>로 뚜렷이 나뉜다는 점입니다.</p>
+  <p><span class="tag sp">자연적 불확실성</span> 수요·기상·장비 고장처럼 <em>주사위를 던지는 자연</em>이 만드는 불확실성 — 확률분포로 모델링하는 것이 자연스럽습니다.<br>
+  <span class="tag ro">적대적 불확실성</span> 적의 공격 지점·타이밍처럼 <em>나에게 최악인 선택을 하는 상대</em>가 만드는 불확실성 — "최악의 경우"로 모델링하는 것이 자연스럽습니다.</p>
+  <p>이 구분이 그대로 SP와 RO의 구분으로 이어집니다.</p>
+
+  <h2><span class="no">02</span>세 가지 모델링 언어</h2>
+  <p>기호는 <strong>1주차 슬라이드의 표기를 그대로</strong> 씁니다. 물결표(˜)는 "아직 값이 정해지지 않은 랜덤한 양", 모자(ˆ)는 "데이터로 추정한 양"이라는 뜻입니다.</p>
+
+  <div class="notation">
+    <span class="s"><span class="acc"><span class="a">˜</span>ξ</span> ~ ℙ</span><span>불확실한 양(랜덤 벡터) <span class="acc"><span class="a">˜</span>ξ</span>는 <strong>참 분포</strong>(true distribution) ℙ를 따른다 — 현실이 따르지만 우리는 모르는 분포</span>
+    <span class="s">𝔼<sub>ℙ</sub>[ · ]</span><span>분포 ℙ에 대한 기댓값 — 아래첨자가 "어느 분포로 평균을 내는가"를 표시</span>
+    <span class="s"><span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub></span><span>표본 ξ<sup>1</sup>, …, ξ<sup>N</sup>으로 만든 <strong>경험분포</strong>(empirical distribution)</span>
+    <span class="s">ℚ, 𝒫<sub>λ</sub>(<span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>)</span><span>후보 분포 ℚ와, <span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>을 중심으로 크기 λ만큼의 분포들을 담은 <strong>ambiguity set</strong></span>
+    <span class="s"><b><i>x</i></b></span><span>우리의 결정 — 오늘 ML 예제에서 모델 파라미터 𝜽가 하던 역할을, OR에서는 작전 결정 <b><i>x</i></b>가 한다</span>
+  </div>
+
+  <h3><span class="tag sp">SP</span> 확률계획법 — 시나리오와 확률을 안다면</h3>
+  <p>확률계획법(Stochastic Programming)은 불확실성을 <strong>시나리오와 그 확률</strong>로 표현합니다. 즉 <span class="acc"><span class="a">˜</span>ξ</span> ~ ℙ에서 분포 ℙ를 안다고 가정하고, <strong>기대 비용이 가장 낮은 결정</strong>을 찾습니다.</p>
+  <div class="formula">
+    <div class="math">min<sub><b><i>x</i></b></sub>&nbsp;&nbsp;<span class="c-amber">𝔼<sub>ℙ</sub></span>[ <i>f</i>(<span class="c-blue"><b><i>x</i></b></span>, <span class="acc"><span class="a">˜</span>ξ</span>) ]</div>
+    <div class="gloss">분포 ℙ를 알 때, <span class="c-amber">기대 비용</span>이 가장 낮은 <span class="c-blue">결정 <b><i>x</i></b></span>를 고른다</div>
+  </div>
+  <p>모양을 잘 보세요. 오늘 슬라이드의 ML 학습 문제 min<sub>𝜽</sub> 𝔼<sub>ℙ</sub>[ℓ(<span class="acc"><span class="a">˜</span>y</span>, f<sub>𝜽</sub>(<span class="acc"><span class="a">˜</span>x</span>))]와 <strong>정확히 같은 꼴</strong>입니다 — 결정변수가 모델 파라미터 𝜽에서 작전 결정 <b><i>x</i></b>로, 손실 ℓ이 작전 비용으로 바뀌었을 뿐입니다.</p>
+  <p>미사일 방어가 직관적인 예입니다. 요격탄이 명중할지는 쏘기 전에 알 수 없고, 명중 <em>확률</em>만 압니다. 그래서 어떤 무기를 어떤 표적에 배정해야 <strong>기대 피해가 최소</strong>가 되는지를 푸는 것이 무기-표적 할당(WTA) 문제입니다 [4]. 물자를 어디에 얼마나 비축할지 정하는 <strong>사전배치(pre-positioning)</strong> 문제 [3], 헬기 부대를 임무부대에 배속하는 문제 [1]도 같은 방식입니다.</p>
+
+  <h3><span class="tag ro">RO</span> 강건최적화 — 확률을 모른다면</h3>
+  <p>강건최적화(Robust Optimization)는 분포 ℙ를 아예 쓰지 않습니다. 불확실한 값 ξ가 어떤 <strong>불확실성 집합</strong> 𝒰 안에 있다는 것만 인정하고, 그 안의 <strong>최악의 경우</strong>에 대비합니다. 물결표가 사라진 것에 주목하세요 — ξ를 더 이상 "확률을 아는 랜덤한 양"으로 취급하지 않기 때문입니다.</p>
+  <div class="formula">
+    <div class="math">min<sub><b><i>x</i></b></sub>&nbsp;&nbsp;<span class="c-red">max<sub>ξ∈𝒰</sub></span>&nbsp;<i>f</i>(<b><i>x</i></b>, ξ)</div>
+    <div class="gloss">내가 계획 <b><i>x</i></b>를 고르면, <span class="c-red">적이 𝒰 안에서 나에게 최악인 ξ를 고른다</span> — ℙ도 𝔼도 없다</div>
+  </div>
+  <p>군사 문제에서 RO가 특히 자연스러운 이유: <strong>적은 주사위가 아닙니다.</strong> 적은 내 계획을 정찰하고, 나에게 가장 아픈 곳을 고릅니다. 위 식의 min–max 구조는 "내가 먼저 두고, 적이 응수한다"는 게임을 그대로 수식으로 옮긴 것입니다. 적 보급망의 어느 간선을 차단할지 정하는 <strong>네트워크 차단(network interdiction)</strong> 문제가 대표적이며, WTA에서도 명중률 정보 자체가 불확실할 때 RO 접근이 쓰입니다 [4].</p>
+
+  <h3><span class="tag dro">DRO</span> 분포강건최적화 — 그 사이 어딘가</h3>
+  <p>현실에서는 참 분포 ℙ를 모릅니다. 손에 있는 것은 표본 N개로 만든 경험분포 <span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>뿐이고, ℙ 자리에 <span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>을 넣고 푸는 것이 오늘 배운 <strong>SAA</strong>(표본평균근사 — ML에서는 ERM)입니다. 표본이 충분하면 <span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub> ≈ ℙ이니 그것으로 충분합니다. 문제는 표본이 적을 때입니다. <span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>이 ℙ에서 멀리 떨어져 있을 수 있고, 그 위에서 최적화한 해는 실전에서 무너질 수 있습니다.</p>
+  <p>분포강건최적화(Distributionally Robust Optimization)의 답은 이렇습니다. <span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>을 그대로 믿는 대신, <strong><span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub> 주변의 분포들을 담은 집합</strong> 𝒫<sub>λ</sub>(<span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>) — ambiguity set — 안의 <strong>최악의 분포 ℚ</strong>에 대비하는 것입니다.</p>
+  <div class="formula">
+    <div class="math">min<sub><b><i>x</i></b></sub>&nbsp;&nbsp;<span class="c-violet">max<sub>ℚ∈𝒫<sub>λ</sub>(<span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>)</sub></span>&nbsp;<span class="c-amber">𝔼<sub>ℚ</sub></span>[ <i>f</i>(<b><i>x</i></b>, <span class="acc"><span class="a">˜</span>ξ</span>) ]</div>
+    <div class="gloss"><span class="c-violet"><span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub> 주변 최악의 분포 ℚ</span>를 가정한 <span class="c-amber">기댓값</span> — λ = 0이면 SAA로, λ가 커지면 RO로</div>
+  </div>
+  <p>군사 응용에 DRO가 잘 맞는 이유는 현실적입니다. <strong>실전 데이터는 언제나 부족합니다.</strong> 전면전의 항만 피격 확률을 추정할 표본은 사실상 존재하지 않으므로 <span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>은 ℙ를 잘 근사하지 못하고, 그렇다고 RO처럼 확률을 아예 버리면 계획이 지나치게 보수적이 됩니다. λ 하나로 그 사이 어디에 설지 조절하는 것이 DRO입니다. 재난·군사 물자 사전배치의 DRO 모형 [7], 차단 게임의 DRO 버전 [8]이 이런 동기에서 나왔습니다.</p>
+
+  <h2><span class="no">03</span>위험측도 — "나쁨"을 어떻게 잴 것인가</h2>
+  <p>같은 SP 모형이라도 목적함수에서 <strong>무엇을 최소화하느냐</strong>에 따라 성격이 완전히 달라집니다. 기댓값은 위험중립적입니다. 평균적으로 좋으면 최악의 시나리오가 아무리 참혹해도 상관하지 않습니다. 하지만 보급 계획에서 "평균적으론 훌륭한데 5%의 확률로 전방 부대가 완전히 고립되는" 계획은 채택할 수 없습니다. 그래서 <strong>위험측도(risk measure)</strong>가 필요합니다.</p>
+
+  <div class="spectrum" role="img" aria-label="위험측도 스펙트럼: 기댓값(위험중립)에서 CVaR(위험회피)을 거쳐 최악의 경우(극단적 위험회피)까지">
+    <div class="bar"></div>
+    <div class="stops">
+      <span class="stop"><span class="m">𝔼<sub>ℙ</sub>[·]</span><span class="d">기댓값 — 위험중립.<br>평균만 본다</span></span>
+      <span class="stop"><span class="m">CVaR<sub>α</sub></span><span class="d">위험회피.<br>최악 (1−α)% 시나리오의 평균</span></span>
+      <span class="stop"><span class="m">max</span><span class="d">최악의 경우 —<br>RO의 관점</span></span>
+    </div>
+  </div>
+
+  <p><span class="tag rm">CVaR</span> <strong>Conditional Value-at-Risk</strong>는 이 스펙트럼의 중간에 있는 가장 널리 쓰이는 위험측도입니다. 정의는 말로 하면 간단합니다. <em>"가장 나쁜 (1−α)·100%의 시나리오들만 골라, 그 평균 손실을 잰다."</em> 예컨대 CVaR<sub>0.95</sub>는 최악의 5% 시나리오들의 평균 비용입니다. α를 키울수록 최악의 경우(max)에 가까워지고, α → 0이면 기댓값으로 돌아갑니다. 즉 <strong>기댓값과 RO는 하나의 스펙트럼의 양 끝</strong>이고, CVaR로 그 사이를 연속적으로 이동할 수 있습니다. UAV 임무 할당에 CVaR를 쓴 최근 논문 [6]이 좋은 예입니다.</p>
+  <p>한 가지 더: DRO도 이 스펙트럼 위에서 이해할 수 있습니다. DRO는 <em>결과값</em>이 아니라 <em>분포</em>에 대해 최악을 가정하는 것이므로, "분포 차원의 위험회피"라고 부를 수 있습니다. 실제로 λ를 키우면 DRO 해는 RO 해에 가까워지고, λ = 0이면 𝒫<sub>λ</sub>(<span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>) = {<span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>}이 되어 SAA로 돌아갑니다.</p>
+
+  <h2><span class="no">04</span>Ambiguity Set — 그림 하나로 이해하기</h2>
+  <p>시나리오가 3개뿐이면 확률분포는 그저 숫자 세 개입니다: ℚ = (q₁, q₂, q₃), 단 q<sub>i</sub> ≥ 0이고 q₁ + q₂ + q₃ = 1. 이 두 조건을 만족하는 점을 전부 모으면 삼각형이 됩니다. 그래서 <strong>모든 분포는 삼각형 위의 한 점</strong>입니다. 꼭짓점은 한 시나리오가 100% 확실한 분포이고, 우리가 믿는 분포 ℙ = (1/4, 1/4, 1/2)도 그 위의 한 점일 뿐입니다.</p>
+  <p>이제 ℙ를 정확히는 믿지 못한다고 합시다. 가장 단순한 처방은 <strong>각 시나리오의 확률이 ±λ만큼 틀릴 수 있다</strong>고 인정하는 것입니다:</p>
+  <div class="formula">
+    <div class="math">𝒫<sub>λ</sub>(ℙ) = { ℚ = (q₁, q₂, q₃) : ∑<sub>i</sub> q<sub>i</sub> = 1,&nbsp; q<sub>i</sub> ≥ 0,&nbsp; <span class="c-violet">|q<sub>i</sub> − p<sub>i</sub>| ≤ λ</span> }</div>
+    <div class="gloss">ℙ에서 각 확률을 <span class="c-violet">λ 이내로 움직여</span> 만들 수 있는 분포 전부</div>
+  </div>
+  <p>삼각형 위에서 𝒫<sub>λ</sub>(ℙ)는 <strong>ℙ를 둘러싼 영역</strong>이고, λ는 그 크기를 조절하는 다이얼입니다.</p>
+
+  <div class="notation">
+    <span class="s">λ = 0</span><span>영역이 점 {ℙ} 하나로 줄어듦 — ℙ를 완전히 믿는다는 뜻. <strong>SP와 같아짐.</strong></span>
+    <span class="s">λ 커짐</span><span>영역이 자람 — 분포에 대한 의심이 커진다는 뜻.</span>
+    <span class="s">λ 충분히 큼</span><span>영역이 삼각형 전체 — 어떤 분포도 배제하지 않음. <strong>RO의 태도와 같아짐.</strong></span>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 460 430" role="img" aria-label="확률 심플렉스 삼각형 위의 ℙ와, λ가 커질수록 자라나는 ambiguity set 𝒫λ(ℙ)">
+      <polygon points="20,394 440,394 230,30" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+      <text x="20" y="414" font-size="12" fill="currentColor">시나리오 1 확실 · (1, 0, 0)</text>
+      <text x="440" y="414" font-size="12" text-anchor="end" fill="currentColor">시나리오 2 확실 · (0, 1, 0)</text>
+      <text x="230" y="16" font-size="12" text-anchor="middle" fill="currentColor">시나리오 3 확실 · (0, 0, 1)</text>
+      <polygon points="125,394 335,394 387.5,303.1 230,30 72.5,303.1" fill="var(--violet)" fill-opacity="0.09" stroke="var(--violet)" stroke-opacity="0.45" stroke-width="1.2"/>
+      <polygon points="177.5,303.1 282.5,303.1 335,212.1 282.5,121.2 177.5,121.2 125,212.1" fill="var(--violet)" fill-opacity="0.14" stroke="var(--violet)" stroke-opacity="0.65" stroke-width="1.2"/>
+      <polygon points="209,248.5 251,248.5 272,212 251,175.8 209,175.8 188,212" fill="var(--violet)" fill-opacity="0.24" stroke="var(--violet)" stroke-width="1.4"/>
+      <circle cx="230" cy="212" r="4" fill="currentColor"/>
+      <text x="240" y="205" font-size="13" fill="currentColor">ℙ</text>
+      <text x="258" y="252" font-size="11.5" fill="var(--violet)">λ = 0.1</text>
+      <text x="290" y="307" font-size="11.5" fill="var(--violet)">λ = 0.25</text>
+      <text x="392" y="307" font-size="11.5" fill="var(--violet)">λ = 0.5</text>
+    </svg>
+    <figcaption>세 시나리오 위의 모든 확률분포는 이 삼각형 위의 한 점입니다. 𝒫<sub>λ</sub>(ℙ)는 ℙ 주변의 보라 영역으로, λ = 0이면 점 {ℙ}(= SP)이고 λ가 커질수록 자라나 결국 삼각형 전체(= RO)를 덮습니다.</figcaption>
+  </figure>
+
+  <p>§02의 DRO 수식에서 내부 max가 하는 일이 이제 보입니다: <em>이 영역 안에서 나에게 가장 불리한 분포 ℚ를 고르는 것.</em> 영역이 클수록(λ가 클수록) 적이 고를 수 있는 분포가 많아지므로, 결정은 그만큼 보수적이 됩니다.</p>
+
+  <h2><span class="no">05</span>응용 지도</h2>
+  <p>아래 표의 모든 문제가 실제 논문으로 존재합니다. 열쇠는 각 문제에서 <strong>① 무엇을 결정하고 ② 무엇이 불확실하며 ③ 어떤 태도(위험측도)로 대비하는가</strong>를 읽어내는 것입니다.</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>응용 문제</th><th>결정할 것</th><th>불확실한 것</th><th>주된 접근</th></tr>
+      <tr><td>무기-표적 할당 (WTA)</td><td>어떤 무기를 어떤 표적에</td><td>명중 여부, 명중률 정보</td><td><span class="tag sp">SP</span> <span class="tag ro">RO</span></td></tr>
+      <tr><td>슛-룩-슛 미사일 방어</td><td>지금 몇 발 쏠지</td><td>요격 성공 여부</td><td><span class="tag sp">SP</span></td></tr>
+      <tr><td>물자 사전배치</td><td>어디에 얼마나 비축</td><td>수요의 위치와 규모</td><td><span class="tag sp">SP</span> <span class="tag dro">DRO</span></td></tr>
+      <tr><td>헬기 부대 할당</td><td>부대 → 임무부대 배속</td><td>실제 임무 발생</td><td><span class="tag sp">SP</span></td></tr>
+      <tr><td>경합환경 보급</td><td>보급 경로·저장소</td><td>적의 공격</td><td><span class="tag sp">SP</span> <span class="tag ro">RO</span></td></tr>
+      <tr><td>UAV 임무 할당</td><td>정찰·수송 임무 배정</td><td>지연과 실패</td><td><span class="tag sp">SP</span> + <span class="tag rm">CVaR</span></td></tr>
+      <tr><td>네트워크 차단</td><td>어느 간선을 차단</td><td>차단 성공, 적의 대응</td><td><span class="tag ro">min–max</span> <span class="tag dro">DRO</span></td></tr>
+      <tr><td>전시 해상수송</td><td>선박 일정과 항로</td><td>항만 피격 시점·위치</td><td><span class="tag sp">SP</span></td></tr>
+    </table>
+  </div>
+
+  <h2><span class="no">06</span>읽을거리</h2>
+  <p>아래는 모두 최근에 나온, OUU를 군사 문제에 실제로 적용한 논문들입니다. 읽기 과제가 아닙니다 — 각 논문이 어떤 문제에 OUU를 썼는지 한 줄씩만 확인하면 충분합니다.</p>
+
+  <ol class="refs">
+    <li><a class="t" href="https://journals.sagepub.com/doi/10.1177/15485129231209039">Two-Stage Stochastic Programming Model of US Army Aviation Allocation of Utility Helicopters to Task Forces</a> <span class="w">— J. of Defense Modeling &amp; Simulation, 2025. 미 육군 헬기 부대의 임무부대 배속을 SP로 최적화.</span> <span class="tag sp">SP</span></li>
+    <li><a class="t" href="https://dash.harvard.edu/items/e87d2b00-d2c7-42a4-bccd-8a880c602f50">Logistics in the Line of Fire: A Stochastic Programming Model for Contested Environments</a> <span class="w">— Harvard University, 2025. 러시아-우크라이나 전쟁 데이터로 만든 시나리오 위에서 전시 보급망을 SP로 모델링 (무료 공개).</span> <span class="tag sp">SP</span></li>
+    <li><a class="t" href="https://doi.org/10.3390/su141912080">A Two-Stage Stochastic Programming Model for Emergency Supplies Pre-Position under the Background of Civil-Military Integration</a> <span class="w">— Sustainability, 2022. 민·군 통합 비상 물자 사전배치를 SP로 최적화.</span> <span class="tag sp">SP</span></li>
+    <li><a class="t" href="https://www.sciencedirect.com/science/article/abs/pii/S0952197624013708">A Comprehensive Survey of Weapon Target Assignment Problem: Model, Algorithm, and Application</a> <span class="w">— Engineering Applications of AI, 2024. 무기-표적 할당(WTA) 문제의 모형·알고리즘·응용을 정리한 서베이.</span> <span class="tag sp">SP</span> <span class="tag ro">RO</span></li>
+    <li><a class="t" href="https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2025.1640539/full">Enhancing Intelligence Source Performance Management through Two-Stage Stochastic Programming and Machine Learning Techniques</a> <span class="w">— Frontiers in Big Data, 2025. 정보원(HUMINT) 운용 성과 관리를 머신러닝과 SP의 결합으로 다룸.</span> <span class="tag sp">SP</span></li>
+    <li><a class="t" href="https://doi.org/10.3390/drones10070529">A Risk-Averse Two-Stage Stochastic Programming Model for Emergency UAV Task Allocation</a> <span class="w">— Drones, 2026. UAV 정찰·수송 임무 배정에 CVaR 위험측도를 적용.</span> <span class="tag sp">SP</span> <span class="tag rm">CVaR</span></li>
+    <li><a class="t" href="https://www.sciencedirect.com/science/article/abs/pii/S0305054824000790">Optimizing Emergency Supply Pre-Positioning for Disaster Relief: A Two-Stage Distributionally Robust Approach</a> <span class="w">— Computers &amp; Operations Research, 2024. 재난 구호 물자 사전배치를 DRO로 최적화 — [3]과 같은 문제의 DRO 버전.</span> <span class="tag dro">DRO</span></li>
+    <li><a class="t" href="https://arxiv.org/pdf/2003.07915">The Value of Randomized Strategies in Distributionally Robust Risk-Averse Network Interdiction Games</a> <span class="w">— arXiv. 네트워크 차단 게임을 위험회피적 DRO로 분석.</span> <span class="tag dro">DRO</span> <span class="tag rm">Risk</span></li>
+    <li><a class="t" href="https://arxiv.org/pdf/2604.02493">Probabilistic Modeling versus Robust Optimization: A Tutorial Based on a Humanitarian Logistics Use Case</a> <span class="w">— arXiv, 2026. 같은 물류 사례를 SP와 RO로 각각 모델링해 두 접근을 나란히 비교한 튜토리얼.</span> <span class="tag sp">SP</span> <span class="tag ro">RO</span></li>
+  </ol>
+
+  <h2><span class="no">07</span>생각해 볼 질문</h2>
+  <ul class="qs">
+    <li><span class="q">Q1 · SP인가 RO인가</span>태풍으로 인한 보급 지연과 적 미사일로 인한 항만 파괴 — 두 불확실성 중 어느 쪽에 SP가, 어느 쪽에 RO가 더 적절한가? 그 이유를 "불확실성을 만드는 주체"의 관점에서 설명해 보라.</li>
+    <li><span class="q">Q2 · 기댓값의 함정</span>보급 계획에서 기대비용만 최소화하면 어떤 위험이 있는가? 목적함수를 CVaR<sub>0.95</sub>로 바꾸면 비축 위치와 양이 어떻게 달라질 것 같은지 직관적으로 예측해 보라.</li>
+    <li><span class="q">Q3 · 확률은 어디서 오는가</span>전면전의 항만 피격 확률을 추정할 데이터는 사실상 존재하지 않는다. 그래도 SP를 쓰려면 시나리오 확률을 어떻게 정해야 할까? DRO는 𝒫<sub>λ</sub>(<span class="acc"><span class="a">ˆ</span>ℙ</span><sub>N</sub>)를 써서 이 문제를 어떤 방식으로 우회하는가?</li>
+  </ul>
+
+  <p class="note">AD7031 OUU 수업 읽기 자료 · 수학 표기는 1주차 슬라이드(OUU_week01_slide)를 따릅니다. 약어: SP = Stochastic Programming(확률계획법), RO = Robust Optimization(강건최적화), DRO = Distributionally Robust Optimization(분포강건최적화), SAA = Sample Average Approximation(표본평균근사), CVaR = Conditional Value-at-Risk. 링크된 논문 중 일부는 기관 구독이 필요할 수 있습니다.</p>
+</div>
+
+</body>
+</html>
