@@ -16,9 +16,9 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 
 | Week | Date | Topic | Lecture note | Notebook | Video | Misc |
 |---|---|---|:---:|:---:|:---:|---|
-| 1 | 8/29 | Intro: optimization under uncertainty (OUU) is everywhere; optimization theory review 1 — convex optimization | [week01](lecture-notes/OUU_week01_slide.pdf) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week1_markowitz.ipynb) *markowitz*<br>[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week01_topiary_occupancy.ipynb) *topiary* | [Optimization: A Bootcamp for Machine Learning, Inverse Problems, and Control](https://www.youtube.com/watch?v=lPBPbGmw1_4) | [읽을거리](https://hankpark0706.github.io/AD7031/week01_reading.html) ([PDF](lecture-notes/OUU_week01_reading.pdf)) |
-| 2 | 9/5 | Optimization theory review 2 — convex optimization (cont.), duality | | | | **HW#1 out** (due 9/19) |
-| 3 | 9/12 | Probability theory review; competing paradigms for OUU | | | | |
+| 1 | 8/29 | Intro: optimization under uncertainty (OUU) is everywhere; optimization theory review 1 — convex optimization | [week01](lecture-notes/OUU_week01_slide.pdf) | | [Optimization: A Bootcamp for Machine Learning, Inverse Problems, and Control](https://www.youtube.com/watch?v=lPBPbGmw1_4) | [읽을거리](https://hankpark0706.github.io/AD7031/week01_reading.html) ([PDF](lecture-notes/OUU_week01_reading.pdf)) |
+| 2 | 9/5 | Optimization theory review 2 — convex optimization (cont.), duality | | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week1_markowitz.ipynb) *markowitz* | | |
+| 3 | 9/12 | Probability theory review; competing paradigms for OUU | | | | **HW#1 out** (due 9/26) |
 | 4 | 9/19 | Risk measures 1 — CVaR vs VaR; portfolio optimization | | | | |
 | 5 | 9/26 | *No class* | | | | |
 | 6 | 10/3 | Risk measures 2; stochastic optimization | | | | **HW#2 out** (due 10/17) · **project topic pitch** (oral) |
