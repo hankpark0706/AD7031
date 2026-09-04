@@ -8,7 +8,7 @@ Course materials for **AD7031 불확실성하 의사결정 (Optimization Under U
 dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 
 📄 [Syllabus (PDF)](syllabus/%5B%EA%B0%95%EC%9D%98%EA%B3%84%ED%9A%8D%EC%84%9C%5D%EB%B6%88%ED%99%95%EC%8B%A4%EC%84%B1%ED%95%98%20%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95%28AD7031%29_26_2.pdf)
-🌐 [Course page](https://hankpark0706.github.io/AD7031/)
+🎮 [Optimization Games](https://hankpark0706.github.io/ip-games/) — browser-based games for the classic models (Markowitz portfolio, knapsack, assignment, shortest path, transportation, min-cost flow). Nothing to install.
 
 ---
 
