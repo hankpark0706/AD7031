@@ -66,7 +66,7 @@
 
 \begin{document}
 
-{\Large\bfseries Week 2 --- Optimization Theory Review: Convexity, LP, and a Probability Warm-up}\\[2pt]
+{\Large\bfseries Week 2 --- Convexity, LP, and Probability: the Two Reviews}\\[2pt]
 {\small AD7031 Optimization Under Uncertainty \quad\textbullet\quad Instructor: Prof.\ H.\ Park \quad\textbullet\quad Sep 5, 2026}
 
 % ---------------------------------------------------------------- 0
@@ -757,7 +757,7 @@ $f\!\left[\lambda \begin{pmatrix} x_1 \\ y_1 \end{pmatrix}
 \takeaway{convexity is compositional: certify the pieces, then check the operation. the risk measures (CVaR, week 4) and worst-case objectives ahead are built exactly this way.}
 
 % ---------------------------------------------------------------- 7
-\beat{7}{Probability review \ {\normalsize\normalfont (if time permits --- continued after duality)}}
+\beat{7}{Probability review \ {\normalsize\normalfont (the second half of today)}}
 \begin{board}
 back to Section 2's table: the OR column had \textbf{uncertain data} $\xi$. today, the vocabulary.
 \vspace{6pt}
@@ -799,6 +799,13 @@ $\tilde\xi$ continuous: \ $\mathbb{E}[\tilde\xi] = \int_{\Xi} \xi\, p(\xi)\, d\x
 
 \quad linearity: \ $\mathbb{E}[a\tilde\xi + b\tilde\eta] = a\,\mathbb{E}[\tilde\xi] + b\,\mathbb{E}[\tilde\eta]$
 \ --- no independence needed
+\vspace{4pt}
+
+\quad {\color{punchink}vector case:} \ $\tilde\xi \in \mathbb{R}^k$ \ $\Rightarrow$ \ the integral is taken componentwise and
+\vspace{2pt}
+
+\qquad $\mu \;:=\; \mathbb{E}[\tilde\xi] \;=\; \big(\mathbb{E}[\tilde\xi_1], \dots, \mathbb{E}[\tilde\xi_k]\big)^{\top} \in \mathbb{R}^k$
+\qquad {\small (the \emph{mean vector})}
 \vspace{10pt}
 
 \textbf{Def} (\emph{generalized expectation}) \quad let $f : \mathbb{R}^k \to \mathbb{R}$
@@ -823,7 +830,33 @@ $\sigma(\tilde\xi) = \sqrt{\mathrm{Var}(\tilde\xi)}$
 
 \textbf{Def} (\emph{covariance}) \quad
 $\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2)
- = \mathbb{E}\big[(\tilde\xi_1 - \mathbb{E}[\tilde\xi_1])(\tilde\xi_2 - \mathbb{E}[\tilde\xi_2])\big]$
+ = \mathbb{E}\big[(\tilde\xi_1 - \mathbb{E}[\tilde\xi_1])(\tilde\xi_2 - \mathbb{E}[\tilde\xi_2])\big]
+ = \mathbb{E}[\tilde\xi_1 \tilde\xi_2] - \mathbb{E}[\tilde\xi_1]\,\mathbb{E}[\tilde\xi_2]$
+\vspace{3pt}
+
+\quad {\small $\mathrm{Cov}(\tilde\xi, \tilde\xi) = \mathrm{Var}(\tilde\xi)$ --- variance is the covariance of a variable with itself}
+\vspace{10pt}
+
+\textbf{Def} (\emph{covariance matrix}) \quad for $\tilde\xi \in \mathbb{R}^k$ with mean $\mu$:
+\vspace{3pt}
+
+\quad $\Sigma \;:=\; \mathbb{E}\big[(\tilde\xi - \mu)(\tilde\xi - \mu)^{\top}\big]
+ \;=\; \mathbb{E}[\tilde\xi \tilde\xi^{\top}] - \mu\mu^{\top} \ \in \mathbb{R}^{k \times k}$,
+\qquad $\Sigma_{ij} = \mathrm{Cov}(\tilde\xi_i, \tilde\xi_j)$
+\vspace{4pt}
+
+\quad diagonal $\Sigma_{ii} = \mathrm{Var}(\tilde\xi_i)$; \ symmetric; \ always $\Sigma \succeq 0$
+\vspace{4pt}
+
+\quad {\color{punchink}why we care:} \ for fixed $a \in \mathbb{R}^k$, \
+$\mathbb{E}[a^{\top}\tilde\xi] = a^{\top}\mu$ \ and \
+$\mathrm{Var}(a^{\top}\tilde\xi) = a^{\top}\Sigma a$
+\vspace{2pt}
+
+\qquad {\small --- this is exactly the Markowitz objective $x^{\top}\Sigma x$ from the QP section: the variance of the}
+\vspace{1pt}
+
+\qquad {\small \phantom{---} portfolio return $\tilde\xi^{\top}x$. Note $\mathbb{E}[\tilde\xi\tilde\xi^{\top}]$ alone is \emph{not} it --- the $\mu\mu^{\top}$ term matters.}
 \vspace{8pt}
 
 \textbf{Def} (\emph{correlation}) \quad
@@ -917,6 +950,6 @@ $f(x, \tilde\xi)$ is a random variable, \ $\mathbb{E}[f(x,\tilde\xi)]$ is a numb
 % ---------------------------------------------------------------- next
 \par\medskip
 {\color{ruleink}\rule{\textwidth}{1.2pt}}\par\nobreak\vspace{3pt}
-{\color{keyink}\small\textbf{next lecture}\quad duality, a full session: every LP comes with a shadow LP --- prices, certificates, and why $\max = \min$.}
+{\color{keyink}\small\textbf{next lecture}\quad duality --- every LP comes with a shadow LP: prices, certificates, and why $\max = \min$; then the competing paradigms for OUU.}
 
 \end{document}
