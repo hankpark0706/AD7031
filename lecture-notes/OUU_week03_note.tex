@@ -1,0 +1,430 @@
+% ============================================================================
+% AD7031 Week 3 -- LECTURE NOTE
+%
+% Straight conversion of the handwritten "OUU Lecture 3" (5 pp.):
+%   p.1   duality theory -- (P), (D), the sup-trick, weak/strong duality, Slater
+%   p.2   LP example -- primal LP to dual LP, LP strong duality
+%   p.3   conic programming -- cone, proper cone, generic conic program, LP
+%   p.4   SDP, second-order cone, dual cone, self-dual cones
+%   p.5   primal / dual conic program
+% Same house style as OUU_week02_note.tex; self-contained -- no \input.
+% ============================================================================
+\documentclass[10pt]{article}
+
+\usepackage[a4paper, margin=1.9cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ruleink}{RGB}{18, 68, 140}
+\definecolor{demoink}{RGB}{140, 82, 20}
+\definecolor{keyink}{RGB}{20, 90, 20}
+\definecolor{watchink}{RGB}{86, 60, 140}
+\definecolor{punchink}{RGB}{170, 30, 60}
+\definecolor{lineA}{RGB}{44, 110, 176}
+\definecolor{lineB}{RGB}{168, 96, 32}
+\definecolor{lineC}{RGB}{78, 62, 140}
+
+% ---- the pens used in the handwritten original ----------------------------
+\definecolor{redink}{RGB}{198, 38, 38}
+\definecolor{purpink}{RGB}{132, 58, 176}
+\definecolor{grnink}{RGB}{22, 118, 62}
+\definecolor{magink}{RGB}{214, 30, 158}
+\definecolor{boxink}{RGB}{232, 150, 42}
+\definecolor{sandink}{RGB}{250, 206, 142}
+\definecolor{hlyel}{RGB}{255, 244, 130}
+
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+
+% tighter spacing around centered displays
+\AtBeginDocument{%
+  \abovedisplayskip=7pt plus 2pt
+  \belowdisplayskip=7pt plus 2pt
+  \abovedisplayshortskip=4pt
+  \belowdisplayshortskip=4pt}
+
+% ---- one section -----------------------------------------------------------
+\newcommand{\beat}[2]{%   number, title
+  \par\bigskip\vspace{4pt}
+  {\color{ruleink}\rule{\textwidth}{1pt}}\par\nobreak\vspace{4pt}
+  {\large\bfseries #1.\; #2}\par\nobreak\vspace{6pt}}
+
+% ---- board content ---------------------------------------------------------
+\newenvironment{board}{%
+  \par\vspace{4pt}
+  \begingroup\leftskip=1.3em\relax\parskip=2pt\relax}{%
+  \par\endgroup\vspace{4pt}}
+
+% ---- hanging bullet (wrapped lines stay indented) --------------------------
+\newcommand{\bul}{\hangindent=2.6em\hangafter=1\hspace{1.2em}\textbullet\ \ignorespaces}
+
+% ---- cone order and highlighter -------------------------------------------
+\newcommand{\coneleq}{\mathrel{\preceq_{\scriptscriptstyle C}}}
+\newcommand{\hl}[1]{\colorbox{hlyel}{$#1$}}
+
+\begin{document}
+
+{\Large\bfseries Week 3 --- Duality Theory and Conic Programming}\\[2pt]
+{\small AD7031 Optimization Under Uncertainty \quad\textbullet\quad Instructor: Prof.\ H.\ Park \quad\textbullet\quad Sep 12, 2026}
+
+% ---------------------------------------------------------------- 1
+\beat{1}{Duality theory}
+\begin{board}
+in this course, we focus on \textbf{convex} functions.
+\vspace{10pt}
+
+\textbf{Primal Problem}
+\vspace{2pt}
+
+\begin{center}
+$\begin{aligned}
+  \inf\quad & f_0(x) \\
+  \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                   & f_i(x) \le 0 \qquad \forall i \in [I]
+\end{aligned}$
+\hspace{4.5cm} $(P)$
+\end{center}
+\vspace{10pt}
+
+\textbf{Dual Problem}
+\vspace{2pt}
+
+\begin{center}
+$\begin{aligned}
+  \sup_{\theta}\ \inf_{x \in \mathbb{R}^N}\quad & f_0(x) + \sum_{i \in [I]} \theta_i f_i(x) \\
+  \text{s.t.}\quad & \theta \in \mathbb{R}^I \\
+                   & \theta \ge 0
+\end{aligned}$
+\hspace{4.0cm} $(D)$
+\end{center}
+\vspace{12pt}
+
+\begin{center}
+{\setlength{\arrayrulewidth}{1pt}
+\arrayrulecolor{boxink}
+\begin{tabular}{|@{\;}c@{\;\;}l@{\;}|}
+\hline
+\rule{0pt}{4.6em}
+ & \color{redink}$\begin{aligned}
+      \inf\quad & f_0(x) \\
+      \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                       & f_i(x) \le 0 \qquad \forall i \in [I]
+   \end{aligned}$ \\[1.4em]
+\hline
+\rule{0pt}{3.6em}
+\color{redink}$=$ &
+ \color{redink}$\displaystyle \inf_{x \in \mathbb{R}^N}\ f_0(x)
+   \;+\; \underbrace{\ \sup_{\theta \in \mathbb{R}^I_+}\ \sum_{i \in [I]} \theta_i f_i(x)\ }_{\textstyle \color{purpink}\le\, 0}$ \\[2.6em]
+\hline
+\end{tabular}}
+\end{center}
+\vspace{4pt}
+
+\hspace{3.0cm}{\color{purpink}if \ $f_i(x) \le 0 \ \ \forall i$, \quad then \quad $= 0$}
+\vspace{3pt}
+
+\hspace{3.0cm}{\color{purpink}if \ $\exists\, i : f_i(x) > 0$, \quad then \quad $= +\infty$}
+\vspace{8pt}
+
+{\color{redink}$\displaystyle \ \ \ge\ \ \sup_{\theta \in \mathbb{R}^I_+}\ \inf_{x \in \mathbb{R}^N}\ f_0(x)
+  + \sum_{i \in [I]} \theta_i f_i(x)$}
+\vspace{14pt}
+
+\textbf{Properties:}
+\vspace{4pt}
+
+\quad --- \textbf{weak duality} \qquad $\inf\,(P) \ \ge\ \sup\,(D)$ \qquad always holds.
+\vspace{6pt}
+
+\quad --- \textbf{strong duality:} \qquad $\inf\,(P) \ =\ \sup\,(D)$ \ holds
+\vspace{3pt}
+
+\qquad\quad when the problem $(P)$ is convex and the \underline{Slater's condition} holds
+\vspace{3pt}
+
+\hspace{4.2cm}{\color{redink}$\exists\, x \in \mathbb{R}^N$, \ s.t. \ $f_i(x) < 0 \quad \forall i \in [I]$}
+\newpage
+
+\begin{center}
+\begin{tikzpicture}[scale=1.15, font=\small]
+  \draw[grnink, very thick] plot[domain=-1.25:1.25, samples=60]
+        ({0.62 - 0.36*\x*\x}, {\x});
+  \draw[grnink, very thick] plot[domain=-1.40:0.85, samples=60]
+        ({\x}, {-0.60 + 0.30*\x*\x});
+  \fill[grnink] (0.505,-0.518) circle (1.7pt);
+  \draw[grnink, ->, thick] (-0.58,-0.52) -- (0.28,-0.52);
+  \node[grnink, above] at (-0.15,-0.50) {$c$};
+  \node[grnink, anchor=east] at (-0.90,0.62) {$f_0(x) = c^{\top}x$};
+  \node[grnink, anchor=south west] at (0.20,1.02) {$f_1(x)$};
+  \node[grnink, below] at (-0.45,-0.92) {$f_2(x)$};
+  \node[grnink, anchor=west] at (1.30,0.28) {$f_1(x^\star) = 0$};
+  \node[grnink, anchor=west] at (1.30,-0.28) {$f_2(x^\star) = 0$};
+\end{tikzpicture}
+\end{center}
+\vspace{6pt}
+
+{\color{redink}\textbf{In this course, we assume that strong duality holds for convex problem!!}}
+\end{board}
+
+% ---------------------------------------------------------------- 2
+\beat{2}{Example: linear program}
+\begin{board}
+\textbf{Primal LP:}
+\vspace{2pt}
+
+\begin{center}
+$\begin{aligned}
+  \inf\quad & c^{\top}x \\
+  \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                   & Ax \le b
+\end{aligned}$
+\hspace{1.8cm}
+$\begin{aligned}
+  & f_0(x) = c^{\top}x \\
+  & f_i(x) = a_i^{\top}x - b_i \qquad \forall i \in [I]
+\end{aligned}$
+\end{center}
+\vspace{4pt}
+
+\hspace{6.6cm}{\color{redink}$f_i(x) \le 0$}
+\vspace{3pt}
+
+\hspace{6.1cm}{\color{redink}$\iff\ a_i^{\top}x - b_i \le 0$}
+\vspace{3pt}
+
+\hspace{6.1cm}{\color{redink}$\iff\ a_i^{\top}x \le b_i$}
+\vspace{14pt}
+
+\textbf{Dual LP:}
+\vspace{4pt}
+
+\quad $\displaystyle \sup_{\theta \in \mathbb{R}^I_+}\ \inf_{x \in \mathbb{R}^N}\
+  c^{\top}x + \sum_{i \in [I]} \theta_i \big(a_i^{\top}x - b_i\big)$
+\vspace{8pt}
+
+$\displaystyle =\ \sup_{\theta \in \mathbb{R}^I_+}\ \inf_{x \in \mathbb{R}^N}\
+  c^{\top}x + \sum_{i \in [I]} \theta_i a_i^{\top}x - \sum_{i \in [I]} \theta_i b_i$
+\vspace{8pt}
+
+$\displaystyle =\ \sup_{\theta \in \mathbb{R}^I_+}\ -\sum_{i \in [I]} \theta_i b_i
+  \ +\ \inf_{x \in \mathbb{R}^N}\ \underbrace{\Big(c + \sum_{i \in [I]} \theta_i a_i\Big)^{\!\top} x}_{}$
+\vspace{2pt}
+
+\hspace{5.1cm}{\color{redink}$= \begin{cases}
+   0 & \text{if } \ c + \sum_{i \in [I]} \theta_i a_i = 0 \\[4pt]
+   -\infty & \text{if } \ \text{otherwise.}
+ \end{cases}$}
+\vspace{10pt}
+
+$\begin{aligned}
+  =\ \sup\quad & -b^{\top}\theta \\
+  \text{s.t.}\quad & \theta \in \mathbb{R}^I_+ \\
+                   & A^{\top}\theta = -c
+\end{aligned}$
+\vspace{16pt}
+
+\underline{\textbf{LP strong duality}} : \ if there exists \ $x \in \mathbb{R}^N : Ax \le b$
+\vspace{4pt}
+
+\hspace{4.0cm} or \quad $\theta \in \mathbb{R}^I : A^{\top}\theta = -c, \ \ \theta \ge 0$
+\vspace{6pt}
+
+\hspace{2.7cm} then strong duality holds
+\end{board}
+
+\newpage
+% ---------------------------------------------------------------- 3
+\beat{3}{Conic programming}
+\begin{board}
+a conic program is a convex optimization problem.
+\vspace{5pt}
+
+\quad --- a \textbf{linear} objective function.
+\vspace{4pt}
+
+\quad --- a feasible set defines through the intersection of \underline{halfspaces}
+\ {\color{redink}$Ax \le b$} \ or a proper cone.
+\vspace{14pt}
+
+\textbf{Def} (\emph{cone}) \quad a set $C$ is a cone if \ $\forall x \in C$, \ we have
+$\lambda x \in C \quad \forall \lambda \ge 0$
+\vspace{8pt}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95, font=\small]
+  \draw[->] (0,0) -- (3.5,0) node[right] {$x_1$};
+  \draw[->] (0,0) -- (0,2.5) node[above] {$x_2$};
+  \draw[thick] (0,0) -- (3.2,1.55);
+  \fill (1.15,0.557) circle (1.8pt) node[below] {$x$};
+  \fill (2.05,0.993) circle (1.8pt) node[below] {$\lambda x$};
+  \node at (1.95,2.05) {this ray is a cone.};
+\end{tikzpicture}
+\hspace{10mm}
+\begin{tikzpicture}[scale=0.95, font=\small]
+  \fill[sandink] (0,0) -- (1.75,2.45) -- (2.95,2.45) -- (3.3,1.1) -- cycle;
+  \draw[->] (0,0) -- (3.5,0) node[right] {$x_1$};
+  \draw[->] (0,0) -- (0,2.75) node[above] {$x_2$};
+  \draw[thick] (0,0) -- (1.75,2.45);
+  \draw[thick] (0,0) -- (3.3,1.1);
+  \fill (1.18,1.65) circle (1.8pt) node[anchor=east, xshift=-2pt] {$x$};
+  \fill (0.82,1.15) circle (1.8pt) node[anchor=east, xshift=-2pt] {$\lambda x$};
+  \fill[grnink] (1.20,1.68) circle (1.8pt);
+  \fill[grnink] (2.25,0.75) circle (1.8pt);
+  \node at (2.05,1.62) {$C$};
+  \node[anchor=west] at (3.05,2.35) {$\rightarrow$ this is a cone.};
+\end{tikzpicture}
+\end{center}
+\vspace{12pt}
+
+\textbf{Def} (\emph{proper cone}) \hspace{2.2cm}
+{\color{magink}$\mathbb{R}^N$ is a cone but not pointed.}
+\vspace{5pt}
+
+\quad $C$ is a proper cone if it's \textbf{convex}, \textbf{closed}, \underline{\textbf{pointed}}
+\vspace{4pt}
+
+\hspace{4.7cm}{\color{redink}if \ $x, -x \in C$ \ then \ $x = 0$.}
+\vspace{14pt}
+
+\textbf{Generic conic program:}
+\vspace{2pt}
+
+\begin{center}
+$\begin{aligned}
+  \inf\quad & c^{\top}x \\
+  \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                   & Ax \coneleq b
+\end{aligned}$
+\hspace{1.4cm}{\color{redink}$\iff\ \ b - Ax \in C$}
+\end{center}
+\vspace{14pt}
+
+\textbf{Example:}
+\vspace{8pt}
+
+\quad 1) \textbf{Linear program:} \quad $C = \mathbb{R}^K_+$
+\vspace{6pt}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95, font=\small]
+  \fill[sandink] (0,0) rectangle (2.5,2.3);
+  \draw[->] (0,0) -- (3.0,0) node[right] {$x_1$};
+  \draw[->] (0,0) -- (0,2.6) node[above] {$x_2$};
+\end{tikzpicture}
+\hspace{16mm}
+\raisebox{13mm}{$\begin{aligned}
+  & b - Ax \in \mathbb{R}^K_+ \\[8pt]
+  \iff\ & b - Ax \ge 0 \ \iff\ Ax \le b
+\end{aligned}$}
+\end{center}
+\vspace{14pt}
+
+\quad 2) \textbf{Semidefinite program:} \quad $C = \mathbb{S}^K_+$
+\vspace{8pt}
+
+\hspace{0.7cm}{\color{redink}$\mathbb{S}^K$ : set of symmetric matrices in $\mathbb{R}^{K \times K}$ \quad $(A^{\top} = A)$}
+\vspace{5pt}
+
+\hspace{0.7cm}{\color{redink}$\mathbb{S}^K_+$ : set of positive semidefinite (symmetric) matrices in $\mathbb{R}^{K \times K}$}
+\vspace{4pt}
+
+\hspace{2.0cm}{\color{redink}$A \in \mathbb{S}^K_+$ \ if \ $z^{\top}Az \ge 0 \qquad \forall z \in \mathbb{R}^K$}
+\vspace{10pt}
+
+\qquad \textbf{Generic semidefinite program:}
+\vspace{2pt}
+
+\begin{center}
+$\begin{aligned}
+  \inf\quad & c^{\top}x \\
+  \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                   & A_1 x_1 + A_2 x_2 + \cdots + A_N x_N
+                     \mathrel{\preceq_{\textcolor{redink}{\mathbb{S}^K_+}}} B
+\end{aligned}$
+\hspace{0.8cm}{\color{redink}\small $\rightarrow$ usually ignored}
+\end{center}
+\newpage
+
+\quad 3) \textbf{Second-order cone:} \quad
+$C = \big\{ (x,t) \in \mathbb{R}^N \times \mathbb{R} \;:\; \|x\|_2 \le t \big\}$
+\qquad ``ice-cream'' cone
+\vspace{6pt}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95, font=\small]
+  \fill[sandink] (0,0) -- (-0.95,2.35) -- (0.95,2.35) -- cycle;
+  \fill[sandink] (0,2.35) ellipse (0.95 and 0.26);
+  \draw[->] (0,0) -- (0,3.0) node[above] {$t$};
+  \draw[->] (0,0) -- (2.55,1.35) node[right] {$x_2$};
+  \draw[->] (0,0) -- (3.1,0) node[right] {$x_1$};
+  \draw[thick] (0,2.35) ellipse (0.95 and 0.26);
+  \draw[thick] (0,0) -- (-0.95,2.35);
+  \draw[thick] (0,0) -- (0.95,2.35);
+\end{tikzpicture}
+\hspace{18mm}
+\begin{tikzpicture}[scale=0.95, font=\small]
+  \draw (0,0) circle (1.45);
+  \draw (0,-0.45) circle (0.85);
+  \draw (0,-0.80) circle (0.40);
+  \node at (0,-0.80) {LP};
+  \node at (0,-0.08) {SOCP};
+  \node at (0,0.92) {SDP};
+  \draw[redink, ->] (1.45,2.00) -- (0.90,1.18);
+  \node[redink, anchor=west] at (1.00,2.18) {tractable, not scaleable.};
+  \node[redink, anchor=west] at (1.55,2.62) {$\parallel$};
+  \node[redink, anchor=west] at (0.80,3.06) {polynomial time solvable};
+\end{tikzpicture}
+\end{center}
+\end{board}
+
+% ---------------------------------------------------------------- 4
+\beat{4}{Conic programming duality}
+\begin{board}
+\textbf{Def} (\emph{dual cone})
+\vspace{4pt}
+
+\quad $C^* = \big\{\, y \in \mathbb{R}^K \;:\; \langle y, x \rangle \ge 0 \quad \forall x \in C \,\big\}$
+\vspace{14pt}
+
+\textbf{Self dual cones} \ $(C = C^*)$
+\vspace{5pt}
+
+\quad --- $C = \hl{\mathbb{R}^K_+}$
+\vspace{5pt}
+
+\quad --- $C = \hl{\mathbb{S}^K_+}$
+\vspace{5pt}
+
+\quad --- $C = $ \colorbox{hlyel}{second-order cone}
+\vspace{16pt}
+
+\textbf{Primal conic program:}
+\vspace{2pt}
+
+\begin{center}
+$\begin{aligned}
+  \inf\quad & c^{\top}x \\
+  \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                   & Ax \coneleq b
+\end{aligned}$
+\end{center}
+\vspace{12pt}
+
+\textbf{Dual conic program:}
+\vspace{2pt}
+
+\begin{center}
+$\begin{aligned}
+  \sup\quad & -\theta^{\top}b \\
+  \text{s.t.}\quad & \theta \in \hl{C^*} \\
+                   & A^{\top}\theta = -c
+\end{aligned}$
+\end{center}
+\end{board}
+
+\end{document}

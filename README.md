@@ -18,7 +18,7 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 |---|---|---|:---:|:---:|:---:|---|
 | 1 | 8/29 | Intro: optimization under uncertainty (OUU) is everywhere | [week01](lecture-notes/OUU_week01_slide.pdf) | |  | [읽을거리](https://hankpark0706.github.io/AD7031/week01_reading.html) ([PDF](lecture-notes/OUU_week01_reading.pdf)) |
 | 2 | 9/5 | Optimization theory review — convex optimization; probability theory review | [week02](lecture-notes/OUU_week02_note.pdf) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week1_markowitz.ipynb) *markowitz* | [Optimization: A Bootcamp for Machine Learning, Inverse Problems, and Control](https://www.youtube.com/watch?v=lPBPbGmw1_4) | |
-| 3 | 9/12 | Duality; competing paradigms for OUU | | | | **HW#1 out** (due 9/26) |
+| 3 | 9/12 | Duality; competing paradigms for OUU | [week03](lecture-notes/OUU_week03_note.pdf) | | | **HW#1 out** (due 9/26) |
 | 4 | 9/19 | Risk measures 1 — CVaR vs VaR; portfolio optimization | | | | |
 | 5 | 9/26 | *No class* | | | | |
 | 6 | 10/3 | Risk measures 2; stochastic optimization | | | | **HW#2 out** (due 10/17) · **project topic pitch** (oral) |
