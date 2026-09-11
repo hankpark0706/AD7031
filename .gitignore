@@ -12,6 +12,9 @@ dist/
 # Gurobi license files -- never publish credentials
 *.lic
 
+# Gurobi model dumps written by the demos when they read a model back
+*.lp
+
 # LaTeX build artifacts
 *.aux
 *.log
