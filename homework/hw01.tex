@@ -1,0 +1,212 @@
+% ============================================================================
+% AD7031 Homework 1 -- covers Weeks 1-3 (optimization language, LP standard
+% form, graphical solution, convex sets, convex functions, Markowitz QP).
+% Deliberately short: 10 asks total (OL7014's HW1 has 29). This cohort has less
+% time and less background, so the cuts are to WORK, not just to numbering.
+% Problem 1 reuses the cargo LP from OL7014's HW1, minus the integer part.
+% Every part carries a one-line \hint -- concise on purpose.
+% Duality is held back for HW2 (draft kept separately).
+% Self-contained on purpose -- no \input{preamble} -- compiles with pdflatex.
+% ============================================================================
+\documentclass[10pt]{article}
+
+\usepackage[a4paper, margin=2.2cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ruleink}{RGB}{18, 68, 140}
+\definecolor{keyink}{RGB}{20, 90, 20}
+
+\setlength{\parindent}{0pt}
+\pagestyle{plain}
+
+\AtBeginDocument{%
+  \abovedisplayskip=5pt plus 1pt
+  \belowdisplayskip=5pt plus 1pt
+  \abovedisplayshortskip=3pt
+  \belowdisplayshortskip=3pt}
+
+% ---- one problem -----------------------------------------------------------
+\newcommand{\problem}[2]{%   points, title
+  \par\bigskip
+  {\color{ruleink}\rule{\textwidth}{1pt}}\par\nobreak\vspace{3pt}
+  {\large\bfseries #2}\hfill{\normalsize\bfseries(#1 points)}\par\nobreak\vspace{4pt}}
+
+% ---- one-line hint, blue italic --------------------------------------------
+\newcommand{\hint}[1]{%
+  \par\vspace{3pt}{\color{ruleink}\emph{hint:\ #1}}\par}
+
+\newlist{parts}{enumerate}{1}
+\setlist[parts]{label=(\alph*), leftmargin=2.2em, itemsep=5pt}
+
+\begin{document}
+
+\begin{center}
+  {\large AD7031 Optimization Under Uncertainty}\\[3pt]
+  {\Large\bfseries Homework 1}\\[4pt]
+  {\small \textbf{Due Sep 26, start of class}}
+\end{center}
+\medskip\hrule\medskip
+
+Write down your solutions and submit them as a single PDF to
+\texttt{lossof0706@gmail.com}.\\
+\textbf{\underline{Your solutions must be handwritten.}}
+
+% ================================================================ Problem 1
+\problem{40}{Problem 1. From words to a model}
+
+A transport aircraft is being loaded for a resupply flight. Two cargo types, with value,
+weight and volume given per pallet:
+
+\begin{center}
+\begin{tabular}{l|cc}
+              & ammunition & fuel \\ \hline
+ value (pts)  & 4 & 5 \\
+ weight (t)   & 3 & 2 \\
+ volume (m$^3$) & 1 & 3 \\
+\end{tabular}
+\end{center}
+
+The aircraft carries at most $60$ t and $48$ m$^3$, and orders require that at least
+$3$ pallets of ammunition fly. Cargo is divisible --- fractional pallets are allowed.
+The goal is to maximize total value.
+
+\begin{parts}
+\item \textbf{(8 pts)} Define the decision variables and write the problem as a scalar
+  LP --- objective and constraints, one line each, with a few words saying what each
+  constraint enforces. Write each line the way the story gives it --- no rearranging
+  yet.
+  \hint{this is the toy LP from lecture with different numbers, plus one extra row for
+    the minimum ammunition order --- write it in the same shape.}
+\item \textbf{(8 pts)} Now put that LP in the Week 2 canonical vector form
+  $\max\, c^{\top}x$ s.t.\ $Ax \le b$: write out $c$, $A$, $b$ with numbers in them, and
+  report the dimensions of $A$.
+  \hint{$x \ge 0$ is equivalent to $-x \le 0$, and $x \ge 3$ to $-x \le -3$.}
+\item \textbf{(14 pts)} Solve it by picture --- with two decision variables, the problem
+  can be drawn in the 2D plane!
+
+  Draw the feasible region in Desmos (\texttt{desmos.com/calculator}). \textbf{Include a
+  screenshot of your Desmos plot}. Then list every vertex with its coordinates and its
+  objective value, and report the optimal solution and its optimal value.
+  \hint{an LP optimum always sits at a vertex, so checking the corners is enough ---
+    no need to test anything inside.}
+\item \textbf{(10 pts)} Now let the computer check your picture. Implement the LP with
+  \texttt{gurobipy} and solve it, starting from the Week 2 Colab
+  notebook.\footnote{\,\raggedright
+  \url{https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week02_linear_program.ipynb}}
+  Include a screenshot of your code and its printed output, using exactly this form:
+\begin{verbatim}
+print(f"optimal solution ammunition is {x_ammo.X}")
+print(f"optimal solution fuel is {x_fuel.X}")
+print(f"optimal objective value is {model.ObjVal}")
+\end{verbatim}
+  Check that Gurobi agrees with the answer you read off your drawing in (c).
+  \hint{Gurobi \emph{minimizes} unless told otherwise --- pass \texttt{GRB.MAXIMIZE} to
+    \texttt{setObjective}.}
+\end{parts}
+
+% ================================================================ Problem 2
+\problem{20}{Problem 2. Convex sets}
+
+A set $S \subseteq \mathbb{R}^n$ is convex when
+\[
+  \lambda x + (1-\lambda) y \;\in\; S
+  \qquad \text{for all } x, y \in S \text{ and all } \lambda \in [0,1]
+\]
+--- the \emph{segment test} from lecture: the straight segment between any two points of
+$S$ stays inside $S$.
+
+\begin{parts}
+\item \textbf{(10 pts)} Draw two convex sets in $\mathbb{R}^2$ whose \emph{union} is not
+  convex, marking two points and the point on their segment that escapes. Then
+  \emph{try} to draw two convex sets whose \emph{intersection} is not convex. After a
+  few honest attempts, say in one sentence what you believe is true about intersections
+  --- pictures are enough here, no proof needed.
+  \hint{for the union, two convex sets that do not touch each other already do it.}
+\item \textbf{(10 pts)} Show that a polyhedron
+  $P = \{\, x \in \mathbb{R}^n \;:\; Ax \le b \,\}$ is a convex set. This is the
+  feasible set you drew in Problem 1.
+  \hint{of course, $P$ is $n$-dimensional, so you cannot draw it on paper any more. Use
+    the definition: take $x, y \in P$ and check that
+    $A\big(\lambda x + (1-\lambda)y\big) \le b$.}
+\end{parts}
+
+% ================================================================ Problem 3
+\problem{20}{Problem 3. Convex functions}
+
+A function $f : \mathbb{R}^N \to \mathbb{R}$ is convex when
+\[
+  f\big(\lambda x + (1-\lambda) y\big) \;\le\; \lambda f(x) + (1-\lambda) f(y)
+  \qquad \text{for all } x, y \in \mathbb{R}^N \text{ and all } \lambda \in [0,1].
+\]
+
+\begin{parts}
+\item \textbf{(10 pts)} Suppose $f_k : \mathbb{R}^N \to \mathbb{R}$, $k \in [K]$, are
+  convex functions. Show that the following functions are convex:
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item $g(x) = \sum_{k \in [K]} f_k(x)$
+    \item $g(x) = \max_{k \in [K]}\,\{ f_k(x) \}$
+  \end{itemize}
+  \hint{use the definition above --- each proof is about one line. Citing Week 2's
+    convexity-preserving operations instead is also fine.}
+\item \textbf{(5 pts)} Show that $f(x) = x^2$ is a convex function.
+  \hint{use the definition above --- again, it is a single-line proof.}
+\item \textbf{(5 pts)} Show that $f(x) = \|x\|_2^2$ is a convex function.
+  \hint{$\|x\|_2^2$ is just $x_1^2 + x_2^2 + \cdots + x_N^2$ --- see (a) again.}
+\end{parts}
+
+% ================================================================ Problem 4
+\problem{20}{Problem 4. Markowitz portfolio}
+
+Three funds --- bond, tech, energy. Next year's returns are not known; all we have is
+their mean vector $\mu$ and covariance matrix $\Sigma$:
+\[
+  \mu = \begin{pmatrix} 0.06 \\ 0.10 \\ 0.15 \end{pmatrix},
+  \qquad
+  \Sigma = \begin{pmatrix}
+    0.010 & 0.001 & 0.000 \\
+    0.001 & 0.040 & 0.015 \\
+    0.000 & 0.015 & 0.090
+  \end{pmatrix}
+\]
+The Markowitz model splits the budget across the three funds so as to minimize risk,
+subject to a required mean return $r$:
+\[
+\begin{aligned}
+  \min_{x \in \mathbb{R}^3} \quad & x^{\top}\Sigma x \\
+  \text{s.t.} \quad & \mu^{\top}x \ge r \\
+                    & \mathbf{1}^{\top}x = 1 \\
+                    & x \ge 0
+\end{aligned}
+\]
+
+\begin{parts}
+\item \textbf{(15 pts)} Choose your own minimum mean return $r$ that you want --- for
+  example $0.01$, or $0.20$. Implement the model with \texttt{gurobipy}, starting from
+  this week's Colab notebook,\footnote{\,\raggedright
+  \url{https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week03_markowitz.ipynb}}
+  and print your result in exactly this form:
+\begin{verbatim}
+print(f"optimal solution bond is {x_bond.X}")
+print(f"optimal solution tech is {x_tech.X}")
+print(f"optimal solution energy is {x_energy.X}")
+print(f"optimal objective value is {model.ObjVal}")
+\end{verbatim}
+  Is your problem feasible for the $r$ you chose? Answer whichever case you land in:
+  \begin{itemize}[leftmargin=2.2em, itemsep=3pt, topsep=3pt]
+    \item \textbf{Infeasible.} Explain why the problem cannot be solved --- in plain
+      Korean, with no mathematics.
+    \item \textbf{Feasible.} Raise $r$ little by little until the problem stops being
+      feasible. Report the $r$ at which that happens, and explain why it happens ---
+      again in plain Korean, with no mathematics.
+  \end{itemize}
+  \hint{you cannot be too greedy.}
+\item \textbf{(5 pts)} Is the Markowitz problem a convex problem? If it is, explain why.
+  \hint{a convex problem is one whose objective $f$ is convex \emph{and} whose feasible
+    set is a convex set --- Problems 2 and 3 did most of that work already.}
+\end{parts}
+
+\end{document}
