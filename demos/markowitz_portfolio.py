@@ -1,12 +1,12 @@
 """
-markowitz_portfolio.py -- the Markowitz portfolio model from the week-2 notebook,
+markowitz_portfolio.py -- the Markowitz portfolio model from the week-3 notebook,
 as a plain script you can run from VS Code.
 
     cd demos
     python markowitz_portfolio.py
 
 Same model as the "Reference: the completed model" cell of
-notebooks/week1_markowitz.ipynb -- written out by hand, no arrays, no loops, no
+notebooks/week03_markowitz.ipynb -- written out by hand, no arrays, no loops, no
 quicksum, so every term matches the math on the slide:
 
     min   x' S x
