@@ -71,11 +71,12 @@
 {\small AD7031 Optimization Under Uncertainty \quad\textbullet\quad Instructor: Prof.\ H.\ Park \quad\textbullet\quad Sep 19, 2026}
 
 %% ------------------------------------------------------------------ 1
-\beat{1}{Random variables}
+\beat{1}{Random variables, events, conditioning}
 \begin{board}
 back to week 2's Section 2 table: the OR column had \textbf{uncertain data} $\xi$. today, the vocabulary ---
 written in this course's notation from the first line --- $x$ is already taken by the
 \textbf{decision}, so the uncertain data is $\tilde\xi$ throughout.
+\vspace{10pt}
 \vspace{10pt}
 
 \bul \textbf{random experiment:} its outcome is not known in advance
@@ -83,6 +84,17 @@ written in this course's notation from the first line --- $x$ is already taken b
 
 \bul \textbf{sample space} $\Omega$ = the set of all possible outcomes
 \vspace{6pt}
+\vspace{10pt}
+
+an \textbf{event} is a subset of the sample space, \ $A \subseteq \Omega$; \ $\mathbb{P}(A)$ is the probability it occurs.
+\vspace{6pt}
+
+\bul \ $0 \le \mathbb{P}(A) \le 1$, \qquad $\mathbb{P}(\Omega) = 1$
+\vspace{3pt}
+
+\bul \ $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$ \qquad --- subtract the overlap, or it is counted twice
+\vspace{10pt}
+\vspace{12pt}
 
 \textbf{Def} (\emph{random variable}) \quad a function that assigns a real number to each outcome: \quad $\tilde\xi : \Omega \to \mathbb{R}$
 \vspace{3pt}
@@ -127,6 +139,7 @@ written in this course's notation from the first line --- $x$ is already taken b
 \end{tikzpicture}
 \end{center}
 \vspace{6pt}
+\vspace{6pt}
 
 \bul \textbf{discrete} $\tilde\xi$: countably many values --- number of defective parts, number of arrivals, demand
 \vspace{3pt}
@@ -139,17 +152,7 @@ written in this course's notation from the first line --- $x$ is already taken b
 
 \quad --- $\Omega$ is where the \emph{experiment} lives, $\Xi \subseteq \mathbb{R}^k$ is where the \emph{numbers} live
 \vspace{14pt}
-\end{board}
-\beat{2}{Events, conditioning, independence}
-\begin{board}
-an \textbf{event} is a subset of the sample space, \ $A \subseteq \Omega$; \ $\mathbb{P}(A)$ is the probability it occurs.
-\vspace{6pt}
-
-\bul \ $0 \le \mathbb{P}(A) \le 1$, \qquad $\mathbb{P}(\Omega) = 1$
-\vspace{3pt}
-
-\bul \ $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$ \qquad --- subtract the overlap, or it is counted twice
-\vspace{10pt}
+\vspace{14pt}
 
 \textbf{Def} (\emph{conditional probability}) \quad
 $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad defined when $\mathbb{P}(B) > 0$
@@ -182,12 +185,11 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \vspace{4pt}
 
 \quad $\mathbb{P}(B) = 1 \cdot \tfrac12 \;+\; \tfrac12 \cdot \tfrac12 \;=\; \tfrac34$ \qquad
-      --- the same $\tfrac34$ the PMF gives in Section 3
+      --- the same $\tfrac34$ Section 2 gives from the scenario list
 \end{board}
 \takeaway{conditioning is how a \emph{two-stage} decision gets written down: act, watch which $A_i$ occurred, act again. weeks 10--12 run on this.}
-
 %% ------------------------------------------------------------------ 3
-\beat{3}{Discrete random variables}
+\beat{2}{Discrete random variables}
 \begin{board}
 a discrete $\tilde\xi$ is a \textbf{list}: finitely many values, each carrying a weight.
 \vspace{10pt}
@@ -203,7 +205,7 @@ a discrete $\tilde\xi$ is a \textbf{list}: finitely many values, each carrying a
 \vspace{6pt}
 
 \quad {\color{punchink}the scenario index goes \emph{up}:} \ $\xi^s$ is scenario $s$; \ a \emph{subscript} $\xi_j$ is
-      component $j$ of a vector (Section 8). two different jobs, two different slots.
+      component $j$ of a vector (Section 7). two different jobs, two different slots.
 \vspace{6pt}
 
 \quad older books call this list the \textbf{probability mass function} and write it as a function $f$.
@@ -214,7 +216,7 @@ a discrete $\tilde\xi$ is a \textbf{list}: finitely many values, each carrying a
       $p = \big(\tfrac14, \tfrac12, \tfrac14\big)$
 \vspace{3pt}
 
-\quad $\mathbb{P}(\tilde\xi \ge 1) = p_2 + p_3 = \tfrac34$ \qquad --- the $\tfrac34$ Section 2 reached by conditioning
+\quad $\mathbb{P}(\tilde\xi \ge 1) = p_2 + p_3 = \tfrac34$ \qquad --- the $\tfrac34$ Section 1 reached by conditioning
 \vspace{12pt}
 
 \textbf{Def} (\emph{mean, variance})
@@ -265,7 +267,7 @@ $\sigma^2 = \mathrm{Var}(\tilde\xi) = \sum_{s \in [S]} p_s\, \big(\xi^s - \mu\bi
 \vspace{14pt}
 \end{board}
 %% ------------------------------------------------------------------ 4
-\beat{4}{Continuous random variables}
+\beat{3}{Continuous random variables}
 \begin{board}
 \textbf{Def} (\emph{probability density function, PDF}) \quad $f : \mathbb{R} \to \mathbb{R}_+$ with
 \vspace{3pt}
@@ -358,9 +360,9 @@ $\mathbb{P}(\mu - 2\sigma \le \tilde\xi \le \mu + 2\sigma) \approx 0.95$
 \end{center}
 \vspace{14pt}
 \end{board}
-\beat{5}{Expectation, in one formula}
+\beat{4}{Expectation, in one formula}
 \begin{board}
-Sections 3 and 4 defined the mean twice --- once a sum, once an integral. one definition covers both.
+Sections 2 and 3 defined the mean twice --- once a sum, once an integral. one definition covers both.
 \vspace{10pt}
 
 \textbf{Def} (\emph{expectation}) \quad for $\tilde\xi \sim \mathbb{P}$,
@@ -403,7 +405,7 @@ continuous      & $p(\xi)\, d\xi$                         & $\int_{\Xi} \xi\, p(
 \takeaway{one definition, two computations. write $\mathbb{E}$ once and stop asking whether the data is discrete or continuous.}
 
 %% ------------------------------------------------------------------ 6
-\beat{6}{Two random variables}
+\beat{5}{Two random variables}
 \begin{board}
 \textbf{Def} (\emph{joint PMF}) \quad
 $p(\xi_1, \xi_2) = \mathbb{P}(\tilde\xi_1 = \xi_1, \ \tilde\xi_2 = \xi_2)$, \qquad $p \ge 0$, \qquad $\sum_x \sum_y p(\xi_1, \xi_2) = 1$
@@ -479,7 +481,7 @@ $p(\xi_1, \xi_2) = p_1(\xi_1)\, p_2(\xi_2) \quad \forall\, \xi_1, \xi_2$ \qquad 
 \vspace{10pt}
 \end{board}
 %% ------------------------------------------------------------------ 7
-\beat{7}{Covariance and correlation}
+\beat{6}{Covariance and correlation}
 \begin{board}
 \textbf{Def} (\emph{covariance, correlation})
 \vspace{3pt}
@@ -541,7 +543,7 @@ $p(\xi_1, \xi_2) = p_1(\xi_1)\, p_2(\xi_2) \quad \forall\, \xi_1, \xi_2$ \qquad 
 \vspace{14pt}
 \end{board}
 %% ------------------------------------------------------------------ 8
-\beat{8}{Linear combinations}
+\beat{7}{Linear combinations}
 \begin{board}
 \quad $\mathbb{E}[a\tilde\xi_1 + b\tilde\xi_2] = a\,\mu_1 + b\,\mu_2$ \qquad --- always, no independence needed
 \vspace{3pt}
@@ -577,7 +579,7 @@ $\Sigma = \begin{pmatrix} 0.0225 & 0.0045 \\ 0.0045 & 0.0225 \end{pmatrix}$
 \vspace{14pt}
 \end{board}
 %% ------------------------------------------------------------------ 9
-\beat{9}{The bridge to optimization}
+\beat{8}{The bridge to optimization}
 \begin{board}
 everything so far was about $\tilde\xi$ alone. now put the decision back in.
 \vspace{10pt}
@@ -600,7 +602,7 @@ everything so far was about $\tilde\xi$ alone. now put the decision back in.
 \end{board}
 \takeaway{every paradigm in this course differs in one place only: \emph{how} it collapses the randomness to a number.}
 %% ------------------------------------------------------------------ 10
-\beat{10}{Running example: the Markowitz portfolio}
+\beat{9}{Running example: the Markowitz portfolio}
 \begin{board}
 \begin{board}
 a budget of $1$, \ $n$ assets. \quad decide the split today; the returns are revealed tomorrow.
@@ -628,7 +630,7 @@ $\tilde\xi^{\top}x = x_1\tilde\xi_1 + \cdots + x_n\tilde\xi_n$ \quad --- a rando
 \quad loss: \ $f(x, \tilde\xi) = -\tilde\xi^{\top}x$ \qquad (a gain is a negative loss)
 \vspace{6pt}
 
-\quad Section 8's linear combinations with $c = x$: \qquad
+\quad Section 7's linear combinations with $c = x$: \qquad
 $\mathbb{E}[\tilde\xi^{\top}x] = \mu^{\top}x$, \qquad $\mathrm{Var}(\tilde\xi^{\top}x) = x^{\top}\Sigma x$
 \vspace{10pt}
 
@@ -701,7 +703,7 @@ $\mathbb{E}[\tilde\xi^{\top}x] = \mu^{\top}x$, \qquad $\mathrm{Var}(\tilde\xi^{\
 \end{aligned}
 \]
 
-\quad Section 5's QP with $Q = 2\Sigma$, $c = 0$; \ convex because $\Sigma \succeq 0$ (Section 6).
+\quad the week 2 note's QP (its Section 5) with $Q = 2\Sigma$, $c = 0$; \ convex because $\Sigma \succeq 0$ (its Section 6).
 \vspace{3pt}
 
 \quad in the language of the bridge: the loss $-\tilde\xi^{\top}x$ is random; Markowitz collapses it with two numbers ---
@@ -758,7 +760,7 @@ x = \begin{pmatrix} x_{\text{bond}} \\ x_{\text{tech}} \\ x_{\text{energy}} \end
 \quad all in tech: \ same expected return $0.10$, \ but $\sigma = 0.20$. \quad the mix cuts $\sigma$ by about a third.
 \vspace{3pt}
 
-\quad every asset gets a share --- not a vertex (Section 5).
+\quad every asset gets a share --- not a vertex (week 2 note, Section 5).
 \vspace{6pt}
 
 \begin{center}
