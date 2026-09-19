@@ -243,7 +243,7 @@ a discrete $\tilde\xi$ is a \textbf{list}: finitely many values, each carrying a
 \vspace{6pt}
 
 \quad {\color{punchink}the scenario index goes \emph{up}:} \ $\xi^s$ is scenario $s$; \ a \emph{subscript} $\xi_j$ is
-      component $j$ of a vector (Section 7). two different jobs, two different slots.
+      component $j$ of a vector (Section 4). two different jobs, two different slots.
 \vspace{6pt}
 
 \quad older books call this list the \textbf{probability mass function} and write it as a function $f$.
@@ -452,250 +452,8 @@ $\mu \pm 3\sigma \approx 0.997$
 \end{center}
 \vspace{14pt}
 \end{board}
-\beat{4}{Expectation, in one formula}
-\begin{board}
-Sections 2 and 3 defined the mean twice --- once a sum, once an integral. one definition covers both.
-\vspace{10pt}
-
-\textbf{Def} (\emph{expectation}) \quad for $\tilde\xi \sim \mathbb{P}$,
-\[
-\mathbb{E}_{\mathbb{P}}\big[\tilde\xi\big] \;=\; \int_{\Omega} \xi \;\, \mathbb{P}(d\xi)
-\]
-
-\quad read $\mathbb{P}(d\xi)$ as \emph{the probability sitting on a small piece} $d\xi$ --- the weight, whichever form it takes:
-\vspace{6pt}
-
-\begin{center}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{}l|l|l@{}}
-                & the weight $\mathbb{P}(d\xi)$ is        & and $\mathbb{E}_{\mathbb{P}}[\tilde\xi]$ reads \\ \hline
-discrete        & $p_s$, \ one per scenario $\xi^s$       & $\sum_{s \in [S]} p_s\, \xi^s$ \\
-continuous      & $p(\xi)\, d\xi$                         & $\int_{\Xi} \xi\, p(\xi)\, d\xi$ \\
-\end{tabular}
-\end{center}
-\vspace{10pt}
-
-\textbf{Def} (\emph{expectation of a function}) \quad for $f : \mathbb{R}^k \to \mathbb{R}$ and a random vector $\tilde\xi$,
-\[
-\mathbb{E}_{\mathbb{P}}\big[f(\tilde\xi)\big] \;=\; \int_{\Omega} f(\xi) \;\, \mathbb{P}(d\xi)
-\qquad\text{---}\qquad
-\sum_{s \in [S]} p_s\, f(\xi^s)
-\quad\text{or}\quad
-\int_{\Xi} f(\xi)\, p(\xi)\, d\xi
-\]
-
-\quad {\color{punchink}this is the one the course actually needs:} \ $f$ will be a \textbf{cost}, and $\mathbb{E}[f(x, \tilde\xi)]$ the objective.
-\vspace{10pt}
-
-\quad variance is an expectation too, so it inherits the same two readings:
-\vspace{4pt}
-
-\quad $\mathrm{Var}(\tilde\xi) = \mathbb{E}\big[(\tilde\xi - \mathbb{E}[\tilde\xi])^2\big]$, \qquad
-      $\sigma(\tilde\xi) = \sqrt{\mathrm{Var}(\tilde\xi)}$, \qquad
-      $\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) = \mathbb{E}\big[(\tilde\xi_1 - \mathbb{E}[\tilde\xi_1])(\tilde\xi_2 - \mathbb{E}[\tilde\xi_2])\big]$
-\end{board}
-\takeaway{one definition, two computations. write $\mathbb{E}$ once and stop asking whether the data is discrete or continuous.}
-
-%% ------------------------------------------------------------------ 6
-\beat{5}{Two random variables}
-\begin{board}
-\textbf{Def} (\emph{joint PMF}) \quad
-$p(\xi_1, \xi_2) = \mathbb{P}(\tilde\xi_1 = \xi_1, \ \tilde\xi_2 = \xi_2)$, \qquad $p \ge 0$, \qquad $\sum_x \sum_y p(\xi_1, \xi_2) = 1$
-\vspace{6pt}
-
-\textbf{Def} (\emph{marginal PMF}) \quad
-$p_1(\xi_1) = \sum_y p(\xi_1, \xi_2)$, \qquad $p_2(\xi_2) = \sum_x p(\xi_1, \xi_2)$
-\vspace{2pt}
-
-\quad --- row sums and column sums, written in the \emph{margins} of the table
-\vspace{10pt}
-
-\textbf{Example 3} \quad two assets, returns tomorrow: \ $\tilde\xi_1$, $\tilde\xi_2$ each either down ($-0.10$) or up ($+0.20$)
-\vspace{6pt}
-
-\begin{center}
-\begin{tabular}{@{}c|cc|c@{}}
- $p(\xi_1, \xi_2)$        & $\xi_2 = -0.10$ & $\xi_2 = 0.20$ & $p_1(\xi_1)$ \\ \hline
- $\xi_1 = -0.10$           & $0.3$ & $0.2$ & $0.5$ \\
- $\xi_1 = \phantom{-}0.20$ & $0.2$ & $0.3$ & $0.5$ \\ \hline
- $p_2(\xi_2)$              & $0.5$ & $0.5$ & $1$ \\
-\end{tabular}
-\end{center}
-\vspace{4pt}
-
-\quad each asset alone: down or up w.p.\ $\tfrac12$. \quad together: same direction w.p.\ $0.3 + 0.3 = 0.6$
-\vspace{10pt}
-
-\textbf{Def} (\emph{joint PDF}) \quad
-$p : \mathbb{R}^2 \to \mathbb{R}_+$, \qquad $\iint p(\xi_1, \xi_2)\, d\xi_1\, d\xi_2 = 1$, \qquad
-$\mathbb{P}\big((\tilde\xi_1, \tilde\xi_2) \in R\big) = \iint_R p(\xi_1, \xi_2)\, d\xi_1\, d\xi_2$
-\vspace{2pt}
-
-\quad --- the \textbf{volume} under $p$ above the region $R$
-\vspace{3pt}
-
-\quad marginal PDF: \ $p_1(\xi_1) = \int p(\xi_1, \xi_2)\, d\xi_2$ \quad --- the sum becomes an integral
-\vspace{10pt}
-
-\textbf{Example 4} \quad $(\tilde\xi_1, \tilde\xi_2)$ uniform on the unit square: \quad $p(\xi_1, \xi_2) = 1$ \ on $[0,1]^2$, \ $0$ outside
-\vspace{4pt}
-
-\begin{center}
-\begin{tikzpicture}[scale=1.55, font=\scriptsize, baseline=(b)]
-  \coordinate (b) at (0,0.5);
-  \draw[->] (-0.12,0) -- (1.35,0) node[right] {$\xi_1$};
-  \draw[->] (0,-0.12) -- (0,1.3) node[left] {$\xi_2$};
-  \draw[fill=blue!6, draw=blue!65!black, thick] (0,0) rectangle (1,1);
-  \fill[red!20] (0,0) -- (1,0) -- (0,1) -- cycle;
-  \draw[red!75!black, thick] (1,0) -- (0,1);
-  \node[red!75!black] at (0.3,0.3) {$R$};
-  \node[below] at (1,0) {$1$}; \node[left] at (0,1) {$1$};
-  \node[anchor=west, font=\tiny, red!75!black] at (0.52,0.58) {$\xi_1 + \xi_2 = 1$};
-\end{tikzpicture}
-\qquad\quad
-\begin{minipage}{0.62\textwidth}
-$\mathbb{P}(\tilde\xi_1 + \tilde\xi_2 \le 1) = \iint_R 1 \; d\xi_1\, d\xi_2$ = area of the triangle $R$ $= \tfrac12$
-\vspace{6pt}
-
-marginal: \ $p_1(\xi_1) = \int_0^1 1 \; d\xi_2 = 1$ on $[0,1]$ --- $\tilde\xi_1$ alone is Uniform$[0,1]$
-\end{minipage}
-\end{center}
-\vspace{10pt}
-
-\textbf{Def} (\emph{independence}) \quad $\tilde\xi_1$, $\tilde\xi_2$ are independent if \quad
-$p(\xi_1, \xi_2) = p_1(\xi_1)\, p_2(\xi_2) \quad \forall\, \xi_1, \xi_2$ \qquad (PMF or PDF)
-\vspace{3pt}
-
-\quad Example 3: \ $p(-0.10, -0.10) = 0.3 \ne 0.5 \cdot 0.5$ \ --- \textbf{not} independent
-\vspace{2pt}
-
-\quad Example 4: \ $p(\xi_1, \xi_2) = 1 = 1 \cdot 1$ \ --- independent
-\vspace{10pt}
-\end{board}
-%% ------------------------------------------------------------------ 7
-\beat{6}{Covariance and correlation}
-\begin{board}
-\textbf{Def} (\emph{covariance, correlation})
-\vspace{3pt}
-
-\quad $\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) = \mathbb{E}\big[(\tilde\xi_1 - \mu_1)(\tilde\xi_2 - \mu_2)\big] = \mathbb{E}[\tilde\xi_1 \tilde\xi_2] - \mu_1 \mu_2$,
-\qquad $\mathrm{Cov}(\tilde\xi_1, \tilde\xi_1) = \mathrm{Var}(\tilde\xi_1)$
-\vspace{3pt}
-
-\quad $\rho_{12} = \dfrac{\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2)}{\sigma_1\, \sigma_2}$, \qquad $-1 \le \rho_{12} \le 1$
-\vspace{3pt}
-
-\quad $\rho > 0$: move together, \quad $\rho < 0$: move opposite, \quad independent $\Rightarrow$ $\rho = 0$
-\vspace{4pt}
-
-\begin{center}
-\begin{tikzpicture}[scale=0.55, font=\scriptsize]
-  \draw[->] (-2.4,0) -- (2.6,0) node[right] {$\xi_1$};
-  \draw[->] (0,-2.4) -- (0,2.6) node[left] {$\xi_2$};
-  \foreach \c in {0.55,1.1,1.65}
-    \draw[blue!65!black, thick] (0,0) circle (\c);
-  \node at (0.1,-3.1) {$\rho = 0$};
-\end{tikzpicture}
-\hspace{9mm}
-\begin{tikzpicture}[scale=0.55, font=\scriptsize]
-  \draw[->] (-2.4,0) -- (2.6,0) node[right] {$\xi_1$};
-  \draw[->] (0,-2.4) -- (0,2.6) node[left] {$\xi_2$};
-  \foreach \c in {0.55,1.1,1.65}
-    \draw[blue!65!black, thick, rotate=45] (0,0) ellipse ({1.304*\c} and {0.548*\c});
-  \node at (0.1,-3.1) {$\rho = 0.7$};
-\end{tikzpicture}
-\hspace{9mm}
-\begin{tikzpicture}[scale=0.55, font=\scriptsize]
-  \draw[->] (-2.4,0) -- (2.6,0) node[right] {$\xi_1$};
-  \draw[->] (0,-2.4) -- (0,2.6) node[left] {$\xi_2$};
-  \foreach \c in {0.55,1.1,1.65}
-    \draw[blue!65!black, thick, rotate=-45] (0,0) ellipse ({1.304*\c} and {0.548*\c});
-  \node at (0.1,-3.1) {$\rho = -0.7$};
-\end{tikzpicture}\\[2pt]
-{\scriptsize contours of the joint PDF of two normal random variables, \ $\mu_1 = \mu_2 = 0$, \ $\sigma_1 = \sigma_2 = 1$}
-\end{center}
-\vspace{8pt}
-
-\textbf{Example 3, continued} \quad (use the margins for $\mu$ and $\sigma$, all four cells for the covariance)
-\vspace{4pt}
-
-\quad $\mu_1 = 0.5 \cdot (-0.10) + 0.5 \cdot 0.20 = 0.05$, \qquad $\mu_2 = 0.05$
-\vspace{3pt}
-
-\quad $\mathrm{Var}(\tilde\xi_1) = 0.5 \cdot (-0.15)^2 + 0.5 \cdot (0.15)^2 = 0.0225$, \qquad $\sigma_1 = \sigma_2 = 0.15$
-\[
-\begin{aligned}
-\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2)
- &= 0.3\,(-0.15)(-0.15) + 0.2\,(-0.15)(0.15) + 0.2\,(0.15)(-0.15) + 0.3\,(0.15)(0.15) \\
- &= (0.3 - 0.2 - 0.2 + 0.3) \cdot 0.0225 \;=\; 0.0045
-\end{aligned}
-\]
-
-\quad $\rho_{12} = \dfrac{0.0045}{0.15 \cdot 0.15} = 0.2$ \quad --- the two assets tend to move together
-\vspace{14pt}
-\end{board}
-%% ------------------------------------------------------------------ 8
-\beat{7}{Linear combinations}
-\begin{board}
-\quad $\mathbb{E}[a\tilde\xi_1 + b\tilde\xi_2] = a\,\mu_1 + b\,\mu_2$ \qquad --- always, no independence needed
-\vspace{3pt}
-
-\quad $\mathrm{Var}(a\tilde\xi_1 + b\tilde\xi_2) = a^2\,\mathrm{Var}(\tilde\xi_1) + b^2\,\mathrm{Var}(\tilde\xi_2) + 2ab\,\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2)$
-\vspace{8pt}
-
-\quad $n$ random variables $\tilde\xi = (\tilde\xi_1, \dots, \tilde\xi_n)$:
-\vspace{3pt}
-
-\qquad mean vector \ $\mu = \big(\mathbb{E}[\tilde\xi_1], \dots, \mathbb{E}[\tilde\xi_n]\big)^{\top} \in \mathbb{R}^n$
-\vspace{3pt}
-
-\qquad covariance matrix \ $\Sigma \in \mathbb{R}^{n \times n}$, \ $\Sigma_{ij} = \mathrm{Cov}(\tilde\xi_i, \tilde\xi_j)$;
-\ diagonal $\Sigma_{ii} = \mathrm{Var}(\tilde\xi_i)$; \ symmetric; \ always $\Sigma \succeq 0$
-\vspace{4pt}
-
-\quad for fixed $c \in \mathbb{R}^n$: \qquad
-$\mathbb{E}[c^{\top}\tilde\xi] = c^{\top}\mu$, \qquad $\mathrm{Var}(c^{\top}\tilde\xi) = c^{\top}\Sigma c$
-\vspace{4pt}
-
-\quad $n = 2$, \ $c = (a, b)$: \quad
-$c^{\top}\Sigma c
- = \begin{pmatrix} a & b \end{pmatrix}
-   \begin{pmatrix} \mathrm{Var}(\tilde\xi_1) & \mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) \\ \mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) & \mathrm{Var}(\tilde\xi_2) \end{pmatrix}
-   \begin{pmatrix} a \\ b \end{pmatrix}$
-\ --- $\mathrm{Var}(a\tilde\xi_1 + b\tilde\xi_2)$ again
-\vspace{4pt}
-
-\quad Example 3: \quad
-$\mu = \begin{pmatrix} 0.05 \\ 0.05 \end{pmatrix}$, \qquad
-$\Sigma = \begin{pmatrix} 0.0225 & 0.0045 \\ 0.0045 & 0.0225 \end{pmatrix}$
-\vspace{14pt}
-\end{board}
-%% ------------------------------------------------------------------ 9
-\beat{8}{The bridge to optimization}
-\begin{board}
-everything so far was about $\tilde\xi$ alone. now put the decision back in.
-\vspace{10pt}
-
-\quad a cost depends on both: \ $f(x, \tilde\xi)$ --- \ $x$ the \textbf{decision} we choose,
-      $\tilde\xi$ the \textbf{data} we do not
-\vspace{4pt}
-
-\quad fix $x$. \ then $f(x, \tilde\xi)$ is a \textbf{random variable} --- it inherits $\tilde\xi$'s randomness
-\vspace{4pt}
-
-\quad so $\mathbb{E}\big[f(x, \tilde\xi)\big]$ is a \textbf{number}, \ one per $x$ --- and numbers can be minimized:
-\[
-\min_{x \in X} \;\; \mathbb{E}\big[f(x, \tilde\xi)\big]
-\]
-
-\quad {\color{punchink}that $\mathbb{E}$ is the whole design space of this course.} \ expectation is one way to turn a
-      random cost into a number; CVaR, VaR and a chance constraint are others. the model above changes
-      in that one slot and nowhere else.
-\end{board}
-\takeaway{every paradigm in this course differs in one place only: \emph{how} it collapses the randomness to a number.}
 %% ------------------------------------------------------------------ 10
-\beat{9}{Running example: the Markowitz portfolio}
-\begin{board}
+\beat{4}{Running example: the Markowitz portfolio}
 \begin{board}
 a budget of $1$, \ $n$ assets. \quad decide the split today; the returns are revealed tomorrow.
 \vspace{6pt}
@@ -711,6 +469,30 @@ a budget of $1$, \ $n$ assets. \quad decide the split today; the returns are rev
       \qquad ($\mathbf{1}$ = all-ones vector, \ $\mathbf{1}^{\top}x = x_1 + \cdots + x_n$)
 \vspace{10pt}
 
+\textbf{Random vectors} \quad the data is a vector now, so the mean is one too and the spread is a matrix:
+\vspace{4pt}
+
+\quad mean vector \ $\mu \in \mathbb{R}^n$, \ $\mu_j = \mathbb{E}[\tilde\xi_j]$
+\vspace{3pt}
+
+\quad $\mathrm{Cov}(\tilde\xi_i, \tilde\xi_j) = \mathbb{E}\big[(\tilde\xi_i - \mu_i)(\tilde\xi_j - \mu_j)\big]$
+\qquad --- how the two move \emph{together}; $\mathrm{Cov}(\tilde\xi_j, \tilde\xi_j) = \mathrm{Var}(\tilde\xi_j)$
+\vspace{3pt}
+
+\quad covariance matrix \ $\Sigma \in \mathbb{R}^{n \times n}$, \ $\Sigma_{ij} = \mathrm{Cov}(\tilde\xi_i, \tilde\xi_j)$:
+\ diagonal = the variances, \ symmetric, \ always $\Sigma \succeq 0$
+\vspace{6pt}
+
+\quad {\color{punchink}the one fact the model runs on} --- for a fixed $c \in \mathbb{R}^n$:
+\vspace{3pt}
+
+\qquad $\mathbb{E}\big[c^{\top}\tilde\xi\big] = c^{\top}\mu$, \qquad
+       $\mathrm{Var}\big(c^{\top}\tilde\xi\big) = c^{\top}\Sigma c$
+\vspace{3pt}
+
+\quad --- the first is linearity (Section 2); the second is linearity used twice, on a product of two terms
+\vspace{10pt}
+
 \textbf{Portfolio return} \quad
 $\tilde\xi^{\top}x = x_1\tilde\xi_1 + \cdots + x_n\tilde\xi_n$ \quad --- a random variable
 \vspace{3pt}
@@ -722,11 +504,11 @@ $\tilde\xi^{\top}x = x_1\tilde\xi_1 + \cdots + x_n\tilde\xi_n$ \quad --- a rando
 \quad loss: \ $f(x, \tilde\xi) = -\tilde\xi^{\top}x$ \qquad (a gain is a negative loss)
 \vspace{6pt}
 
-\quad Section 7's linear combinations with $c = x$: \qquad
+\quad the fact above with $c = x$: \qquad
 $\mathbb{E}[\tilde\xi^{\top}x] = \mu^{\top}x$, \qquad $\mathrm{Var}(\tilde\xi^{\top}x) = x^{\top}\Sigma x$
 \vspace{10pt}
 
-\textbf{Check on Example 3} \quad $(\tilde\xi_1, \tilde\xi_2)$ = Example 3's $(\tilde\xi_1, \tilde\xi_2)$, \ half in each: \ $x = (\tfrac12, \tfrac12)$
+\textbf{Check --- two assets} \quad the joint distribution below, \ half the budget in each: \ $x = (\tfrac12, \tfrac12)$
 \vspace{4pt}
 
 \begin{center}
@@ -798,7 +580,7 @@ $\mathbb{E}[\tilde\xi^{\top}x] = \mu^{\top}x$, \qquad $\mathrm{Var}(\tilde\xi^{\
 \quad the week 2 note's QP (its Section 5) with $Q = 2\Sigma$, $c = 0$; \ convex because $\Sigma \succeq 0$ (its Section 6).
 \vspace{3pt}
 
-\quad in the language of the bridge: the loss $-\tilde\xi^{\top}x$ is random; Markowitz collapses it with two numbers ---
+\quad the loss $-\tilde\xi^{\top}x$ is random; Markowitz collapses it with two numbers ---
 \vspace{1pt}
 
 \qquad its variance (objective) and its mean (constraint).
@@ -874,7 +656,6 @@ x = \begin{pmatrix} x_{\text{bond}} \\ x_{\text{tech}} \\ x_{\text{energy}} \end
   \node[align=center] at (2.2,-0.85) {one dot per asset, the star is the optimal mix:\\ same expected return as tech, $\sigma$ from $0.20$ down to $0.13$};
 \end{tikzpicture}
 \end{center}
-\end{board}
 \end{board}
 \demo{week03\_markowitz.ipynb}{Colab --- build this model live from the skeleton, then compare with the completed cell.}
 \demo{demos/markowitz\_portfolio.py}{the same model as a plain script: prints the model, solves it, plots the weights $x^{\star}$.}
