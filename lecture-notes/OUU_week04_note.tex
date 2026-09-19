@@ -161,15 +161,14 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad --- $B$ becomes the new sample space; divide by $\mathbb{P}(B)$ so the weights add to $1$ again
 \vspace{8pt}
 
-\quad two coins. \quad $H_1 = \{\text{first toss } H\} = \{HH, HT\}$, \qquad $\{\tilde\xi = 2\} = \{HH\}$
+\quad two coins: \quad $A = \{\tilde\xi = 2\} = \{HH\}$, \qquad $B = \{\text{first flip is head}\} = \{HH, HT\}$
 \vspace{3pt}
 
-\quad $\mathbb{P}(\tilde\xi = 2) = \tfrac14$, \qquad $\mathbb{P}(H_1) = \tfrac12$, \qquad
-      $\{\tilde\xi = 2\} \cap H_1 = \{HH\}$ --- so the numerator is $\tfrac14$
+\quad $\mathbb{P}(A) = \tfrac14$, \quad $\mathbb{P}(B) = \tfrac12$, \quad $A \cap B = \{HH\}$:
+\qquad $\mathbb{P}(A \mid B) = \dfrac{1/4}{1/2} = \tfrac12$
 \vspace{3pt}
 
-\quad $\mathbb{P}\big(\tilde\xi = 2 \mid H_1\big) = \dfrac{1/4}{1/2} = \tfrac12$
-      \qquad --- seeing the first head doubles it, $\tfrac14 \to \tfrac12$
+\quad --- the first head doubles it, $\tfrac14 \to \tfrac12$
 \vspace{10pt}
 
 \textbf{Def} (\emph{independent events}) \quad $A$ and $B$ are independent if \quad $\mathbb{P}(A \cap B) = \mathbb{P}(A)\,\mathbb{P}(B)$
@@ -178,15 +177,15 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad then \ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A)\,\mathbb{P}(B)}{\mathbb{P}(B)} = \mathbb{P}(A)$ \quad --- learning $B$ tells you nothing about $A$
 \vspace{8pt}
 
-\quad same coins, \ $H_2 = \{\text{second toss } H\}$: \qquad
-      $H_1 \cap H_2 = \{HH\}$, \quad $\mathbb{P} = \tfrac14 = \tfrac12 \cdot \tfrac12$ \quad --- \textbf{independent}
+\quad same coins, \ same $B$. \quad now $A = \{\tilde\xi = 1\} = \{HT, TH\}$:
 \vspace{3pt}
 
-\quad but $H_1$ and $\{\tilde\xi = 2\}$ are \textbf{not}: \qquad
-      $\tfrac14 \;\ne\; \tfrac12 \cdot \tfrac14$ \quad --- which is the line above, read the other way
+\quad $\mathbb{P}(A \cap B) = \mathbb{P}(\{HT\}) = \tfrac14 = \tfrac12 \cdot \tfrac12 = \mathbb{P}(A)\,\mathbb{P}(B)$
+\qquad --- \textbf{independent}
 \vspace{3pt}
 
-\quad {\color{punchink}two separate tosses are independent; a \emph{count} built from both is not.}
+\quad so $\mathbb{P}(A \mid B) = \tfrac12 = \mathbb{P}(A)$: \ the first flip says nothing about whether the count is $1$.
+      \ {\color{punchink}with $A = \{\tilde\xi = 2\}$ above it said plenty} --- independence is a property of the \emph{pair}.
 \vspace{10pt}
 
 \textbf{Thm} (\emph{law of total probability}) \quad let $A_1, \dots, A_I$ \textbf{partition} $\Omega$:
@@ -199,14 +198,14 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad --- split the world into cases, answer each case, weight by how likely the case is
 \vspace{10pt}
 
-\quad two coins again, \ same $H_1$: \ the partition $H_1$, $H_1^{c}$ (first toss $H$, first toss $T$) --- each of probability $\tfrac12$
+\quad two coins again: \ $A_1 = B$ (first flip head), \ $A_2 = B^{c}$ (first flip tail) --- a partition, each $\tfrac12$
 \vspace{4pt}
 
-\quad take $B = \{\tilde\xi \ge 1\}$: \qquad $\mathbb{P}(B \mid H_1) = 1$ \ (a head already landed), \qquad
-      $\mathbb{P}(B \mid H_1^{c}) = \tfrac12$ \ (needs the second)
+\quad the event of interest is $\{\tilde\xi \ge 1\}$: \qquad $\mathbb{P}(\tilde\xi \ge 1 \mid A_1) = 1$ \ (a head already landed), \qquad
+      $\mathbb{P}(\tilde\xi \ge 1 \mid A_2) = \tfrac12$ \ (needs the second)
 \vspace{4pt}
 
-\quad $\mathbb{P}(B) = 1 \cdot \tfrac12 \;+\; \tfrac12 \cdot \tfrac12 \;=\; \tfrac34$ \qquad
+\quad $\mathbb{P}(\tilde\xi \ge 1) = 1 \cdot \tfrac12 \;+\; \tfrac12 \cdot \tfrac12 \;=\; \tfrac34$ \qquad
       --- the same $\tfrac34$ Section 2 gives from the scenario list
 \end{board}
 \takeaway{conditioning is how a \emph{two-stage} decision gets written down: act, watch which $A_i$ occurred, act again. weeks 10--12 run on this.}
