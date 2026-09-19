@@ -177,7 +177,8 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad then \ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A)\,\mathbb{P}(B)}{\mathbb{P}(B)} = \mathbb{P}(A)$ \quad --- learning $B$ tells you nothing about $A$
 \vspace{8pt}
 
-\quad same coins, \ same $B$. \quad now $A = \{\text{exactly one head}\} = \{HT, TH\}$:
+\quad two coins. \quad $A = \{\text{exactly one head}\} = \{HT, TH\}$, \qquad
+      $B = \{\text{first flip is head}\} = \{HH, HT\}$
 \vspace{3pt}
 
 \quad $\mathbb{P}(A \cap B) = \mathbb{P}(\{HT\}) = \tfrac14$, \qquad
@@ -188,7 +189,8 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad so $\mathbb{P}(A \mid B) = \tfrac12 = \mathbb{P}(A)$: \ the first flip says nothing about whether there is exactly one head
 \vspace{8pt}
 
-\quad now run the same test on the \emph{first} pair, \ $A = \{\text{both heads}\} = \{HH\}$:
+\quad now \ $A = \{\text{both heads}\} = \{HH\}$, \qquad
+      $B = \{\text{first flip is head}\} = \{HH, HT\}$ \quad --- the same test:
 \vspace{3pt}
 
 \quad $\mathbb{P}(A \cap B) = \mathbb{P}(\{HH\}) = \tfrac14$, \qquad
@@ -196,11 +198,11 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \qquad $\tfrac14 \ne \tfrac18$ --- \textbf{dependent}
 \vspace{3pt}
 
-\quad which is why conditioning moved it there: \ $\mathbb{P}(A \mid B) = \tfrac12 \ne \tfrac14 = \mathbb{P}(A)$
+\quad which is why conditioning moved it: \ $\mathbb{P}(A \mid B) = \tfrac12 \ne \tfrac14 = \mathbb{P}(A)$
 \vspace{6pt}
 
-\quad {\color{punchink}same $B$, two different $A$, opposite answers} --- independence is a property of the \emph{pair},
-      not of either event on its own.
+\quad {\color{punchink}$B$ did not change, $A$ did --- and the verdict flipped.} \ independence is a property of the
+      \emph{pair}, not of either event on its own.
 \vspace{10pt}
 
 \textbf{Thm} (\emph{law of total probability}) \quad let $A_1, \dots, A_I$ \textbf{partition} $\Omega$:
@@ -213,7 +215,7 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad --- split the world into cases, answer each case, weight by how likely the case is
 \vspace{10pt}
 
-\quad two coins again: \ $A_1 = B$ (first flip head), \ $A_2 = B^{c}$ (first flip tail) --- a partition, each $\tfrac12$
+\quad two coins again: \ $A_1 = \{\text{first flip is head}\}$, \ $A_2 = \{\text{first flip is tail}\}$ --- a partition, each $\tfrac12$
 \vspace{4pt}
 
 \quad the event of interest: \ \emph{at least one head} \qquad $\mathbb{P}(\text{at least one head} \mid A_1) = 1$ \ (a head already landed), \qquad
