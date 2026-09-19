@@ -74,7 +74,8 @@
 \beat{1}{Random variables}
 \begin{board}
 back to week 2's Section 2 table: the OR column had \textbf{uncertain data} $\xi$. today, the vocabulary ---
-textbook notation ($X$, $f$) first, this course's notation ($\tilde\xi$) at the end.
+written in this course's notation from the first line --- $x$ is already taken by the
+\textbf{decision}, so the uncertain data is $\tilde\xi$ throughout.
 \vspace{10pt}
 
 \textbf{Random variable}
@@ -89,16 +90,16 @@ textbook notation ($X$, $f$) first, this course's notation ($\tilde\xi$) at the 
 \quad {\footnotesize\color{punchink}(week 2 wrote this $S$; from here it is $\Omega$, so that $S$ can count \emph{scenarios} below)}
 \vspace{6pt}
 
-\textbf{Def} (\emph{random variable}) \quad a function that assigns a real number to each outcome: \quad $X : \Omega \to \mathbb{R}$
+\textbf{Def} (\emph{random variable}) \quad a function that assigns a real number to each outcome: \quad $\tilde\xi : \Omega \to \mathbb{R}$
 \vspace{3pt}
 
-\quad capital $X$ = the random variable, \qquad lowercase $x$ = a value it takes
+\quad the tilde marks the \emph{random} object; \ $\xi$ without it is a \textbf{realization} --- one value it took
 \vspace{5pt}
 
 \quad toss a coin twice: \ $\Omega = \{HH, HT, TH, TT\}$, \ each outcome has probability $\tfrac14$
 \vspace{3pt}
 
-\quad $X$ = number of heads: \quad $X(HH) = 2, \quad X(HT) = 1, \quad X(TH) = 1, \quad X(TT) = 0$
+\quad $\tilde\xi$ = number of heads: \quad $\tilde\xi(HH) = 2, \quad \tilde\xi(HT) = 1, \quad \tilde\xi(TH) = 1, \quad \tilde\xi(TT) = 0$
 \vspace{6pt}
 
 \begin{center}
@@ -114,13 +115,13 @@ textbook notation ($X$, $f$) first, this course's notation ($\tilde\xi$) at the 
   \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,1.83) -- (5.0,1.4);
   \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,1.17) -- (5.0,1.4);
   \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,0.5)  -- (5.0,0.4);
-  \node[red!75!black] at (3.2,2.78) {$X$};
-  \node[align=center] at (2.6,-0.75) {$X : \Omega \to \mathbb{R}$ --- every outcome gets one number;\\ two outcomes may share a number};
+  \node[red!75!black] at (3.2,2.78) {$\tilde\xi$};
+  \node[align=center] at (2.6,-0.75) {$\tilde\xi : \Omega \to \mathbb{R}$ --- every outcome gets one number;\\ two outcomes may share a number};
 \end{tikzpicture}
 \hspace{12mm}
 \begin{tikzpicture}[xscale=0.9, yscale=3.0, font=\scriptsize]
-  \draw[->] (-0.6,0) -- (2.8,0) node[right] {$x$};
-  \draw[->] (-0.6,0) -- (-0.6,0.78) node[above] {$f(x) = P(X = x)$};
+  \draw[->] (-0.6,0) -- (2.8,0) node[right] {$\xi$};
+  \draw[->] (-0.6,0) -- (-0.6,0.78) node[above] {$\mathbb{P}(\tilde\xi = \xi)$};
   \draw[fill=blue!15, draw=blue!65!black] (-0.18,0) rectangle (0.18,0.25);
   \draw[fill=blue!15, draw=blue!65!black] (0.82,0) rectangle (1.18,0.5);
   \draw[fill=blue!15, draw=blue!65!black] (1.82,0) rectangle (2.18,0.25);
@@ -133,10 +134,16 @@ textbook notation ($X$, $f$) first, this course's notation ($\tilde\xi$) at the 
 \end{center}
 \vspace{6pt}
 
-\bul \textbf{discrete} $X$: countably many values --- number of defective parts, number of arrivals, demand
+\bul \textbf{discrete} $\tilde\xi$: countably many values --- number of defective parts, number of arrivals, demand
 \vspace{3pt}
 
-\bul \textbf{continuous} $X$: values fill an interval --- length, time, temperature, a return
+\bul \textbf{continuous} $\tilde\xi$: values fill an interval --- length, time, temperature, a return
+\vspace{6pt}
+
+\bul \textbf{support} $\Xi$ = the set of values $\tilde\xi$ actually takes \ (the smallest closed set with $\mathbb{P}(\tilde\xi \in \Xi) = 1$)
+\vspace{3pt}
+
+\quad --- $\Omega$ is where the \emph{experiment} lives, $\Xi \subseteq \mathbb{R}^k$ is where the \emph{numbers} live
 \vspace{14pt}
 \end{board}
 \beat{2}{Events, conditioning, independence}
@@ -176,11 +183,11 @@ P(B) \;=\; P(B \cap A_1) + \cdots + P(B \cap A_I)
 \quad two coins again. \ $A_1$ = first toss is $H$, \ $A_2$ = first toss is $T$ --- a partition, each of probability $\tfrac12$
 \vspace{4pt}
 
-\quad take $B = \{X \ge 1\}$: \qquad $P(B \mid A_1) = 1$ \ (a head already landed), \qquad
-      $P(B \mid A_2) = \tfrac12$ \ (needs the second)
+\quad take $B = \{\tilde\xi \ge 1\}$: \qquad $\mathbb{P}(B \mid A_1) = 1$ \ (a head already landed), \qquad
+      $\mathbb{P}(B \mid A_2) = \tfrac12$ \ (needs the second)
 \vspace{4pt}
 
-\quad $P(B) = 1 \cdot \tfrac12 \;+\; \tfrac12 \cdot \tfrac12 \;=\; \tfrac34$ \qquad
+\quad $\mathbb{P}(B) = 1 \cdot \tfrac12 \;+\; \tfrac12 \cdot \tfrac12 \;=\; \tfrac34$ \qquad
       --- the same $\tfrac34$ the PMF gives in Section 3
 \end{board}
 \takeaway{conditioning is how a \emph{two-stage} decision gets written down: act, watch which $A_i$ occurred, act again. weeks 10--12 run on this.}
@@ -188,65 +195,65 @@ P(B) \;=\; P(B \cap A_1) + \cdots + P(B \cap A_I)
 %% ------------------------------------------------------------------ 3
 \beat{3}{Discrete random variables}
 \begin{board}
-\textbf{Def} (\emph{probability mass function, PMF}) \quad
-$f(x) = P(X = x)$, \qquad $f : \mathbb{R} \to [0,1]$
-\vspace{3pt}
-
-\quad (1) \ $f(x) \ge 0$ \qquad (2) \ $\sum_x f(x) = 1$ \qquad\qquad $P(X \in A) = \sum_{x \in A} f(x)$
-\vspace{3pt}
-
-\quad two coins: \ $f(0) = \tfrac14$, \ $f(1) = \tfrac12$, \ $f(2) = \tfrac14$, \qquad
-$P(X \ge 1) = f(1) + f(2) = \tfrac34$
-
+a discrete $\tilde\xi$ is a \textbf{list}: finitely many values, each carrying a weight.
 \vspace{10pt}
 
-\textbf{The same object, this course's way} \quad a discrete random variable is a \textbf{list of scenarios} with weights:
+\textbf{Def} (\emph{scenarios}) \quad $\tilde\xi$ takes the values \ $\xi^1, \dots, \xi^S$ --- the \textbf{scenarios} --- with
 \vspace{4pt}
 
-\quad $\tilde\xi$ takes the values $\xi_1, \dots, \xi_S$ \ with \ $p_s = \mathbb{P}(\tilde\xi = \xi_s)$, \qquad
-$p_s \ge 0$, \qquad $\sum_{s \in [S]} p_s = 1$
+\quad $p_s = \mathbb{P}\big(\tilde\xi = \xi^s\big)$, \qquad
+(1) \ $p_s \ge 0$ \qquad (2) \ $\sum_{s \in [S]} p_s = 1$, \qquad $[S] = \{1, \dots, S\}$
+\vspace{4pt}
+
+\quad $\mathbb{P}(\tilde\xi \in A) = \sum_{s \,:\, \xi^s \in A} p_s$ \qquad --- add the weights of the scenarios landing in $A$
+\vspace{6pt}
+
+\quad {\color{punchink}the scenario index goes \emph{up}:} \ $\xi^s$ is scenario $s$; \ a \emph{subscript} $\xi_j$ is
+      component $j$ of a vector (Section 8). two different jobs, two different slots.
+\vspace{6pt}
+
+\quad older books call this list the \textbf{probability mass function} and write it as a function $f$.
+      same content --- but a table, and a table is the only thing a solver can be handed.
+\vspace{10pt}
+
+\quad two coins: \quad $S = 3$, \qquad $\xi^1 = 0$, \ $\xi^2 = 1$, \ $\xi^3 = 2$, \qquad
+      $p = \big(\tfrac14, \tfrac12, \tfrac14\big)$
 \vspace{3pt}
 
-\quad here $[S] = \{1, \dots, S\}$ \ and \ $s$ indexes \emph{scenarios} --- $S$ of them, listed out
-\vspace{4pt}
-
-\quad two coins: \ three scenarios \ $\xi_1 = 0$, \ $\xi_2 = 1$, \ $\xi_3 = 2$ \ with \ $p = \big(\tfrac14, \tfrac12, \tfrac14\big)$
-\vspace{4pt}
-
-\quad {\color{punchink}same content as the PMF, different packaging.} \ a PMF is a function; a scenario list is a
-      \emph{table} --- and a solver can only be handed a table. every model from week 10 on is written this way.
-
-\vspace{8pt}
+\quad $\mathbb{P}(\tilde\xi \ge 1) = p_2 + p_3 = \tfrac34$ \qquad --- the $\tfrac34$ Section 2 reached by conditioning
+\vspace{12pt}
 
 \textbf{Def} (\emph{mean, variance})
-\vspace{3pt}
+\vspace{4pt}
 
-\quad mean: \quad $\mu = \mathbb{E}[X] = \sum_x x\, f(x)$
-\vspace{3pt}
+\quad mean: \quad $\mu = \mathbb{E}[\tilde\xi] = \sum_{s \in [S]} p_s\, \xi^s$
+\vspace{4pt}
 
-\quad variance: \quad $\sigma^2 = \mathrm{Var}(X) = \sum_x (x - \mu)^2 f(x) = \mathbb{E}[X^2] - \mu^2$,
-\qquad standard deviation \ $\sigma = \sqrt{\mathrm{Var}(X)}$
-\vspace{3pt}
+\quad variance: \quad
+$\sigma^2 = \mathrm{Var}(\tilde\xi) = \sum_{s \in [S]} p_s\, \big(\xi^s - \mu\big)^2 = \mathbb{E}\big[\tilde\xi^2\big] - \mu^2$,
+\qquad $\sigma = \sqrt{\mathrm{Var}(\tilde\xi)}$
+\vspace{4pt}
 
-\quad function of $X$: \quad $\mathbb{E}[h(X)] = \sum_x h(x)\, f(x)$
+\quad function of $\tilde\xi$: \quad $\mathbb{E}\big[h(\tilde\xi)\big] = \sum_{s \in [S]} p_s\, h(\xi^s)$
 \qquad {\color{punchink}\small $\leftarrow$ law of the unconscious statistician}
-\vspace{3pt}
+\vspace{4pt}
 
-\quad $\mathbb{E}[aX + b] = a\,\mathbb{E}[X] + b$, \qquad $\mathrm{Var}(aX + b) = a^2\,\mathrm{Var}(X)$
-\vspace{10pt}
+\quad $\mathbb{E}[a\tilde\xi + b] = a\,\mathbb{E}[\tilde\xi] + b$, \qquad
+      $\mathrm{Var}(a\tilde\xi + b) = a^2\,\mathrm{Var}(\tilde\xi)$
+\vspace{12pt}
 
-\textbf{Example 1} \quad demand $X$ for a spare part next month:
+\textbf{Example 1} \quad demand $\tilde\xi$ for a spare part next month:
 \vspace{5pt}
 
 \begin{center}
 \begin{tabular}{@{}l|ccc@{}}
- $x$     & 4    & 8   & 12   \\ \hline
- $f(x)$  & 0.25 & 0.5 & 0.25 \\
+ $\xi^s$ & 4    & 8   & 12   \\ \hline
+ $p_s$   & 0.25 & 0.5 & 0.25 \\
 \end{tabular}
 \qquad\qquad
 \begin{tikzpicture}[scale=0.95, font=\scriptsize, baseline=-6pt]
-  \draw[dashed, red!75!black, thick] (1.6,0) -- (1.6,1.4) node[above] {$\mathbb{E}[X] = 8$};
-  \draw[->] (-0.3,0) -- (3.6,0) node[right] {$x$};
+  \draw[dashed, red!75!black, thick] (1.6,0) -- (1.6,1.4) node[above] {$\mathbb{E}[\tilde\xi] = 8$};
+  \draw[->] (-0.3,0) -- (3.6,0) node[right] {$\xi$};
   \draw[fill=blue!15, draw=blue!65!black] (0.35,0) rectangle (0.85,0.5);
   \draw[fill=blue!15, draw=blue!65!black] (1.35,0) rectangle (1.85,1.0);
   \draw[fill=blue!15, draw=blue!65!black] (2.35,0) rectangle (2.85,0.5);
@@ -256,10 +263,10 @@ $p_s \ge 0$, \qquad $\sum_{s \in [S]} p_s = 1$
 \end{center}
 \vspace{5pt}
 
-\quad $\mathbb{E}[X] = 0.25 \cdot 4 + 0.5 \cdot 8 + 0.25 \cdot 12 = 8$
+\quad $\mathbb{E}[\tilde\xi] = 0.25 \cdot 4 + 0.5 \cdot 8 + 0.25 \cdot 12 = 8$
 \vspace{3pt}
 
-\quad $\mathrm{Var}(X) = 0.25 \cdot (4 - 8)^2 + 0.5 \cdot (8 - 8)^2 + 0.25 \cdot (12 - 8)^2 = 8$,
+\quad $\mathrm{Var}(\tilde\xi) = 0.25 \cdot (4 - 8)^2 + 0.5 \cdot (8 - 8)^2 + 0.25 \cdot (12 - 8)^2 = 8$,
 \qquad $\sigma = 2\sqrt{2} \approx 2.83$
 \vspace{14pt}
 \end{board}
@@ -269,35 +276,35 @@ $p_s \ge 0$, \qquad $\sum_{s \in [S]} p_s = 1$
 \textbf{Def} (\emph{probability density function, PDF}) \quad $f : \mathbb{R} \to \mathbb{R}_+$ with
 \vspace{3pt}
 
-\quad (1) \ $f(x) \ge 0$ \qquad (2) \ $\int_{-\infty}^{\infty} f(x)\, dx = 1$ \qquad
-(3) \ $P(a \le X \le b) = \int_a^b f(x)\, dx$ \ = area under $f$ from $a$ to $b$
+\quad (1) \ $p(\xi) \ge 0$ \qquad (2) \ $\int_{-\infty}^{\infty} p(\xi)\, d\xi = 1$ \qquad
+(3) \ $\mathbb{P}(a \le \tilde\xi \le b) = \int_a^b p(\xi)\, d\xi$ \ = area under $p$ from $a$ to $b$
 \vspace{3pt}
 
-\quad {\color{punchink}$f(x)$ is \emph{not} a probability:} \ $P(X = x) = 0$ for every single $x$, \ and $f(x) > 1$ is allowed
+\quad {\color{punchink}$p(\xi)$ is \emph{not} a probability:} \ $\mathbb{P}(\tilde\xi = \xi) = 0$ for every single $\xi$, \ and $p(\xi) > 1$ is allowed
 \vspace{8pt}
 
 \textbf{Def} (\emph{mean, variance}) \quad same as discrete --- the sums become integrals:
 \vspace{3pt}
 
-\quad $\mu = \mathbb{E}[X] = \int x\, f(x)\, dx$, \qquad
-$\sigma^2 = \mathrm{Var}(X) = \int (x - \mu)^2 f(x)\, dx = \mathbb{E}[X^2] - \mu^2$, \qquad
-$\mathbb{E}[h(X)] = \int h(x)\, f(x)\, dx$
+\quad $\mu = \mathbb{E}[\tilde\xi] = \int \xi\, p(\xi)\, dx$, \qquad
+$\sigma^2 = \mathrm{Var}(\tilde\xi) = \int (\xi - \mu)^2 p(\xi)\, dx = \mathbb{E}[\tilde\xi^2] - \mu^2$, \qquad
+$\mathbb{E}[h(\tilde\xi)] = \int h(\xi)\, p(\xi)\, dx$
 \vspace{10pt}
 
-\textbf{Example 2} \quad $X \sim \mathrm{Uniform}[a,b]$ \ ---
-$f(x) = \dfrac{1}{b-a}$ \ on \ $[a,b]$, \ $0$ outside
+\textbf{Example 2} \quad $\tilde\xi \sim \mathrm{Uniform}[a,b]$ \ ---
+$p(\xi) = \dfrac{1}{b-a}$ \ on \ $[a,b]$, \ $0$ outside
 \vspace{4pt}
 
 \begin{center}
 \begin{tikzpicture}[xscale=0.30, yscale=7.5, font=\scriptsize]
   \draw[dashed, gray!70] (0,0.125) -- (4,0.125);
-  \draw[->] (-0.5,0) -- (15.5,0) node[right] {$x$};
-  \draw[->] (0,-0.012) -- (0,0.195) node[left] {$f(x)$};
+  \draw[->] (-0.5,0) -- (15.5,0) node[right] {$\xi$};
+  \draw[->] (0,-0.012) -- (0,0.195) node[left] {$p(\xi)$};
   \draw[fill=blue!15, draw=blue!65!black, thick] (4,0) rectangle (12,0.125);
   \node[below] at (4,0) {$a = 4$};
   \node[below] at (12,0) {$b = 12$};
   \node[left] at (0,0.125) {$\tfrac{1}{b-a}$};
-  \draw[dashed, red!75!black, thick] (8,0) -- (8,0.165) node[above] {$\mathbb{E}[X] = 8$};
+  \draw[dashed, red!75!black, thick] (8,0) -- (8,0.165) node[above] {$\mathbb{E}[\tilde\xi] = 8$};
   \node[below] at (8,-0.022) {$8$};
 \end{tikzpicture}
 \end{center}
@@ -305,46 +312,46 @@ $f(x) = \dfrac{1}{b-a}$ \ on \ $[a,b]$, \ $0$ outside
 
 \quad mean:
 \[
-\mathbb{E}[X] \;=\; \int_a^b x \, \frac{1}{b-a} \, dx
+\mathbb{E}[\tilde\xi] \;=\; \int_a^b \xi \, \frac{1}{b-a} \, dx
  \;=\; \frac{1}{b-a}\left[\frac{x^2}{2}\right]_a^b
  \;=\; \frac{b^2 - a^2}{2(b-a)} \;=\; \frac{a+b}{2}
 \]
 
 \quad second moment --- $h(x) = x^2$:
 \[
-\mathbb{E}[X^2] \;=\; \int_a^b x^2 \, \frac{1}{b-a} \, dx
+\mathbb{E}[\tilde\xi^2] \;=\; \int_a^b \xi^2 \, \frac{1}{b-a} \, dx
  \;=\; \frac{1}{b-a}\left[\frac{x^3}{3}\right]_a^b
  \;=\; \frac{b^3 - a^3}{3(b-a)} \;=\; \frac{a^2 + ab + b^2}{3}
 \]
 
 \quad variance --- subtract, no new integral:
 \[
-\mathrm{Var}(X) \;=\; \mathbb{E}[X^2] - \mathbb{E}[X]^2
+\mathrm{Var}(\tilde\xi) \;=\; \mathbb{E}[\tilde\xi^2] - \mathbb{E}[\tilde\xi]^2
  \;=\; \frac{a^2 + ab + b^2}{3} - \frac{(a+b)^2}{4}
  \;=\; \frac{(b-a)^2}{12}
 \]
 
 \quad with $a = 4$, $b = 12$: \qquad
-$\mathbb{E}[X] = 8$, \qquad
-$\mathrm{Var}(X) = \dfrac{64}{12} = \dfrac{16}{3}$, \qquad
+$\mathbb{E}[\tilde\xi] = 8$, \qquad
+$\mathrm{Var}(\tilde\xi) = \dfrac{64}{12} = \dfrac{16}{3}$, \qquad
 $\sigma = \dfrac{4}{\sqrt{3}} \approx 2.31$
 \vspace{12pt}
 
-\textbf{Normal distribution} \quad $X \sim \mathcal{N}(\mu, \sigma^2)$:
-\qquad $f(x) = \dfrac{1}{\sigma\sqrt{2\pi}}\, \exp\!\Big(\!-\dfrac{(x-\mu)^2}{2\sigma^2}\Big)$, \ $x \in \mathbb{R}$
+\textbf{Normal distribution} \quad $\tilde\xi \sim \mathcal{N}(\mu, \sigma^2)$:
+\qquad $p(\xi) = \dfrac{1}{\sigma\sqrt{2\pi}}\, \exp\!\Big(\!-\dfrac{(\xi-\mu)^2}{2\sigma^2}\Big)$, \ $\xi \in \mathbb{R}$
 \vspace{4pt}
 
-\quad $\mathbb{E}[X] = \mu$, \qquad $\mathrm{Var}(X) = \sigma^2$
+\quad $\mathbb{E}[\tilde\xi] = \mu$, \qquad $\mathrm{Var}(\tilde\xi) = \sigma^2$
 \vspace{3pt}
 
-\quad $P(\mu - \sigma \le X \le \mu + \sigma) \approx 0.68$, \qquad
-$P(\mu - 2\sigma \le X \le \mu + 2\sigma) \approx 0.95$
+\quad $\mathbb{P}(\mu - \sigma \le \tilde\xi \le \mu + \sigma) \approx 0.68$, \qquad
+$\mathbb{P}(\mu - 2\sigma \le \tilde\xi \le \mu + 2\sigma) \approx 0.95$
 \vspace{4pt}
 
 \begin{center}
 \begin{tikzpicture}[xscale=1.15, yscale=5.0, font=\scriptsize]
   \fill[blue!30, domain=-1:1, samples=40] (-1,0) -- plot (\x, {0.3989*exp(-\x*\x/2)}) -- (1,0) -- cycle;
-  \draw[->] (-3.4,0) -- (3.7,0) node[right] {$x$};
+  \draw[->] (-3.4,0) -- (3.7,0) node[right] {$\xi$};
   \draw[very thick, blue!65!black, domain=-3.2:3.2, samples=80] plot (\x, {0.3989*exp(-\x*\x/2)});
   \draw[dashed, gray!70] (0,0) -- (0,0.3989);
   \foreach \t in {-2,-1,1,2} \draw (\t,0.012) -- (\t,-0.012);
@@ -374,7 +381,7 @@ Sections 3 and 4 defined the mean twice --- once a sum, once an integral. one de
 \renewcommand{\arraystretch}{1.3}
 \begin{tabular}{@{}l|l|l@{}}
                 & the weight $\mathbb{P}(d\xi)$ is        & and $\mathbb{E}_{\mathbb{P}}[\tilde\xi]$ reads \\ \hline
-discrete        & $p_s$, \ one per scenario $\xi_s$       & $\sum_{s \in [S]} p_s\, \xi_s$ \\
+discrete        & $p_s$, \ one per scenario $\xi^s$       & $\sum_{s \in [S]} p_s\, \xi^s$ \\
 continuous      & $p(\xi)\, d\xi$                         & $\int_{\Xi} \xi\, p(\xi)\, d\xi$ \\
 \end{tabular}
 \end{center}
@@ -384,7 +391,7 @@ continuous      & $p(\xi)\, d\xi$                         & $\int_{\Xi} \xi\, p(
 \[
 \mathbb{E}_{\mathbb{P}}\big[f(\tilde\xi)\big] \;=\; \int_{\Omega} f(\xi) \;\, \mathbb{P}(d\xi)
 \qquad\text{---}\qquad
-\sum_{s \in [S]} p_s\, f(\xi_s)
+\sum_{s \in [S]} p_s\, f(\xi^s)
 \quad\text{or}\quad
 \int_{\Xi} f(\xi)\, p(\xi)\, d\xi
 \]
@@ -405,25 +412,25 @@ continuous      & $p(\xi)\, d\xi$                         & $\int_{\Xi} \xi\, p(
 \beat{6}{Two random variables}
 \begin{board}
 \textbf{Def} (\emph{joint PMF}) \quad
-$f_{XY}(x, y) = P(X = x, \ Y = y)$, \qquad $f_{XY} \ge 0$, \qquad $\sum_x \sum_y f_{XY}(x, y) = 1$
+$p(\xi_1, \xi_2) = \mathbb{P}(\tilde\xi_1 = \xi_1, \ \tilde\xi_2 = \xi_2)$, \qquad $p \ge 0$, \qquad $\sum_x \sum_y p(\xi_1, \xi_2) = 1$
 \vspace{6pt}
 
 \textbf{Def} (\emph{marginal PMF}) \quad
-$f_X(x) = \sum_y f_{XY}(x, y)$, \qquad $f_Y(y) = \sum_x f_{XY}(x, y)$
+$p_1(\xi_1) = \sum_y p(\xi_1, \xi_2)$, \qquad $p_2(\xi_2) = \sum_x p(\xi_1, \xi_2)$
 \vspace{2pt}
 
 \quad --- row sums and column sums, written in the \emph{margins} of the table
 \vspace{10pt}
 
-\textbf{Example 3} \quad two assets, returns tomorrow: \ $X$, $Y$ each either down ($-0.10$) or up ($+0.20$)
+\textbf{Example 3} \quad two assets, returns tomorrow: \ $\tilde\xi_1$, $\tilde\xi_2$ each either down ($-0.10$) or up ($+0.20$)
 \vspace{6pt}
 
 \begin{center}
 \begin{tabular}{@{}c|cc|c@{}}
- $f_{XY}(x, y)$        & $y = -0.10$ & $y = 0.20$ & $f_X(x)$ \\ \hline
- $x = -0.10$           & $0.3$ & $0.2$ & $0.5$ \\
- $x = \phantom{-}0.20$ & $0.2$ & $0.3$ & $0.5$ \\ \hline
- $f_Y(y)$              & $0.5$ & $0.5$ & $1$ \\
+ $p(\xi_1, \xi_2)$        & $\xi_2 = -0.10$ & $\xi_2 = 0.20$ & $p_1(\xi_1)$ \\ \hline
+ $\xi_1 = -0.10$           & $0.3$ & $0.2$ & $0.5$ \\
+ $\xi_1 = \phantom{-}0.20$ & $0.2$ & $0.3$ & $0.5$ \\ \hline
+ $p_2(\xi_2)$              & $0.5$ & $0.5$ & $1$ \\
 \end{tabular}
 \end{center}
 \vspace{4pt}
@@ -432,49 +439,49 @@ $f_X(x) = \sum_y f_{XY}(x, y)$, \qquad $f_Y(y) = \sum_x f_{XY}(x, y)$
 \vspace{10pt}
 
 \textbf{Def} (\emph{joint PDF}) \quad
-$f_{XY} : \mathbb{R}^2 \to \mathbb{R}_+$, \qquad $\iint f_{XY}(x, y)\, dx\, dy = 1$, \qquad
-$P\big((X, Y) \in R\big) = \iint_R f_{XY}(x, y)\, dx\, dy$
+$p : \mathbb{R}^2 \to \mathbb{R}_+$, \qquad $\iint p(\xi_1, \xi_2)\, d\xi_1\, d\xi_2 = 1$, \qquad
+$\mathbb{P}\big((\tilde\xi_1, \tilde\xi_2) \in R\big) = \iint_R p(\xi_1, \xi_2)\, d\xi_1\, d\xi_2$
 \vspace{2pt}
 
-\quad --- the \textbf{volume} under $f_{XY}$ above the region $R$
+\quad --- the \textbf{volume} under $p$ above the region $R$
 \vspace{3pt}
 
-\quad marginal PDF: \ $f_X(x) = \int f_{XY}(x, y)\, dy$ \quad --- the sum becomes an integral
+\quad marginal PDF: \ $p_1(\xi_1) = \int p(\xi_1, \xi_2)\, dy$ \quad --- the sum becomes an integral
 \vspace{10pt}
 
-\textbf{Example 4} \quad $(X, Y)$ uniform on the unit square: \quad $f_{XY}(x, y) = 1$ \ on $[0,1]^2$, \ $0$ outside
+\textbf{Example 4} \quad $(\tilde\xi_1, \tilde\xi_2)$ uniform on the unit square: \quad $p(\xi_1, \xi_2) = 1$ \ on $[0,1]^2$, \ $0$ outside
 \vspace{4pt}
 
 \begin{center}
 \begin{tikzpicture}[scale=1.55, font=\scriptsize, baseline=(b)]
   \coordinate (b) at (0,0.5);
-  \draw[->] (-0.12,0) -- (1.35,0) node[right] {$x$};
-  \draw[->] (0,-0.12) -- (0,1.3) node[left] {$y$};
+  \draw[->] (-0.12,0) -- (1.35,0) node[right] {$\xi_1$};
+  \draw[->] (0,-0.12) -- (0,1.3) node[left] {$\xi_2$};
   \draw[fill=blue!6, draw=blue!65!black, thick] (0,0) rectangle (1,1);
   \fill[red!20] (0,0) -- (1,0) -- (0,1) -- cycle;
   \draw[red!75!black, thick] (1,0) -- (0,1);
   \node[red!75!black] at (0.3,0.3) {$R$};
   \node[below] at (1,0) {$1$}; \node[left] at (0,1) {$1$};
-  \node[anchor=west, font=\tiny, red!75!black] at (0.52,0.58) {$x + y = 1$};
+  \node[anchor=west, font=\tiny, red!75!black] at (0.52,0.58) {$\xi_1 + \xi_2 = 1$};
 \end{tikzpicture}
 \qquad\quad
 \begin{minipage}{0.62\textwidth}
-$P(X + Y \le 1) = \iint_R 1 \; dx\, dy$ = area of the triangle $R$ $= \tfrac12$
+$\mathbb{P}(\tilde\xi_1 + \tilde\xi_2 \le 1) = \iint_R 1 \; d\xi_1\, d\xi_2$ = area of the triangle $R$ $= \tfrac12$
 \vspace{6pt}
 
-marginal: \ $f_X(x) = \int_0^1 1 \; dy = 1$ on $[0,1]$ --- $X$ alone is Uniform$[0,1]$
+marginal: \ $p_1(\xi_1) = \int_0^1 1 \; d\xi_2 = 1$ on $[0,1]$ --- $\tilde\xi_1$ alone is Uniform$[0,1]$
 \end{minipage}
 \end{center}
 \vspace{10pt}
 
-\textbf{Def} (\emph{independence}) \quad $X$, $Y$ are independent if \quad
-$f_{XY}(x, y) = f_X(x)\, f_Y(y) \quad \forall\, x, y$ \qquad (PMF or PDF)
+\textbf{Def} (\emph{independence}) \quad $\tilde\xi_1$, $\tilde\xi_2$ are independent if \quad
+$p(\xi_1, \xi_2) = p_1(\xi_1)\, p_2(\xi_2) \quad \forall\, \xi_1, \xi_2$ \qquad (PMF or PDF)
 \vspace{3pt}
 
-\quad Example 3: \ $f_{XY}(-0.10, -0.10) = 0.3 \ne 0.5 \cdot 0.5$ \ --- \textbf{not} independent
+\quad Example 3: \ $p(-0.10, -0.10) = 0.3 \ne 0.5 \cdot 0.5$ \ --- \textbf{not} independent
 \vspace{2pt}
 
-\quad Example 4: \ $f_{XY}(x, y) = 1 = 1 \cdot 1$ \ --- independent
+\quad Example 4: \ $p(\xi_1, \xi_2) = 1 = 1 \cdot 1$ \ --- independent
 \vspace{10pt}
 \end{board}
 %% ------------------------------------------------------------------ 7
@@ -483,11 +490,11 @@ $f_{XY}(x, y) = f_X(x)\, f_Y(y) \quad \forall\, x, y$ \qquad (PMF or PDF)
 \textbf{Def} (\emph{covariance, correlation})
 \vspace{3pt}
 
-\quad $\mathrm{Cov}(X, Y) = \mathbb{E}\big[(X - \mu_X)(Y - \mu_Y)\big] = \mathbb{E}[XY] - \mu_X \mu_Y$,
-\qquad $\mathrm{Cov}(X, X) = \mathrm{Var}(X)$
+\quad $\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) = \mathbb{E}\big[(\tilde\xi_1 - \mu_1)(\tilde\xi_2 - \mu_2)\big] = \mathbb{E}[\tilde\xi_1 \tilde\xi_2] - \mu_1 \mu_2$,
+\qquad $\mathrm{Cov}(\tilde\xi_1, \tilde\xi_1) = \mathrm{Var}(\tilde\xi_1)$
 \vspace{3pt}
 
-\quad $\rho_{XY} = \dfrac{\mathrm{Cov}(X, Y)}{\sigma_X\, \sigma_Y}$, \qquad $-1 \le \rho_{XY} \le 1$
+\quad $\rho_{12} = \dfrac{\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2)}{\sigma_1\, \sigma_2}$, \qquad $-1 \le \rho_{12} \le 1$
 \vspace{3pt}
 
 \quad $\rho > 0$: move together, \quad $\rho < 0$: move opposite, \quad independent $\Rightarrow$ $\rho = 0$
@@ -495,79 +502,79 @@ $f_{XY}(x, y) = f_X(x)\, f_Y(y) \quad \forall\, x, y$ \qquad (PMF or PDF)
 
 \begin{center}
 \begin{tikzpicture}[scale=0.55, font=\scriptsize]
-  \draw[->] (-2.4,0) -- (2.6,0) node[right] {$x$};
-  \draw[->] (0,-2.4) -- (0,2.6) node[left] {$y$};
+  \draw[->] (-2.4,0) -- (2.6,0) node[right] {$\xi_1$};
+  \draw[->] (0,-2.4) -- (0,2.6) node[left] {$\xi_2$};
   \foreach \c in {0.55,1.1,1.65}
     \draw[blue!65!black, thick] (0,0) circle (\c);
   \node at (0.1,-3.1) {$\rho = 0$};
 \end{tikzpicture}
 \hspace{9mm}
 \begin{tikzpicture}[scale=0.55, font=\scriptsize]
-  \draw[->] (-2.4,0) -- (2.6,0) node[right] {$x$};
-  \draw[->] (0,-2.4) -- (0,2.6) node[left] {$y$};
+  \draw[->] (-2.4,0) -- (2.6,0) node[right] {$\xi_1$};
+  \draw[->] (0,-2.4) -- (0,2.6) node[left] {$\xi_2$};
   \foreach \c in {0.55,1.1,1.65}
     \draw[blue!65!black, thick, rotate=45] (0,0) ellipse ({1.304*\c} and {0.548*\c});
   \node at (0.1,-3.1) {$\rho = 0.7$};
 \end{tikzpicture}
 \hspace{9mm}
 \begin{tikzpicture}[scale=0.55, font=\scriptsize]
-  \draw[->] (-2.4,0) -- (2.6,0) node[right] {$x$};
-  \draw[->] (0,-2.4) -- (0,2.6) node[left] {$y$};
+  \draw[->] (-2.4,0) -- (2.6,0) node[right] {$\xi_1$};
+  \draw[->] (0,-2.4) -- (0,2.6) node[left] {$\xi_2$};
   \foreach \c in {0.55,1.1,1.65}
     \draw[blue!65!black, thick, rotate=-45] (0,0) ellipse ({1.304*\c} and {0.548*\c});
   \node at (0.1,-3.1) {$\rho = -0.7$};
 \end{tikzpicture}\\[2pt]
-{\scriptsize contours of the joint PDF of two normal random variables, \ $\mu_X = \mu_Y = 0$, \ $\sigma_X = \sigma_Y = 1$}
+{\scriptsize contours of the joint PDF of two normal random variables, \ $\mu_1 = \mu_2 = 0$, \ $\sigma_1 = \sigma_2 = 1$}
 \end{center}
 \vspace{8pt}
 
 \textbf{Example 3, continued} \quad (use the margins for $\mu$ and $\sigma$, all four cells for the covariance)
 \vspace{4pt}
 
-\quad $\mu_X = 0.5 \cdot (-0.10) + 0.5 \cdot 0.20 = 0.05$, \qquad $\mu_Y = 0.05$
+\quad $\mu_1 = 0.5 \cdot (-0.10) + 0.5 \cdot 0.20 = 0.05$, \qquad $\mu_2 = 0.05$
 \vspace{3pt}
 
-\quad $\mathrm{Var}(X) = 0.5 \cdot (-0.15)^2 + 0.5 \cdot (0.15)^2 = 0.0225$, \qquad $\sigma_X = \sigma_Y = 0.15$
+\quad $\mathrm{Var}(\tilde\xi_1) = 0.5 \cdot (-0.15)^2 + 0.5 \cdot (0.15)^2 = 0.0225$, \qquad $\sigma_1 = \sigma_2 = 0.15$
 \[
 \begin{aligned}
-\mathrm{Cov}(X, Y)
+\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2)
  &= 0.3\,(-0.15)(-0.15) + 0.2\,(-0.15)(0.15) + 0.2\,(0.15)(-0.15) + 0.3\,(0.15)(0.15) \\
  &= (0.3 - 0.2 - 0.2 + 0.3) \cdot 0.0225 \;=\; 0.0045
 \end{aligned}
 \]
 
-\quad $\rho_{XY} = \dfrac{0.0045}{0.15 \cdot 0.15} = 0.2$ \quad --- the two assets tend to move together
+\quad $\rho_{12} = \dfrac{0.0045}{0.15 \cdot 0.15} = 0.2$ \quad --- the two assets tend to move together
 \vspace{14pt}
 \end{board}
 %% ------------------------------------------------------------------ 8
 \beat{8}{Linear combinations}
 \begin{board}
-\quad $\mathbb{E}[aX + bY] = a\,\mu_X + b\,\mu_Y$ \qquad --- always, no independence needed
+\quad $\mathbb{E}[a\tilde\xi_1 + b\tilde\xi_2] = a\,\mu_1 + b\,\mu_2$ \qquad --- always, no independence needed
 \vspace{3pt}
 
-\quad $\mathrm{Var}(aX + bY) = a^2\,\mathrm{Var}(X) + b^2\,\mathrm{Var}(Y) + 2ab\,\mathrm{Cov}(X, Y)$
+\quad $\mathrm{Var}(a\tilde\xi_1 + b\tilde\xi_2) = a^2\,\mathrm{Var}(\tilde\xi_1) + b^2\,\mathrm{Var}(\tilde\xi_2) + 2ab\,\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2)$
 \vspace{8pt}
 
-\quad $n$ random variables $X = (X_1, \dots, X_n)$:
+\quad $n$ random variables $\tilde\xi = (\tilde\xi_1, \dots, \tilde\xi_n)$:
 \vspace{3pt}
 
-\qquad mean vector \ $\mu = \big(\mathbb{E}[X_1], \dots, \mathbb{E}[X_n]\big)^{\top} \in \mathbb{R}^n$
+\qquad mean vector \ $\mu = \big(\mathbb{E}[\tilde\xi_1], \dots, \mathbb{E}[\tilde\xi_n]\big)^{\top} \in \mathbb{R}^n$
 \vspace{3pt}
 
-\qquad covariance matrix \ $\Sigma \in \mathbb{R}^{n \times n}$, \ $\Sigma_{ij} = \mathrm{Cov}(X_i, X_j)$;
-\ diagonal $\Sigma_{ii} = \mathrm{Var}(X_i)$; \ symmetric; \ always $\Sigma \succeq 0$
+\qquad covariance matrix \ $\Sigma \in \mathbb{R}^{n \times n}$, \ $\Sigma_{ij} = \mathrm{Cov}(\tilde\xi_i, \tilde\xi_j)$;
+\ diagonal $\Sigma_{ii} = \mathrm{Var}(\tilde\xi_i)$; \ symmetric; \ always $\Sigma \succeq 0$
 \vspace{4pt}
 
 \quad for fixed $c \in \mathbb{R}^n$: \qquad
-$\mathbb{E}[c^{\top}X] = c^{\top}\mu$, \qquad $\mathrm{Var}(c^{\top}X) = c^{\top}\Sigma c$
+$\mathbb{E}[c^{\top}\tilde\xi] = c^{\top}\mu$, \qquad $\mathrm{Var}(c^{\top}\tilde\xi) = c^{\top}\Sigma c$
 \vspace{4pt}
 
 \quad $n = 2$, \ $c = (a, b)$: \quad
 $c^{\top}\Sigma c
  = \begin{pmatrix} a & b \end{pmatrix}
-   \begin{pmatrix} \mathrm{Var}(X) & \mathrm{Cov}(X,Y) \\ \mathrm{Cov}(X,Y) & \mathrm{Var}(Y) \end{pmatrix}
+   \begin{pmatrix} \mathrm{Var}(\tilde\xi_1) & \mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) \\ \mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) & \mathrm{Var}(\tilde\xi_2) \end{pmatrix}
    \begin{pmatrix} a \\ b \end{pmatrix}$
-\ --- $\mathrm{Var}(aX + bY)$ again
+\ --- $\mathrm{Var}(a\tilde\xi_1 + b\tilde\xi_2)$ again
 \vspace{4pt}
 
 \quad Example 3: \quad
@@ -576,34 +583,26 @@ $\Sigma = \begin{pmatrix} 0.0225 & 0.0045 \\ 0.0045 & 0.0225 \end{pmatrix}$
 \vspace{14pt}
 \end{board}
 %% ------------------------------------------------------------------ 9
-\beat{9}{This course's notation, and the bridge}
+\beat{9}{The bridge to optimization}
 \begin{board}
-the decision is already $x$, so the uncertain data gets its own letter:
-\vspace{5pt}
+everything so far was about $\tilde\xi$ alone. now put the decision back in.
+\vspace{10pt}
 
-\begin{center}
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}l|l|l@{}}
-                        & textbook                      & this course \\ \hline
-random variable         & $X$                           & $\tilde\xi$, \ with distribution $\mathbb{P}$: \ $\tilde\xi \sim \mathbb{P}$ \\
-a value of it           & $x$                           & $\xi$ \ (a \emph{realization}) \\
-probability             & $P(\cdot)$                    & $\mathbb{P}(\cdot)$ \\
-set of possible values  & range of $X$                  & support $\Xi$ \ (smallest closed set with $\mathbb{P}(\tilde\xi \in \Xi) = 1$) \\
-discrete                & values $x$, PMF $f(x)$        & scenarios $\xi_1, \dots, \xi_S$ with probabilities $p_1, \dots, p_S$ \\
-continuous              & PDF $f(x)$                    & density $p(\xi)$ \\
-mean, discrete          & $\sum_x x\, f(x)$             & $\mathbb{E}[\tilde\xi] = \sum_{s \in [S]} p_s\, \xi_s$ \\
-mean, continuous        & $\int x\, f(x)\, dx$          & $\mathbb{E}[\tilde\xi] = \int_{\Xi} \xi\, p(\xi)\, d\xi$ \\
-function of it          & $\mathbb{E}[h(X)]$            & $\mathbb{E}[f(\tilde\xi)]$ \ ($f$ = any function, e.g.\ a cost --- not a PDF) \\
-random vector           & $X \in \mathbb{R}^k$, \ $\mu$, $\Sigma$ & $\tilde\xi \in \mathbb{R}^k$, \ $\mu$, $\Sigma$ \\
-\end{tabular}
-\end{center}
-\vspace{12pt}
+\quad a cost depends on both: \ $f(x, \tilde\xi)$ --- \ $x$ the \textbf{decision} we choose,
+      $\tilde\xi$ the \textbf{data} we do not
+\vspace{4pt}
 
-\textbf{The bridge to optimization} \quad data random $\Rightarrow$ cost random:
-$f(x, \tilde\xi)$ is a random variable, \ $\mathbb{E}[f(x,\tilde\xi)]$ is a number.
+\quad fix $x$. \ then $f(x, \tilde\xi)$ is a \textbf{random variable} --- it inherits $\tilde\xi$'s randomness
+\vspace{4pt}
+
+\quad so $\mathbb{E}\big[f(x, \tilde\xi)\big]$ is a \textbf{number}, \ one per $x$ --- and numbers can be minimized:
 \[
-\min_x \;\; \mathbb{E}\big[f(x, \tilde\xi)\big]
+\min_{x \in X} \;\; \mathbb{E}\big[f(x, \tilde\xi)\big]
 \]
+
+\quad {\color{punchink}that $\mathbb{E}$ is the whole design space of this course.} \ expectation is one way to turn a
+      random cost into a number; CVaR, VaR and a chance constraint are others. the model above changes
+      in that one slot and nowhere else.
 \end{board}
 \takeaway{every paradigm in this course differs in one place only: \emph{how} it collapses the randomness to a number.}
 %% ------------------------------------------------------------------ 10
@@ -639,7 +638,7 @@ $\tilde\xi^{\top}x = x_1\tilde\xi_1 + \cdots + x_n\tilde\xi_n$ \quad --- a rando
 $\mathbb{E}[\tilde\xi^{\top}x] = \mu^{\top}x$, \qquad $\mathrm{Var}(\tilde\xi^{\top}x) = x^{\top}\Sigma x$
 \vspace{10pt}
 
-\textbf{Check on Example 3} \quad $(\tilde\xi_1, \tilde\xi_2)$ = Example 3's $(X, Y)$, \ half in each: \ $x = (\tfrac12, \tfrac12)$
+\textbf{Check on Example 3} \quad $(\tilde\xi_1, \tilde\xi_2)$ = Example 3's $(\tilde\xi_1, \tilde\xi_2)$, \ half in each: \ $x = (\tfrac12, \tfrac12)$
 \vspace{4pt}
 
 \begin{center}
