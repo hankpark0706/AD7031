@@ -409,7 +409,31 @@ $\sigma = \dfrac{4}{\sqrt{3}} \approx 2.31$
 \vspace{3pt}
 
 \quad $\mathbb{P}(\mu - \sigma \le \tilde\xi \le \mu + \sigma) \approx 0.68$, \qquad
-$\mathbb{P}(\mu - 2\sigma \le \tilde\xi \le \mu + 2\sigma) \approx 0.95$
+$\mathbb{P}(\mu - 2\sigma \le \tilde\xi \le \mu + 2\sigma) \approx 0.95$, \qquad
+$\mu \pm 3\sigma \approx 0.997$
+\vspace{10pt}
+
+\textbf{Six Sigma} --- yes, the manufacturing one \quad push the tolerance limits out to $\mu \pm 6\sigma$:
+\vspace{4pt}
+
+\quad $\mathbb{P}(\mu - 6\sigma \le \tilde\xi \le \mu + 6\sigma) = 0.999999998$
+\qquad --- about $2$ failures per \emph{billion} parts
+\vspace{6pt}
+
+\quad so why is the slogan \textbf{3.4 defects per million}, a million times worse? \ because the standard
+      also allows the process mean to \textbf{drift} by up to $1.5\sigma$ over a long production run.
+\vspace{3pt}
+
+\quad the mean slides, the limits do not --- the nearer one is then only $4.5\sigma$ away, and only that tail matters:
+\vspace{3pt}
+
+\quad $\mathbb{P}(\tilde\xi \text{ past the nearer limit}) = 3.4 \times 10^{-6}$
+\qquad --- the famous $3.4$ per million
+\vspace{6pt}
+
+\quad {\color{punchink}notice the shape of the requirement:} \ \emph{choose the design so that failure has
+      probability at most $\varepsilon$}. \ that is a \textbf{chance constraint}, and it is one of the
+      paradigms this course builds --- the same $\tilde\xi$, collapsed to a number a different way.
 \vspace{4pt}
 
 \begin{center}
