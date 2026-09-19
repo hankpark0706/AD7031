@@ -78,9 +78,6 @@ written in this course's notation from the first line --- $x$ is already taken b
 \textbf{decision}, so the uncertain data is $\tilde\xi$ throughout.
 \vspace{10pt}
 
-\textbf{Random variable}
-\vspace{4pt}
-
 \bul \textbf{random experiment:} its outcome is not known in advance
 \vspace{3pt}
 
@@ -126,7 +123,7 @@ written in this course's notation from the first line --- $x$ is already taken b
   \node[above, font=\tiny] at (0,0.25) {$\tfrac14$};
   \node[above, font=\tiny] at (1,0.5) {$\tfrac12$};
   \node[above, font=\tiny] at (2,0.25) {$\tfrac14$};
-  \node[align=center] at (1.1,-0.25) {collect the arrows landing on each number:\\ $f(1) = P(\{HT, TH\}) = \tfrac14 + \tfrac14 = \tfrac12$};
+  \node[align=center] at (1.1,-0.25) {collect the arrows landing on each number:\\ $\mathbb{P}(\tilde\xi = 1) = \mathbb{P}(\{HT, TH\}) = \tfrac14 + \tfrac14 = \tfrac12$};
 \end{tikzpicture}
 \end{center}
 \vspace{6pt}
@@ -145,33 +142,33 @@ written in this course's notation from the first line --- $x$ is already taken b
 \end{board}
 \beat{2}{Events, conditioning, independence}
 \begin{board}
-an \textbf{event} is a subset of the sample space, \ $A \subseteq \Omega$; \ $P(A)$ is the probability it occurs.
+an \textbf{event} is a subset of the sample space, \ $A \subseteq \Omega$; \ $\mathbb{P}(A)$ is the probability it occurs.
 \vspace{6pt}
 
-\bul \ $0 \le P(A) \le 1$, \qquad $P(\Omega) = 1$
+\bul \ $0 \le \mathbb{P}(A) \le 1$, \qquad $\mathbb{P}(\Omega) = 1$
 \vspace{3pt}
 
-\bul \ $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ \qquad --- subtract the overlap, or it is counted twice
+\bul \ $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$ \qquad --- subtract the overlap, or it is counted twice
 \vspace{10pt}
 
 \textbf{Def} (\emph{conditional probability}) \quad
-$P(A \mid B) = \dfrac{P(A \cap B)}{P(B)}$, \qquad defined when $P(B) > 0$
+$\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad defined when $\mathbb{P}(B) > 0$
 \vspace{3pt}
 
-\quad --- $B$ becomes the new sample space; divide by $P(B)$ so the weights add to $1$ again
+\quad --- $B$ becomes the new sample space; divide by $\mathbb{P}(B)$ so the weights add to $1$ again
 \vspace{10pt}
 
-\textbf{Def} (\emph{independent events}) \quad $A$ and $B$ are independent if \quad $P(A \cap B) = P(A)\,P(B)$
+\textbf{Def} (\emph{independent events}) \quad $A$ and $B$ are independent if \quad $\mathbb{P}(A \cap B) = \mathbb{P}(A)\,\mathbb{P}(B)$
 \vspace{3pt}
 
-\quad then \ $P(A \mid B) = \dfrac{P(A)\,P(B)}{P(B)} = P(A)$ \quad --- learning $B$ tells you nothing about $A$
+\quad then \ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A)\,\mathbb{P}(B)}{\mathbb{P}(B)} = \mathbb{P}(A)$ \quad --- learning $B$ tells you nothing about $A$
 \vspace{10pt}
 
 \textbf{Thm} (\emph{law of total probability}) \quad let $A_1, \dots, A_I$ \textbf{partition} $\Omega$:
 \ $A_i \cap A_j = \emptyset$ for $i \ne j$, \ and \ $\bigcup_{i} A_i = \Omega$. \ then for any event $B$,
 \[
-P(B) \;=\; P(B \cap A_1) + \cdots + P(B \cap A_I)
-     \;=\; P(B \mid A_1)\,P(A_1) + \cdots + P(B \mid A_I)\,P(A_I)
+\mathbb{P}(B) \;=\; \mathbb{P}(B \cap A_1) + \cdots + \mathbb{P}(B \cap A_I)
+     \;=\; \mathbb{P}(B \mid A_1)\,\mathbb{P}(A_1) + \cdots + \mathbb{P}(B \mid A_I)\,\mathbb{P}(A_I)
 \]
 
 \quad --- split the world into cases, answer each case, weight by how likely the case is
