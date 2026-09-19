@@ -161,7 +161,7 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad --- $B$ becomes the new sample space; divide by $\mathbb{P}(B)$ so the weights add to $1$ again
 \vspace{8pt}
 
-\quad two coins: \quad $A = \{\tilde\xi = 2\} = \{HH\}$, \qquad $B = \{\text{first flip is head}\} = \{HH, HT\}$
+\quad two coins: \quad $A = \{\text{both flips are heads}\} = \{HH\}$, \qquad $B = \{\text{first flip is head}\} = \{HH, HT\}$
 \vspace{3pt}
 
 \quad $\mathbb{P}(A) = \tfrac14$, \quad $\mathbb{P}(B) = \tfrac12$, \quad $A \cap B = \{HH\}$:
@@ -177,15 +177,15 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad then \ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A)\,\mathbb{P}(B)}{\mathbb{P}(B)} = \mathbb{P}(A)$ \quad --- learning $B$ tells you nothing about $A$
 \vspace{8pt}
 
-\quad same coins, \ same $B$. \quad now $A = \{\tilde\xi = 1\} = \{HT, TH\}$:
+\quad same coins, \ same $B$. \quad now $A = \{\text{exactly one head}\} = \{HT, TH\}$:
 \vspace{3pt}
 
 \quad $\mathbb{P}(A \cap B) = \mathbb{P}(\{HT\}) = \tfrac14 = \tfrac12 \cdot \tfrac12 = \mathbb{P}(A)\,\mathbb{P}(B)$
 \qquad --- \textbf{independent}
 \vspace{3pt}
 
-\quad so $\mathbb{P}(A \mid B) = \tfrac12 = \mathbb{P}(A)$: \ the first flip says nothing about whether the count is $1$.
-      \ {\color{punchink}with $A = \{\tilde\xi = 2\}$ above it said plenty} --- independence is a property of the \emph{pair}.
+\quad so $\mathbb{P}(A \mid B) = \tfrac12 = \mathbb{P}(A)$: \ the first flip says nothing about whether there is exactly one head.
+      \ {\color{punchink}with $A = $ both heads, above, it said plenty} --- independence is a property of the \emph{pair}.
 \vspace{10pt}
 
 \textbf{Thm} (\emph{law of total probability}) \quad let $A_1, \dots, A_I$ \textbf{partition} $\Omega$:
@@ -201,11 +201,11 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad two coins again: \ $A_1 = B$ (first flip head), \ $A_2 = B^{c}$ (first flip tail) --- a partition, each $\tfrac12$
 \vspace{4pt}
 
-\quad the event of interest is $\{\tilde\xi \ge 1\}$: \qquad $\mathbb{P}(\tilde\xi \ge 1 \mid A_1) = 1$ \ (a head already landed), \qquad
-      $\mathbb{P}(\tilde\xi \ge 1 \mid A_2) = \tfrac12$ \ (needs the second)
+\quad the event of interest: \ \emph{at least one head} \qquad $\mathbb{P}(\text{at least one head} \mid A_1) = 1$ \ (a head already landed), \qquad
+      $\mathbb{P}(\text{at least one head} \mid A_2) = \tfrac12$ \ (needs the second)
 \vspace{4pt}
 
-\quad $\mathbb{P}(\tilde\xi \ge 1) = 1 \cdot \tfrac12 \;+\; \tfrac12 \cdot \tfrac12 \;=\; \tfrac34$ \qquad
+\quad $\mathbb{P}(\text{at least one head}) = 1 \cdot \tfrac12 \;+\; \tfrac12 \cdot \tfrac12 \;=\; \tfrac34$ \qquad
       --- the same $\tfrac34$ Section 2 gives from the scenario list
 \end{board}
 \takeaway{conditioning is how a \emph{two-stage} decision gets written down: act, watch which $A_i$ occurred, act again. weeks 10--12 run on this.}
