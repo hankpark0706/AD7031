@@ -180,12 +180,27 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 \quad same coins, \ same $B$. \quad now $A = \{\text{exactly one head}\} = \{HT, TH\}$:
 \vspace{3pt}
 
-\quad $\mathbb{P}(A \cap B) = \mathbb{P}(\{HT\}) = \tfrac14 = \tfrac12 \cdot \tfrac12 = \mathbb{P}(A)\,\mathbb{P}(B)$
-\qquad --- \textbf{independent}
+\quad $\mathbb{P}(A \cap B) = \mathbb{P}(\{HT\}) = \tfrac14$, \qquad
+      $\mathbb{P}(A)\,\mathbb{P}(B) = \tfrac12 \cdot \tfrac12 = \tfrac14$
+\qquad equal --- \textbf{independent}
 \vspace{3pt}
 
-\quad so $\mathbb{P}(A \mid B) = \tfrac12 = \mathbb{P}(A)$: \ the first flip says nothing about whether there is exactly one head.
-      \ {\color{punchink}with $A = $ both heads, above, it said plenty} --- independence is a property of the \emph{pair}.
+\quad so $\mathbb{P}(A \mid B) = \tfrac12 = \mathbb{P}(A)$: \ the first flip says nothing about whether there is exactly one head
+\vspace{8pt}
+
+\quad now run the same test on the \emph{first} pair, \ $A = \{\text{both heads}\} = \{HH\}$:
+\vspace{3pt}
+
+\quad $\mathbb{P}(A \cap B) = \mathbb{P}(\{HH\}) = \tfrac14$, \qquad
+      $\mathbb{P}(A)\,\mathbb{P}(B) = \tfrac14 \cdot \tfrac12 = \tfrac18$
+\qquad $\tfrac14 \ne \tfrac18$ --- \textbf{dependent}
+\vspace{3pt}
+
+\quad which is why conditioning moved it there: \ $\mathbb{P}(A \mid B) = \tfrac12 \ne \tfrac14 = \mathbb{P}(A)$
+\vspace{6pt}
+
+\quad {\color{punchink}same $B$, two different $A$, opposite answers} --- independence is a property of the \emph{pair},
+      not of either event on its own.
 \vspace{10pt}
 
 \textbf{Thm} (\emph{law of total probability}) \quad let $A_1, \dots, A_I$ \textbf{partition} $\Omega$:
