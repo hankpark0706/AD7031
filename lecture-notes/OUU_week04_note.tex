@@ -71,7 +71,7 @@
 {\small AD7031 Optimization Under Uncertainty \quad\textbullet\quad Instructor: Prof.\ H.\ Park \quad\textbullet\quad Sep 19, 2026}
 
 %% ------------------------------------------------------------------ 1
-\beat{1}{Random variables, events, conditioning}
+\beat{1}{Events and conditioning}
 \begin{board}
 back to week 2's Section 2 table: the OR column had \textbf{uncertain data} $\xi$. today, the vocabulary ---
 written in this course's notation from the first line --- $x$ is already taken by the
@@ -85,65 +85,33 @@ written in this course's notation from the first line --- $x$ is already taken b
 \vspace{10pt}
 
 an \textbf{event} is a subset of the sample space, \ $A \subseteq \Omega$; \ $\mathbb{P}(A)$ is the probability it occurs.
-\vspace{6pt}
-
-\bul \ $0 \le \mathbb{P}(A) \le 1$, \qquad $\mathbb{P}(\Omega) = 1$
-\vspace{3pt}
-
-\bul \ $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$ \qquad --- subtract the overlap, or it is counted twice
-\vspace{12pt}
-
-\textbf{Def} (\emph{random variable}) \quad a function that assigns a real number to each outcome: \quad $\tilde\xi : \Omega \to \mathbb{R}$
-\vspace{3pt}
-
-\quad the tilde marks the \emph{random} object; \ $\xi$ without it is a \textbf{realization} --- one value it took
 \vspace{5pt}
 
-\quad toss a coin twice: \ $\Omega = \{HH, HT, TH, TT\}$, \ each outcome has probability $\tfrac14$
+\quad \emph{running example} --- toss a coin twice: \ $\Omega = \{HH, HT, TH, TT\}$, \ each outcome has probability $\tfrac14$
 \vspace{3pt}
 
-\quad $\tilde\xi$ = number of heads: \quad $\tilde\xi(HH) = 2, \quad \tilde\xi(HT) = 1, \quad \tilde\xi(TH) = 1, \quad \tilde\xi(TT) = 0$
-\vspace{6pt}
+\quad $A = \{\text{first flip is head}\} = \{HH, HT\}$ \ is an event, \ $\mathbb{P}(A) = \tfrac12$
+\vspace{8pt}
 
-\begin{center}
-\begin{tikzpicture}[scale=0.85, font=\scriptsize]
-  \draw[rounded corners=8pt, fill=blue!6, draw=blue!65!black, thick] (0,0) rectangle (2.0,3.0);
-  \node[anchor=south] at (1.0,3.02) {$\Omega$};
-  \foreach \y/\lab in {2.5/HH, 1.83/HT, 1.17/TH, 0.5/TT}
-    { \fill (1.35,\y) circle (1.6pt); \node[anchor=east] at (1.25,\y) {$\lab$}; }
-  \draw[->] (5.0,-0.1) -- (5.0,3.1) node[above] {$\mathbb{R}$};
-  \foreach \v/\y in {0/0.4, 1/1.4, 2/2.4}
-    { \draw (4.92,\y) -- (5.08,\y); \node[anchor=west] at (5.1,\y) {$\v$}; }
-  \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,2.5)  -- (5.0,2.4);
-  \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,1.83) -- (5.0,1.4);
-  \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,1.17) -- (5.0,1.4);
-  \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,0.5)  -- (5.0,0.4);
-  \node[red!75!black] at (3.2,2.78) {$\tilde\xi$};
-  \node[align=center] at (2.6,-0.75) {$\tilde\xi : \Omega \to \mathbb{R}$ --- every outcome gets one number;\\ two outcomes may share a number};
-\end{tikzpicture}
-\hspace{12mm}
-\begin{tikzpicture}[xscale=0.9, yscale=3.0, font=\scriptsize]
-  \draw[->] (-0.6,0) -- (2.8,0) node[right] {$\xi$};
-  \draw[->] (-0.6,0) -- (-0.6,0.78) node[above] {$\mathbb{P}(\tilde\xi = \xi)$};
-  \draw[fill=blue!15, draw=blue!65!black] (-0.18,0) rectangle (0.18,0.25);
-  \draw[fill=blue!15, draw=blue!65!black] (0.82,0) rectangle (1.18,0.5);
-  \draw[fill=blue!15, draw=blue!65!black] (1.82,0) rectangle (2.18,0.25);
-  \node[below] at (0,0) {$0$}; \node[below] at (1,0) {$1$}; \node[below] at (2,0) {$2$};
-  \node[above, font=\tiny] at (0,0.25) {$\tfrac14$};
-  \node[above, font=\tiny] at (1,0.5) {$\tfrac12$};
-  \node[above, font=\tiny] at (2,0.25) {$\tfrac14$};
-  \node[align=center] at (1.1,-0.25) {collect the arrows landing on each number:\\ $\mathbb{P}(\tilde\xi = 1) = \mathbb{P}(\{HT, TH\}) = \tfrac14 + \tfrac14 = \tfrac12$};
-\end{tikzpicture}
-\end{center}
-\vspace{6pt}
-
-\bul \textbf{discrete} $\tilde\xi$: countably many values --- number of defective parts, number of arrivals, demand
+\bul \ $0 \le \mathbb{P}(A) \le 1$, \qquad $\mathbb{P}(\Omega) = 1$, \qquad $\mathbb{P}(\emptyset) = 0$
 \vspace{3pt}
 
-\bul \textbf{continuous} $\tilde\xi$: values fill an interval --- length, time, temperature, a return
-\vspace{6pt}
+\bul \ $A, B$ \textbf{disjoint} ($A \cap B = \emptyset$): \qquad $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B)$
+\vspace{3pt}
 
-\vspace{6pt}
+\bul \ \textbf{complement} $A^c$ \ ($A \cap A^c = \emptyset$, \ $A \cup A^c = \Omega$): \qquad
+$\mathbb{P}(A) + \mathbb{P}(A^c) = \mathbb{P}(\Omega) = 1$
+\vspace{3pt}
+
+\bul \ \textbf{monotone:} \ $A \subseteq B \subseteq \Omega$ \ $\Rightarrow$ \ $\mathbb{P}(A) \le \mathbb{P}(B)$, \qquad
+$\mathbb{P}(B \setminus A) = \mathbb{P}(B) - \mathbb{P}(A)$
+\vspace{3pt}
+
+\bul \ $A, B$ \textbf{arbitrary}: \qquad $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$
+\vspace{2pt}
+
+\qquad --- subtract the overlap, or it is counted twice; \ the disjoint rule is the case $\mathbb{P}(A \cap B) = 0$
+\vspace{12pt}
 
 \textbf{Def} (\emph{support}) \quad the smallest closed set $\Xi \subseteq \Omega$ such that
 $\mathbb{P}(\Xi) = 1$ is called the \textbf{support} of $\tilde\xi$
@@ -198,32 +166,60 @@ $\mathbb{P}(A \mid B) = \dfrac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, \qquad def
 
 \quad {\color{punchink}$B$ did not change, $A$ did --- and the verdict flipped.} \ independence is a property of the
       \emph{pair}, not of either event on its own.
-\vspace{10pt}
-
-\textbf{Thm} (\emph{law of total probability}) \quad let $A_1, \dots, A_I$ \textbf{partition} $\Omega$:
-\ $A_i \cap A_j = \emptyset$ for $i \ne j$, \ and \ $\bigcup_{i} A_i = \Omega$. \ then for any event $B$,
-\[
-\mathbb{P}(B) \;=\; \mathbb{P}(B \cap A_1) + \cdots + \mathbb{P}(B \cap A_I)
-     \;=\; \mathbb{P}(B \mid A_1)\,\mathbb{P}(A_1) + \cdots + \mathbb{P}(B \mid A_I)\,\mathbb{P}(A_I)
-\]
-
-\quad --- split the world into cases, answer each case, weight by how likely the case is
-\vspace{10pt}
-
-\quad two coins again: \ $A_1 = \{\text{first flip is head}\}$, \ $A_2 = \{\text{first flip is tail}\}$ --- a partition, each $\tfrac12$
-\vspace{4pt}
-
-\quad the event of interest: \ \emph{at least one head} \qquad $\mathbb{P}(\text{at least one head} \mid A_1) = 1$ \ (a head already landed), \qquad
-      $\mathbb{P}(\text{at least one head} \mid A_2) = \tfrac12$ \ (needs the second)
-\vspace{4pt}
-
-\quad $\mathbb{P}(\text{at least one head}) = 1 \cdot \tfrac12 \;+\; \tfrac12 \cdot \tfrac12 \;=\; \tfrac34$ \qquad
-      --- the same $\tfrac34$ Section 2 gives from the scenario list
 \end{board}
-\takeaway{conditioning is how a \emph{two-stage} decision gets written down: act, watch which $A_i$ occurred, act again. weeks 10--12 run on this.}
 %% ------------------------------------------------------------------ 3
 \beat{2}{Discrete random variables}
 \begin{board}
+\textbf{Def} (\emph{random variable}) \quad a function that assigns a real number to each outcome: \quad $\tilde\xi : \Omega \to \mathbb{R}$
+\vspace{3pt}
+
+\quad the tilde marks the \emph{random} object; \ $\xi$ without it is a \textbf{realization} --- one value it took
+\vspace{5pt}
+
+\quad the same two coins: \ $\Omega = \{HH, HT, TH, TT\}$, \ each outcome has probability $\tfrac14$
+\vspace{3pt}
+
+\quad $\tilde\xi$ = number of heads: \quad $\tilde\xi(HH) = 2, \quad \tilde\xi(HT) = 1, \quad \tilde\xi(TH) = 1, \quad \tilde\xi(TT) = 0$
+\vspace{6pt}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85, font=\scriptsize]
+  \draw[rounded corners=8pt, fill=blue!6, draw=blue!65!black, thick] (0,0) rectangle (2.0,3.0);
+  \node[anchor=south] at (1.0,3.02) {$\Omega$};
+  \foreach \y/\lab in {2.5/HH, 1.83/HT, 1.17/TH, 0.5/TT}
+    { \fill (1.35,\y) circle (1.6pt); \node[anchor=east] at (1.25,\y) {$\lab$}; }
+  \draw[->] (5.0,-0.1) -- (5.0,3.1) node[above] {$\mathbb{R}$};
+  \foreach \v/\y in {0/0.4, 1/1.4, 2/2.4}
+    { \draw (4.92,\y) -- (5.08,\y); \node[anchor=west] at (5.1,\y) {$\v$}; }
+  \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,2.5)  -- (5.0,2.4);
+  \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,1.83) -- (5.0,1.4);
+  \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,1.17) -- (5.0,1.4);
+  \draw[->, red!75!black, thick, shorten >=2pt, shorten <=3pt] (1.35,0.5)  -- (5.0,0.4);
+  \node[red!75!black] at (3.2,2.78) {$\tilde\xi$};
+  \node[align=center] at (2.6,-0.75) {$\tilde\xi : \Omega \to \mathbb{R}$ --- every outcome gets one number;\\ two outcomes may share a number};
+\end{tikzpicture}
+\hspace{12mm}
+\begin{tikzpicture}[xscale=0.9, yscale=3.0, font=\scriptsize]
+  \draw[->] (-0.6,0) -- (2.8,0) node[right] {$\xi$};
+  \draw[->] (-0.6,0) -- (-0.6,0.78) node[above] {$\mathbb{P}(\tilde\xi = \xi)$};
+  \draw[fill=blue!15, draw=blue!65!black] (-0.18,0) rectangle (0.18,0.25);
+  \draw[fill=blue!15, draw=blue!65!black] (0.82,0) rectangle (1.18,0.5);
+  \draw[fill=blue!15, draw=blue!65!black] (1.82,0) rectangle (2.18,0.25);
+  \node[below] at (0,0) {$0$}; \node[below] at (1,0) {$1$}; \node[below] at (2,0) {$2$};
+  \node[above, font=\tiny] at (0,0.25) {$\tfrac14$};
+  \node[above, font=\tiny] at (1,0.5) {$\tfrac12$};
+  \node[above, font=\tiny] at (2,0.25) {$\tfrac14$};
+  \node[align=center] at (1.1,-0.25) {collect the arrows landing on each number:\\ $\mathbb{P}(\tilde\xi = 1) = \mathbb{P}(\{HT, TH\}) = \tfrac14 + \tfrac14 = \tfrac12$};
+\end{tikzpicture}
+\end{center}
+\vspace{6pt}
+
+\bul \textbf{discrete} $\tilde\xi$: countably many values --- number of defective parts, number of arrivals, demand
+\vspace{3pt}
+
+\bul \textbf{continuous} $\tilde\xi$: values fill an interval --- length, time, temperature, a return
+\vspace{6pt}
+
 a discrete $\tilde\xi$ is a \textbf{list}: finitely many values, each carrying a weight.
 \vspace{10pt}
 
@@ -238,7 +234,7 @@ a discrete $\tilde\xi$ is a \textbf{list}: finitely many values, each carrying a
 \vspace{6pt}
 
 \quad {\color{punchink}the scenario index goes \emph{up}:} \ $\xi^s$ is scenario $s$; \ a \emph{subscript} $\xi_j$ is
-      component $j$ of a vector (Section 4). two different jobs, two different slots.
+      component $j$ of a vector (Section 5). two different jobs, two different slots.
 \vspace{6pt}
 
 \quad older books call this list the \textbf{probability mass function} and write it as a function $f$.
@@ -249,7 +245,7 @@ a discrete $\tilde\xi$ is a \textbf{list}: finitely many values, each carrying a
       $p = \big(\tfrac14, \tfrac12, \tfrac14\big)$
 \vspace{3pt}
 
-\quad $\mathbb{P}(\tilde\xi \ge 1) = p_2 + p_3 = \tfrac34$ \qquad --- the $\tfrac34$ Section 1 reached by conditioning
+\quad $\mathbb{P}(\tilde\xi \ge 1) = p_2 + p_3 = \tfrac34$ \qquad --- \emph{at least one head}, read straight off the list
 \vspace{12pt}
 
 \textbf{Def} (\emph{mean}) \quad $\mu = \mathbb{E}[\tilde\xi] = \sum_{s \in [S]} p_s\, \xi^s$
@@ -328,7 +324,7 @@ $\sigma^2 = \mathrm{Var}(\tilde\xi) = \mathbb{E}\big[(\tilde\xi - \mu)^2\big] = 
 %% ------------------------------------------------------------------ 4
 \beat{3}{Continuous random variables}
 \begin{board}
-\textbf{Def} (\emph{probability density function, PDF}) \quad $f : \mathbb{R} \to \mathbb{R}_+$ with
+\textbf{Def} (\emph{probability density function, PDF}) \quad $p : \mathbb{R} \to \mathbb{R}_+$ with
 \vspace{3pt}
 
 \quad (1) \ $p(\xi) \ge 0$ \qquad (2) \ $\int_{-\infty}^{\infty} p(\xi)\, d\xi = 1$ \qquad
@@ -448,7 +444,88 @@ $\mu \pm 3\sigma \approx 0.997$
 \vspace{14pt}
 \end{board}
 %% ------------------------------------------------------------------ 10
-\beat{4}{Running example: the Markowitz portfolio}
+\beat{4}{Two random variables}
+\begin{board}
+one random variable at a time is not enough for Markowitz: $n$ assets, and what makes a portfolio
+safe is how they move \emph{together}, not how each moves alone.
+\vspace{10pt}
+
+\textbf{Def} (\emph{independent random variables}) \quad $\tilde\xi_1, \tilde\xi_2$ are \textbf{independent}
+when their joint law \textbf{factors}:
+\vspace{4pt}
+
+\quad discrete: \quad $\mathbb{P}(\tilde\xi_1 = \xi_1, \ \tilde\xi_2 = \xi_2)
+      = \mathbb{P}(\tilde\xi_1 = \xi_1)\, \mathbb{P}(\tilde\xi_2 = \xi_2)$
+\vspace{3pt}
+
+\quad continuous: \quad $p(\xi_1, \xi_2) = p_1(\xi_1)\, p_2(\xi_2)$
+\vspace{3pt}
+
+\quad --- the same test as independent \emph{events} in Section 1, now asked of every pair of values at once
+\vspace{12pt}
+
+\textbf{Def} (\emph{covariance}) \quad
+$\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) = \mathbb{E}\big[(\tilde\xi_1 - \mathbb{E}[\tilde\xi_1])
+ (\tilde\xi_2 - \mathbb{E}[\tilde\xi_2])\big]$
+\vspace{4pt}
+
+\quad --- both above their means together, or both below: positive. \ one up while the other is down: negative
+\vspace{3pt}
+
+\quad $\mathrm{Cov}(\tilde\xi, \tilde\xi) = \mathrm{Var}(\tilde\xi)$ \quad --- variance is the diagonal case
+\vspace{3pt}
+
+\quad shortcut, the same trick as Section 2: \quad
+$\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) = \mathbb{E}[\tilde\xi_1 \tilde\xi_2]
+ - \mathbb{E}[\tilde\xi_1]\, \mathbb{E}[\tilde\xi_2]$
+\vspace{12pt}
+
+\textbf{Def} (\emph{correlation}) \quad
+$\rho(\tilde\xi_1, \tilde\xi_2) = \dfrac{\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2)}
+ {\sigma(\tilde\xi_1)\, \sigma(\tilde\xi_2)} \ \in [-1, 1]$
+\vspace{4pt}
+
+\quad --- covariance carries the units of \emph{both} variables; dividing by the two $\sigma$'s strips them out,
+      so $\rho$ compares across pairs
+\vspace{12pt}
+
+\bul independent \ $\Rightarrow$ \ $\mathrm{Cov}(\tilde\xi_1, \tilde\xi_2) = 0$: \ \textbf{uncorrelated}
+\vspace{4pt}
+
+\bul {\color{punchink}the converse is false.} \ let $\tilde\xi$ take $-1, 0, 1$ with probability $\tfrac13$ each,
+      and set $\tilde\eta = \tilde\xi^{\,2}$:
+\vspace{3pt}
+
+\quad $\mathbb{E}[\tilde\xi] = 0$, \ so \quad
+$\mathrm{Cov}(\tilde\xi, \tilde\eta) = \mathbb{E}[\tilde\xi \tilde\eta] - \mathbb{E}[\tilde\xi]\,\mathbb{E}[\tilde\eta]
+ = \mathbb{E}[\tilde\xi^{\,3}]
+ = \tfrac13(-1) + \tfrac13(0) + \tfrac13(1) = 0$
+\vspace{3pt}
+
+\quad uncorrelated --- yet $\tilde\eta$ is a \emph{function} of $\tilde\xi$: knowing one pins the other exactly.
+\vspace{3pt}
+
+\quad --- covariance sees only the \textbf{linear} part of a relationship. \ zero covariance is not independence
+\vspace{12pt}
+
+\textbf{Covariance matrix} \quad for a random vector $\tilde\xi = (\tilde\xi_1, \dots, \tilde\xi_n)$: \quad
+$\Sigma \in \mathbb{R}^{n \times n}$, \ $\Sigma_{ij} = \mathrm{Cov}(\tilde\xi_i, \tilde\xi_j)$
+\vspace{4pt}
+
+\quad symmetric; \ diagonal $\Sigma_{jj} = \mathrm{Var}(\tilde\xi_j)$; \ and for any weights $x \in \mathbb{R}^n$,
+\vspace{3pt}
+
+\[
+\mathrm{Var}\big(x^{\top}\tilde\xi\big) \;=\; x^{\top} \Sigma\, x \;\ge\; 0
+\]
+\vspace{1pt}
+
+\quad --- so $\Sigma \succeq 0$ always. \ that identity \emph{is} the Markowitz objective; the next section uses it at once
+\vspace{14pt}
+\end{board}
+\takeaway{a portfolio's risk is not the sum of its assets' risks --- the off-diagonal $\Sigma_{ij}$ are exactly what diversification moves.}
+%% ------------------------------------------------------------------ 11
+\beat{5}{Running example: the Markowitz portfolio}
 \begin{board}
 a budget of $1$, \ $n$ assets. \quad decide the split today; the returns are revealed tomorrow.
 \vspace{6pt}
@@ -470,12 +547,8 @@ a budget of $1$, \ $n$ assets. \quad decide the split today; the returns are rev
 \quad mean vector \ $\mu \in \mathbb{R}^n$, \ $\mu_j = \mathbb{E}[\tilde\xi_j]$
 \vspace{3pt}
 
-\quad $\mathrm{Cov}(\tilde\xi_i, \tilde\xi_j) = \mathbb{E}\big[(\tilde\xi_i - \mu_i)(\tilde\xi_j - \mu_j)\big]$
-\qquad --- how the two move \emph{together}; $\mathrm{Cov}(\tilde\xi_j, \tilde\xi_j) = \mathrm{Var}(\tilde\xi_j)$
-\vspace{3pt}
-
-\quad covariance matrix \ $\Sigma \in \mathbb{R}^{n \times n}$, \ $\Sigma_{ij} = \mathrm{Cov}(\tilde\xi_i, \tilde\xi_j)$:
-\ diagonal = the variances, \ symmetric, \ always $\Sigma \succeq 0$
+\quad $\mu \in \mathbb{R}^n$ and $\Sigma \in \mathbb{R}^{n \times n}$ are the mean vector and the covariance
+matrix of Section 4 --- $\Sigma_{ij} = \mathrm{Cov}(\tilde\xi_i, \tilde\xi_j)$, \ symmetric, \ $\Sigma \succeq 0$
 \vspace{6pt}
 
 \quad {\color{punchink}the one fact the model runs on} --- for a fixed $c \in \mathbb{R}^n$:
