@@ -28,7 +28,7 @@
 \documentclass[10pt]{article}
 
 \usepackage[a4paper, margin=1.9cm]{geometry}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb, mathtools}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{graphicx}
 \usepackage{array}
@@ -625,7 +625,11 @@ $c + A^{\top}\theta = \begin{bmatrix} \theta_2 e - \theta_1 \mu - \theta_3 \\ 1 
 $\begin{aligned}
   \max\quad & r\,\theta_1 - \theta_2 \\
   \text{s.t.}\quad & \theta_1, \theta_2 \ge 0, \ \ \theta_3 \in \mathbb{R}^N_+ \\
-                   & \|\theta_2 e - \theta_1 \mu - \theta_3\|_2 \le 1
+                   & \underbrace{\|\theta_2 e - \theta_1 \mu - \theta_3\|_2}_{\mathclap{\textstyle
+                       \left\| \, \theta_2 \begin{bmatrix} 1 \\ \vdots \\ 1 \end{bmatrix}
+                       - \theta_1 \begin{bmatrix} \mu_1 \\ \vdots \\ \mu_N \end{bmatrix}
+                       - \begin{bmatrix} \theta_{3,1} \\ \vdots \\ \theta_{3,N} \end{bmatrix} \right\|_2}}
+                     \le 1
 \end{aligned}$
 \end{center}
 \end{board}
