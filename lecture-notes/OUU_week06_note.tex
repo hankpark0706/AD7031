@@ -20,9 +20,10 @@
 % minimum-variance portfolio in epigraph form, min t s.t. (x, t) in SOC_Sigma,
 % a conic program over R^{N+2}_+ x SOC_Sigma^{N+1} (coding-session assets, r = 0.13);
 % the second-order cone is stated with a general Q > 0, sqrt(x'Qx) <= t.
-% Section 5 ends with that portfolio's dual (z = (x, t), c = (0, 1), x >= 0 moved to
-% the halfspaces so C = SOC_Sigma, C* = SOC_{Sigma^-1}). Checked numerically on the
-% coding-session data, r = 0.13: primal min = dual max = 0.128374.
+% Section 5 ends with two dual examples: 1) the LP (C = R^N_+; x free gives back
+% Section 3), 2) that portfolio with Sigma = I (z = (x, t), c = (0, 1), x >= 0 moved
+% to the halfspaces, C = SOC = C*). Checked numerically, mu = (0.10, 0.15),
+% r = 0.13: primal min = dual max = 0.7211 (= ||(0.4, 0.6)||_2).
 % Same house style as OUU_week02_note.tex; self-contained -- no \input.
 % ============================================================================
 \documentclass[10pt]{article}
@@ -565,7 +566,30 @@ $\begin{aligned}
 \end{center}
 \vspace{16pt}
 
-\textbf{Example:} \ portfolio, minimum variance
+\textbf{Example 1:} \ linear program, \ $C = \mathbb{R}^N_+ = C^*$
+\vspace{6pt}
+
+\begin{center}
+$\begin{aligned}
+  \min\quad & c^{\top}x \\
+  \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                   & Ax \le b \\
+                   & x \ge 0
+\end{aligned}$
+\qquad $\Longrightarrow$ \qquad
+$\begin{aligned}
+  \max\quad & -b^{\top}\theta \\
+  \text{s.t.}\quad & \theta \in \mathbb{R}^I_+ \\
+                   & c + A^{\top}\theta \ge 0
+\end{aligned}$
+\end{center}
+\vspace{6pt}
+
+\quad $x$ free: \ $C = \mathbb{R}^N$, \ $C^* = \{0\}$ \ $\Rightarrow$ \ $c + A^{\top}\theta = 0$, \ i.e.\
+$A^{\top}\theta = -c$ \ --- the dual LP of Section 3
+\newpage
+
+\textbf{Example 2:} \ portfolio, minimum variance \ --- for simplicity, \ $\Sigma = I$
 \vspace{8pt}
 
 \quad decision \ $z = \begin{bmatrix} x \\ t \end{bmatrix} \in \mathbb{R}^{N+1}$, \qquad
@@ -573,7 +597,7 @@ $c = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$, \qquad $c^{\top}z = t$
 \vspace{8pt}
 
 \quad $x \ge 0$ written as halfspaces $-x \le 0$ \ $\Rightarrow$ \
-$C = \mathrm{SOC}_{\Sigma}^{N+1}$, \quad $C^* = \mathrm{SOC}_{\Sigma^{-1}}^{N+1}$
+$C = \mathrm{SOC}^{N+1} = C^*$ \quad (self-dual)
 \vspace{8pt}
 
 \begin{center}
@@ -583,21 +607,21 @@ $\begin{aligned}
                    & \begin{bmatrix} -\mu^{\top} & 0 \\ e^{\top} & 0 \\ -I & 0 \end{bmatrix} z
                      \le \begin{bmatrix} -r \\ 1 \\ 0 \end{bmatrix}
                      && \theta = \begin{bmatrix} \theta_1 \\ \theta_2 \\ \lambda \end{bmatrix} \in \mathbb{R}^{N+2}_+ \\
-                   & z \in \mathrm{SOC}_{\Sigma}^{N+1}
+                   & z \in \mathrm{SOC}^{N+1} && \|x\|_2 \le t
 \end{aligned}$
 \end{center}
 \vspace{8pt}
 
 \quad $-b^{\top}\theta = r\,\theta_1 - \theta_2$, \qquad
 $c + A^{\top}\theta = \begin{bmatrix} \theta_2 e - \theta_1 \mu - \lambda \\ 1 \end{bmatrix}
-  \in \mathrm{SOC}_{\Sigma^{-1}}^{N+1}$
+  \in \mathrm{SOC}^{N+1}$
 \vspace{10pt}
 
 \begin{center}
 $\begin{aligned}
   \max\quad & r\,\theta_1 - \theta_2 \\
   \text{s.t.}\quad & \theta_1, \theta_2 \ge 0, \ \ \lambda \in \mathbb{R}^N_+ \\
-                   & \sqrt{(\theta_2 e - \theta_1 \mu - \lambda)^{\top}\, \Sigma^{-1}\, (\theta_2 e - \theta_1 \mu - \lambda)} \le 1
+                   & \|\theta_2 e - \theta_1 \mu - \lambda\|_2 \le 1
 \end{aligned}$
 \end{center}
 \end{board}
