@@ -21,16 +21,16 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 | 3 | 9/12 | Linear and quadratic programs; convexity-preserving operations; probability review (start) | [week02](lecture-notes/OUU_week02_note.pdf) · [week04](lecture-notes/OUU_week04_note.pdf) | | [George Dantzig, The Accidental Maths Genius (Good Will Hunting in Real Life)](https://www.youtube.com/watch?v=xynFFqcSZDY) | **[HW#1](homework/hw01.pdf) out** (due 9/26) |
 | 4 | 9/19 | Probability review — events and conditioning, scenarios, expectation; Markowitz portfolio | [week04](lecture-notes/OUU_week04_note.pdf) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week03_markowitz.ipynb) *markowitz* | | 1. [Seeing Theory](https://seeing-theory.brown.edu/probability-distributions/index.html) — 1D distributions<br>2. [Bivariate Gaussian](https://mtalebi.github.io/Bivariate-Gaussian-Distribution/) — 2D distributions |
 | 5 | 9/26 | *No class* | | | | **[HW#1 solution](homework/hw01-sol.pdf)** |
-| 6 | 10/3 | Duality; conic programming | [week06](lecture-notes/OUU_week06_note.pdf) | | | **HW#2 out** (due 10/17) |
-| 7 | 10/10 | One-stage models 1 — robust optimization, distributionally robust optimization; midterm review | | | | |
-| 8 | 10/17 | **Midterm** | | | | Written exam |
-| 9 | 10/24 | One-stage models 2 — distributionally robust optimization | | | | |
-| 10 | 10/31 | Two-stage models 1 — two-stage location–allocation problem (LAP) | | | | **project topic pitch** (oral, tentative) |
-| 11 | 11/7 | Two-stage models 2 — sample average approximation | | | | **Project draft due** (written) |
-| 12 | 11/14 | Two-stage models 3 — machine learning, contextual two-stage model | | | | |
-| 13 | 11/21 | Guest lecture | | | | |
-| 14 | 11/28 | Monte Carlo sampling — convergence, optimizer's curse, estimating solution quality | | | | |
-| 15 | 12/5 | Multistage models — stochastic dual dynamic programming (SDDP) | | | | |
+| 6 | 10/3 | Duality; conic programming | [week06](lecture-notes/OUU_week06_note.pdf) | | | |
+| 7 | 10/10 | **Project topic pitch** — discussion of draft final-project ideas | | | | **Project topic pitch** (oral) on [Zoom](https://illinois.zoom.us/j/9545298219?pwd=RmpzSG5SYmJNUEx4SWNwQVhLL3BaZz09)<br>Meeting ID 954 529 8219 · Password 072431<br>[Sign-up sheet](https://claude.ai/artifact/62jhyeCrjKovCeMhFxVc9s)<br>**HW#2 out** (due 10/17) |
+| 8 | 10/17 | Risk measures — mean-variance, Value at Risk (VaR), Conditional Value at Risk (CVaR) | | | | |
+| 9 | 10/24 | One-stage models 1 — robust optimization, distributionally robust optimization | | | | |
+| 10 | 10/31 | One-stage models 2 — distributionally robust optimization; midterm review | | | | |
+| 11 | 11/7 | **Midterm** | | | | Written exam |
+| 12 | 11/14 | Two-stage models 1 — two-stage location–allocation problem (LAP) | | | | |
+| 13 | 11/21 | Two-stage models 2 — sample average approximation | | | | |
+| 14 | 11/28 | Two-stage models 3 — machine learning, contextual two-stage model | | | | |
+| 15 | 12/5 | Monte Carlo sampling — convergence, optimizer's curse, estimating solution quality | | | | |
 | 16 | 12/12 | **Final project presentation** | | | | Final slides & report due |
 
 Lecture notes, notebooks, and demos are posted week by week — check back after each lecture.
@@ -40,8 +40,7 @@ Lecture notes, notebooks, and demos are posted week by week — check back after
 Pick a real decision problem from the defense or public sector, model it with an
 optimization-under-uncertainty approach, and deliver a working software solution.
 
-- Week 10 — topic pitch (oral; date tentative)
-- Week 11 — written draft
+- Week 7 — topic pitch (oral, on Zoom)
 - Week 16 — presentation and final submission
 
 ## Reference
