@@ -594,17 +594,17 @@ $\begin{aligned}
 $c = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$, \qquad $c^{\top}z = t$
 \vspace{8pt}
 
-\quad $x \ge 0$ written as halfspaces $-x \le 0$ \ $\Rightarrow$ \
-$C = \mathrm{SOC}^{N+1} = C^*$ \quad (self-dual)
+\quad $A = \begin{bmatrix} -\mu^{\top} & 0 \\ e^{\top} & 0 \\ -I & 0 \end{bmatrix}$, \qquad
+$b = \begin{bmatrix} -r \\ 1 \\ 0 \end{bmatrix}$, \qquad
+$\theta = \begin{bmatrix} \theta_1 \\ \theta_2 \\ \lambda \end{bmatrix} \in \mathbb{R}^{N+2}_+$,
+\qquad $C = \mathrm{SOC}^{N+1} = C^*$ \ (self-dual)
 \vspace{8pt}
 
 \begin{center}
 $\begin{aligned}
   \min\quad & c^{\top}z \\
   \text{s.t.}\quad & z \in \mathbb{R}^{N+1} \\
-                   & \begin{bmatrix} -\mu^{\top} & 0 \\ e^{\top} & 0 \\ -I & 0 \end{bmatrix} z
-                     \le \begin{bmatrix} -r \\ 1 \\ 0 \end{bmatrix}
-                     && \theta = \begin{bmatrix} \theta_1 \\ \theta_2 \\ \lambda \end{bmatrix} \in \mathbb{R}^{N+2}_+ \\
+                   & Az \le b && \mu^{\top}x \ge r, \ \ e^{\top}x \le 1, \ \ x \ge 0 \\
                    & z \in \mathrm{SOC}^{N+1} && \|x\|_2 \le t
 \end{aligned}$
 \end{center}
