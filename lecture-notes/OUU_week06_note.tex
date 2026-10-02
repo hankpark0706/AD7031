@@ -574,13 +574,13 @@ $\begin{aligned}
   \min\quad & c^{\top}x \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
                    & Ax \le b \\
-                   & x \ge 0
+                   & x \in \mathbb{R}^N_+ = C
 \end{aligned}$
 \qquad $\Longrightarrow$ \qquad
 $\begin{aligned}
   \max\quad & -b^{\top}\theta \\
   \text{s.t.}\quad & \theta \in \mathbb{R}^I_+ \\
-                   & c + A^{\top}\theta \ge 0
+                   & c + A^{\top}\theta \in \mathbb{R}^N_+ = C^*
 \end{aligned}$
 \end{center}
 \vspace{6pt}
