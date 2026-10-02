@@ -13,6 +13,8 @@
 %   p.3   conic programming -- cone, proper cone, generic conic program, LP
 %   p.4   SDP, second-order cone, dual cone, self-dual cones
 %   p.5   primal / dual conic program
+% Generic conic program written as  min c'x  s.t.  Ax <= b, x in C  (the handwritten
+% original used Ax <=_C b); examples, SDP, and the primal/dual pair follow that form.
 % Changes from the handwritten order: second-order cone listed before SDP (in
 % Section 4 and in the self-dual list); added 4) several cones at once, with the
 % minimum-variance portfolio in epigraph form, min t s.t. (x, t) in SOC_Sigma,
@@ -73,8 +75,6 @@
 % ---- hanging bullet (wrapped lines stay indented) --------------------------
 \newcommand{\bul}{\hangindent=2.6em\hangafter=1\hspace{1.2em}\textbullet\ \ignorespaces}
 
-% ---- cone order -------------------------------------------
-\newcommand{\coneleq}{\mathrel{\preceq_{\scriptscriptstyle C}}}
 
 \begin{document}
 
@@ -301,7 +301,7 @@ a conic program is a convex optimization problem.
 \vspace{4pt}
 
 \quad --- a feasible set defines through the intersection of \underline{halfspaces}
-\ {$Ax \le b$} \ or \underline{a proper cone} $C$.
+\ {$Ax \le b$} \ and \underline{a proper cone} $C$.
 \vspace{14pt}
 
 \textbf{Def} (\emph{cone}) \quad a set $C$ is a cone if \ $\forall x \in C$, \ we have
@@ -351,16 +351,16 @@ $\lambda x \in C \quad \forall \lambda \ge 0$
 $\begin{aligned}
   \min\quad & c^{\top}x \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
-                   & Ax \coneleq b
+                   & Ax \le b \\
+                   & x \in C
 \end{aligned}$
-\hspace{1.4cm}{$\iff\ \ b - Ax \in C$}
 \end{center}
 \vspace{14pt}
 
 \textbf{Example:}
 \vspace{8pt}
 
-\quad 1) \textbf{Linear program:} \quad $C = \mathbb{R}^K_+$
+\quad 1) \textbf{Linear program:} \quad $C = \mathbb{R}^N_+$
 \vspace{6pt}
 
 \begin{center}
@@ -371,8 +371,8 @@ $\begin{aligned}
 \end{tikzpicture}
 \hspace{16mm}
 \raisebox{13mm}{$\begin{aligned}
-  & b - Ax \in \mathbb{R}^K_+ \\[8pt]
-  \iff\ & b - Ax \ge 0 \ \iff\ Ax \le b
+  & x \in \mathbb{R}^N_+ \ \iff\ x \ge 0 \\[8pt]
+  & \min\ c^{\top}x \ \ \text{s.t.}\ \ Ax \le b, \ \ x \ge 0
 \end{aligned}$}
 \end{center}
 \vspace{14pt}
@@ -412,18 +412,21 @@ $C = \mathrm{SOC}_Q^{N+1} = \big\{ (x,t) \in \mathbb{R}^N \times \mathbb{R} \;:\
 \hspace{2.0cm}{$A \in \mathbb{S}^K_+$ \ if \ $z^{\top}Az \ge 0 \qquad \forall z \in \mathbb{R}^K$}
 \vspace{10pt}
 
-\qquad \textbf{Generic semidefinite program:}
+\qquad \textbf{Generic semidefinite program:} \quad the variable is a matrix $X$
 \vspace{2pt}
 
 \begin{center}
 $\begin{aligned}
-  \min\quad & c^{\top}x \\
-  \text{s.t.}\quad & x \in \mathbb{R}^N \\
-                   & A_1 x_1 + A_2 x_2 + \cdots + A_N x_N
-                     \mathrel{\preceq_{{\mathbb{S}^K_+}}} B
+  \min\quad & \langle D, X \rangle \\
+  \text{s.t.}\quad & X \in \mathbb{S}^K \\
+                   & \langle A_i, X \rangle \le b_i \qquad \forall i \in [I] \\
+                   & X \in \mathbb{S}^K_+
 \end{aligned}$
 \hspace{0.8cm}{\small $\rightarrow$ usually ignored}
 \end{center}
+\vspace{4pt}
+
+\hspace{2.0cm}$\langle D, X \rangle = \sum_{j,k} D_{jk} X_{jk}$ \ --- linear in $X$
 \vspace{10pt}
 
 \begin{center}
@@ -440,58 +443,43 @@ $\begin{aligned}
   \node[anchor=west] at (0.80,3.06) {polynomial time solvable};
 \end{tikzpicture}
 \end{center}
-\newpage
+\vspace{14pt}
 
-\quad 4) \textbf{Several cones at once:} \quad $C = C_1 \times C_2$ \ is again a proper cone
+\quad 4) \textbf{Several cones at once:}
 \vspace{8pt}
 
-\hspace{0.7cm}{$b_1 - A_1 x \in C_1$ \ and \ $b_2 - A_2 x \in C_2
-\quad \iff \quad
-\begin{bmatrix} b_1 \\ b_2 \end{bmatrix} - \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} x \in C_1 \times C_2$}
+\hspace{0.7cm}$x \in C_1$ \ and \ $x \in C_2 \quad \iff \quad x \in C_1 \cap C_2$ \qquad --- again a proper cone
+\vspace{5pt}
+
+\hspace{0.7cm}$x = (x^1, x^2)$: \ $x^1 \in C_1$ \ and \ $x^2 \in C_2 \quad \iff \quad x \in C_1 \times C_2$
+\qquad --- again a proper cone
 \vspace{10pt}
 
-\hspace{0.7cm}feasible set \ $= \{x : b_1 - A_1 x \in C_1\} \,\cap\, \{x : b_2 - A_2 x \in C_2\}$
-\ --- convex $\cap$ convex $=$ convex
-\vspace{8pt}
-
-\hspace{0.7cm}the coding session, \ $x = (x_1, x_2)$: \ sets of $x$ --- convex, but \textbf{not} cones;
-\ $C_1, C_2$ live in the space of $b - Ax$
-\vspace{6pt}
-
 \begin{center}
-\begin{tikzpicture}[scale=1.9, font=\small, baseline=0]
-  \fill[sandink] (0,0) -- (1,0) -- (0,1) -- cycle;
-  \draw[thick] (0,0) -- (1,0) -- (0,1) -- cycle;
-  \draw[->] (-0.15,0) -- (1.25,0) node[right] {$x_1$};
-  \draw[->] (0,-0.15) -- (0,1.25) node[above] {$x_2$};
-  \node[below, align=center] at (0.55,-0.22) {$\{x : b_1 - A_1 x \in \mathbb{R}^3_+\}$\\[1pt] $x_1 + x_2 \le 1, \ \ x \ge 0$};
+\begin{tikzpicture}[scale=1.15, font=\small, baseline=0]
+  \fill[sandink] (0,0) rectangle (1.5,1.5);
+  \draw[thick] (1.5,0) -- (0,0) -- (0,1.5);
+  \draw[->] (-1.6,0) -- (1.8,0) node[right] {$x$};
+  \draw[->] (0,-0.25) -- (0,1.8) node[above] {$t$};
+  \node[below] at (0.1,-0.3) {$C_1 = \mathbb{R}^2_+$};
 \end{tikzpicture}
-\quad\raisebox{0.9cm}{\Large$\cap$}\quad
-\begin{tikzpicture}[scale=1.9, font=\small, baseline=0]
-  \fill[sandink] plot[domain=0:360, samples=144]
-        (\x:{0.13/sqrt(0.01*cos(\x)*cos(\x) + 0.002*cos(\x)*sin(\x) + 0.04*sin(\x)*sin(\x))}) -- cycle;
-  \draw[thick] plot[domain=0:360, samples=144]
-        (\x:{0.13/sqrt(0.01*cos(\x)*cos(\x) + 0.002*cos(\x)*sin(\x) + 0.04*sin(\x)*sin(\x))}) -- cycle;
-  \draw[->] (-1.45,0) -- (1.5,0) node[right] {$x_1$};
-  \draw[->] (0,-0.8) -- (0,1.25) node[above] {$x_2$};
-  \node[below, align=center] at (0,-0.85) {$\{x : b_2 - A_2 x \in \mathrm{SOC}_{\Sigma}^3\}$\\[1pt] $\sqrt{x^{\top}\Sigma\, x} \le 0.13$};
+\quad\raisebox{0.8cm}{\Large$\cap$}\quad
+\begin{tikzpicture}[scale=1.15, font=\small, baseline=0]
+  \fill[sandink] (0,0) -- (-1.5,1.5) -- (1.5,1.5) -- cycle;
+  \draw[thick] (-1.5,1.5) -- (0,0) -- (1.5,1.5);
+  \draw[->] (-1.6,0) -- (1.8,0) node[right] {$x$};
+  \draw[->] (0,-0.25) -- (0,1.8) node[above] {$t$};
+  \node[below] at (0.1,-0.3) {$C_2 = \mathrm{SOC}^2 : \ |x| \le t$};
 \end{tikzpicture}
-\quad\raisebox{0.9cm}{\Large$=$}\quad
-\begin{tikzpicture}[scale=1.9, font=\small, baseline=0]
-  \begin{scope}
-    \clip (0,0) -- (1,0) -- (0,1) -- cycle;
-    \fill[sandink] plot[domain=0:360, samples=144]
-          (\x:{0.13/sqrt(0.01*cos(\x)*cos(\x) + 0.002*cos(\x)*sin(\x) + 0.04*sin(\x)*sin(\x))}) -- cycle;
-  \end{scope}
-  \draw[dashed] (0,0) -- (1,0) -- (0,1) -- cycle;
-  \begin{scope}
-    \clip (-0.15,-0.15) rectangle (1.25,1.25);
-    \draw[dashed] plot[domain=0:360, samples=144]
-          (\x:{0.13/sqrt(0.01*cos(\x)*cos(\x) + 0.002*cos(\x)*sin(\x) + 0.04*sin(\x)*sin(\x))}) -- cycle;
-  \end{scope}
-  \draw[->] (-0.15,0) -- (1.25,0) node[right] {$x_1$};
-  \draw[->] (0,-0.15) -- (0,1.25) node[above] {$x_2$};
-  \node[below] at (0.55,-0.22) {feasible set: convex};
+\quad\raisebox{0.8cm}{\Large$=$}\quad
+\begin{tikzpicture}[scale=1.15, font=\small, baseline=0]
+  \fill[sandink] (0,0) -- (0,1.5) -- (1.5,1.5) -- cycle;
+  \draw[dashed] (1.5,0) -- (0,0);
+  \draw[dashed] (-1.5,1.5) -- (0,0);
+  \draw[thick] (0,1.5) -- (0,0) -- (1.5,1.5);
+  \draw[->] (-1.6,0) -- (1.8,0) node[right] {$x$};
+  \draw[->] (0,-0.25) -- (0,1.8) node[above] {$t$};
+  \node[below] at (0.1,-0.3) {$C_1 \cap C_2 : \ 0 \le x \le t$};
 \end{tikzpicture}
 \end{center}
 \vspace{14pt}
@@ -511,15 +499,17 @@ $\begin{aligned}
 $\begin{aligned}
   \min\quad & t \\
   \text{s.t.}\quad & (x, t) \in \mathbb{R}^N \times \mathbb{R} \\
-                   & \sqrt{x^{\top}\Sigma\, x} \le t && \iff\ (x,\ t) \in \mathrm{SOC}_{\Sigma}^{N+1} \\
-                   & \mu^{\top}x \ge r && \iff\ \mu^{\top}x - r \in \mathbb{R}_+ \\
-                   & e^{\top}x \le 1 && \iff\ 1 - e^{\top}x \in \mathbb{R}_+ \\
-                   & x \ge 0 && \iff\ x \in \mathbb{R}^N_+
+                   & \mu^{\top}x \ge r, \ \ e^{\top}x \le 1 && \iff\ A\,(x, t) \le b
+                     && \text{halfspaces} \\
+                   & \sqrt{x^{\top}\Sigma\, x} \le t && \iff\ (x,\ t) \in \mathrm{SOC}_{\Sigma}^{N+1}
+                     && \text{cone} \\
+                   & x \ge 0 && \iff\ (x,\ t) \in \mathbb{R}^{N+1}_+
+                     && \text{cone}
 \end{aligned}$
 \end{center}
 \vspace{10pt}
 
-\qquad $\Rightarrow$ \ {$C = \mathbb{R}^{N+2}_+ \times \mathrm{SOC}_{\Sigma}^{N+1}$} \ --- a SOCP in $(x, t)$
+\qquad $\Rightarrow$ \ {$C = \mathrm{SOC}_{\Sigma}^{N+1} \cap \mathbb{R}^{N+1}_+$} \ --- a SOCP in $(x, t)$
 \end{board}
 
 \newpage
@@ -556,7 +546,8 @@ $\begin{aligned}
 $\begin{aligned}
   \min\quad & c^{\top}x \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
-                   & Ax \coneleq b
+                   & Ax \le b \\
+                   & x \in C
 \end{aligned}$
 \end{center}
 \vspace{12pt}
@@ -566,9 +557,9 @@ $\begin{aligned}
 
 \begin{center}
 $\begin{aligned}
-  \max\quad & -\theta^{\top}b \\
-  \text{s.t.}\quad & \theta \in C^* \\
-                   & A^{\top}\theta = -c
+  \max\quad & -b^{\top}\theta \\
+  \text{s.t.}\quad & \theta \in \mathbb{R}^I_+ \\
+                   & c + A^{\top}\theta \in C^*
 \end{aligned}$
 \end{center}
 \end{board}
