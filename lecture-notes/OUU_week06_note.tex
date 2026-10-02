@@ -431,16 +431,14 @@ $\begin{aligned}
 
 \begin{center}
 \begin{tikzpicture}[scale=0.95, font=\small]
+  \draw (-1.85,-1.75) rectangle (1.85,2.25);
+  \node at (0,1.85) {conic program};
   \draw (0,0) circle (1.45);
   \draw (0,-0.45) circle (0.85);
   \draw (0,-0.80) circle (0.40);
   \node at (0,-0.80) {LP};
   \node at (0,-0.08) {SOCP};
   \node at (0,0.92) {SDP};
-  \draw[->] (1.45,2.00) -- (0.90,1.18);
-  \node[anchor=west] at (1.00,2.18) {tractable, not scaleable.};
-  \node[anchor=west] at (1.55,2.62) {$\parallel$};
-  \node[anchor=west] at (0.80,3.06) {polynomial time solvable};
 \end{tikzpicture}
 \end{center}
 \vspace{14pt}
