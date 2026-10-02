@@ -15,7 +15,8 @@
 %   p.5   primal / dual conic program
 % Changes from the handwritten order: second-order cone listed before SDP (in
 % Section 4 and in the self-dual list); added 4) several cones at once, with the
-% coding session's portfolio as a conic program over R^{N+1}_+ x SOC^{N+1}.
+% coding session's portfolio as a conic program over R^{N+1}_+ x SOC_Sigma^{N+1};
+% the second-order cone is stated with a general Q > 0, sqrt(x'Qx) <= t.
 % Same house style as OUU_week02_note.tex; self-contained -- no \input.
 % ============================================================================
 \documentclass[10pt]{article}
@@ -378,7 +379,11 @@ $\begin{aligned}
 \vspace{14pt}
 
 \quad 2) \textbf{Second-order cone:} \quad
-$C = \mathrm{SOC}^{N+1} = \big\{ (x,t) \in \mathbb{R}^N \times \mathbb{R} \;:\; \|x\|_2 \le t \big\}$
+$C = \mathrm{SOC}_Q^{N+1} = \big\{ (x,t) \in \mathbb{R}^N \times \mathbb{R} \;:\; \sqrt{x^{\top}Q\,x} \le t \big\}$,
+\quad $Q \succ 0$
+\vspace{6pt}
+
+\hspace{0.7cm}$Q = I$: \quad $\mathrm{SOC}^{N+1} = \big\{ (x,t) \;:\; \|x\|_2 \le t \big\}$
 \qquad ``ice-cream'' cone
 \vspace{6pt}
 
@@ -455,7 +460,7 @@ $\begin{aligned}
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
                    & e^{\top}x \le 1 && \iff\ 1 - e^{\top}x \in \mathbb{R}_+
                      && \text{budget} \\
-                   & x^{\top}\Sigma\, x \le \bar\sigma^2 && \iff\ \big(L^{\top}x,\ \bar\sigma\big) \in \mathrm{SOC}^{N+1}
+                   & x^{\top}\Sigma\, x \le \bar\sigma^2 && \iff\ \big(x,\ \bar\sigma\big) \in \mathrm{SOC}_{\Sigma}^{N+1}
                      && \text{variance bound} \\
                    & x \ge 0 && \iff\ x \in \mathbb{R}^N_+
                      && \text{nonnegative weights}
@@ -463,11 +468,11 @@ $\begin{aligned}
 \end{center}
 \vspace{6pt}
 
-\qquad {\color{redink}$\Sigma = LL^{\top}$ \ (Cholesky) \ $\Rightarrow$ \ $x^{\top}\Sigma\, x = \|L^{\top}x\|_2^2$, \ so
-  \ $x^{\top}\Sigma\, x \le \bar\sigma^2 \iff \|L^{\top}x\|_2 \le \bar\sigma$}
+\qquad {\color{redink}$x^{\top}\Sigma\, x \le \bar\sigma^2 \iff \sqrt{x^{\top}\Sigma\, x} \le \bar\sigma$
+  \quad --- standard deviation of the return $\le \bar\sigma$}
 \vspace{10pt}
 
-\qquad $\Rightarrow$ \ {\color{redink}$C = \mathbb{R}^{N+1}_+ \times \mathrm{SOC}^{N+1}$} \ --- a SOCP
+\qquad $\Rightarrow$ \ {\color{redink}$C = \mathbb{R}^{N+1}_+ \times \mathrm{SOC}_{\Sigma}^{N+1}$} \ --- a SOCP
 \qquad ($\max\, \mu^{\top}x = -\min\, (-\mu)^{\top}x$, \ so $c = -\mu$)
 \vspace{16pt}
 
@@ -477,17 +482,16 @@ $\Sigma = \begin{bmatrix} 0.01 & 0.001 \\ 0.001 & 0.04 \end{bmatrix}$, \quad
 $\bar\sigma = 0.13$
 \vspace{8pt}
 
-\qquad $L = \begin{bmatrix} 0.1 & 0 \\ 0.01 & 0.19975 \end{bmatrix}$, \quad
-$L^{\top}x = \begin{bmatrix} 0.1\,x_1 + 0.01\,x_2 \\ 0.19975\,x_2 \end{bmatrix}$, \quad
-$\|L^{\top}x\|_2^2 = 0.01x_1^2 + 0.002x_1x_2 + 0.04x_2^2 \ \checkmark$
-\vspace{10pt}
-
 \begin{center}
 $\underbrace{\begin{bmatrix} 1 - x_1 - x_2 \\ x_1 \\ x_2 \end{bmatrix}}_{\in\ \mathbb{R}^3_+}
 \qquad
-\underbrace{\begin{bmatrix} 0.1\,x_1 + 0.01\,x_2 \\ 0.19975\,x_2 \\ 0.13 \end{bmatrix}}_{\in\ \mathrm{SOC}^3}
-\qquad \Longrightarrow \qquad b - Ax \in \mathbb{R}^3_+ \times \mathrm{SOC}^3$
+\underbrace{\begin{bmatrix} x_1 \\ x_2 \\ 0.13 \end{bmatrix}}_{\in\ \mathrm{SOC}_{\Sigma}^3}
+\qquad \Longrightarrow \qquad b - Ax \in \mathbb{R}^3_+ \times \mathrm{SOC}_{\Sigma}^3$
 \end{center}
+\vspace{6pt}
+
+\hspace{5.4cm}{\color{redink}$(x_1, x_2, 0.13) \in \mathrm{SOC}_{\Sigma}^3
+  \iff \sqrt{0.01x_1^2 + 0.04x_2^2 + 0.002x_1x_2} \le 0.13$}
 \end{board}
 
 \newpage
@@ -507,7 +511,8 @@ $\underbrace{\begin{bmatrix} 1 - x_1 - x_2 \\ x_1 \\ x_2 \end{bmatrix}}_{\in\ \m
 \quad --- $C = \hl{\mathbb{R}^K_+}$
 \vspace{5pt}
 
-\quad --- $C = $ \colorbox{hlyel}{second-order cone}
+\quad --- $C = \hl{\mathrm{SOC}^{K}}$ \ (second-order cone, $Q = I$)
+\qquad {\color{redink}general $Q \succ 0$: \ $\big(\mathrm{SOC}_Q^{K}\big)^* = \mathrm{SOC}_{Q^{-1}}^{K}$ \ --- not self-dual}
 \vspace{5pt}
 
 \quad --- $C = \hl{\mathbb{S}^K_+}$
