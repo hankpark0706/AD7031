@@ -440,7 +440,7 @@ $\begin{aligned}
   \node[anchor=west] at (0.80,3.06) {polynomial time solvable};
 \end{tikzpicture}
 \end{center}
-\vspace{14pt}
+\newpage
 
 \quad 4) \textbf{Several cones at once:} \quad $C = C_1 \times C_2$ \ is again a proper cone
 \vspace{8pt}
@@ -448,7 +448,52 @@ $\begin{aligned}
 \hspace{0.7cm}{$b_1 - A_1 x \in C_1$ \ and \ $b_2 - A_2 x \in C_2
 \quad \iff \quad
 \begin{bmatrix} b_1 \\ b_2 \end{bmatrix} - \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} x \in C_1 \times C_2$}
-\vspace{16pt}
+\vspace{10pt}
+
+\hspace{0.7cm}feasible set \ $= \{x : b_1 - A_1 x \in C_1\} \,\cap\, \{x : b_2 - A_2 x \in C_2\}$
+\ --- convex $\cap$ convex $=$ convex
+\vspace{8pt}
+
+\hspace{0.7cm}the coding session, \ $x = (x_1, x_2)$:
+\vspace{6pt}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.9, font=\small, baseline=0]
+  \fill[sandink] (0,0) -- (1,0) -- (0,1) -- cycle;
+  \draw[thick] (0,0) -- (1,0) -- (0,1) -- cycle;
+  \draw[->] (-0.15,0) -- (1.25,0) node[right] {$x_1$};
+  \draw[->] (0,-0.15) -- (0,1.25) node[above] {$x_2$};
+  \node[below, align=center] at (0.55,-0.22) {$x_1 + x_2 \le 1, \ \ x \ge 0$\\[1pt] $(\in \mathbb{R}^3_+)$};
+\end{tikzpicture}
+\quad\raisebox{0.9cm}{\Large$\cap$}\quad
+\begin{tikzpicture}[scale=1.9, font=\small, baseline=0]
+  \fill[sandink] plot[domain=0:360, samples=144]
+        (\x:{0.13/sqrt(0.01*cos(\x)*cos(\x) + 0.002*cos(\x)*sin(\x) + 0.04*sin(\x)*sin(\x))}) -- cycle;
+  \draw[thick] plot[domain=0:360, samples=144]
+        (\x:{0.13/sqrt(0.01*cos(\x)*cos(\x) + 0.002*cos(\x)*sin(\x) + 0.04*sin(\x)*sin(\x))}) -- cycle;
+  \draw[->] (-1.45,0) -- (1.5,0) node[right] {$x_1$};
+  \draw[->] (0,-0.8) -- (0,1.25) node[above] {$x_2$};
+  \node[below, align=center] at (0,-0.85) {$\sqrt{x^{\top}\Sigma\, x} \le 0.13$\\[1pt] $(\in \mathrm{SOC}_{\Sigma}^3)$};
+\end{tikzpicture}
+\quad\raisebox{0.9cm}{\Large$=$}\quad
+\begin{tikzpicture}[scale=1.9, font=\small, baseline=0]
+  \begin{scope}
+    \clip (0,0) -- (1,0) -- (0,1) -- cycle;
+    \fill[sandink] plot[domain=0:360, samples=144]
+          (\x:{0.13/sqrt(0.01*cos(\x)*cos(\x) + 0.002*cos(\x)*sin(\x) + 0.04*sin(\x)*sin(\x))}) -- cycle;
+  \end{scope}
+  \draw[dashed] (0,0) -- (1,0) -- (0,1) -- cycle;
+  \begin{scope}
+    \clip (-0.15,-0.15) rectangle (1.25,1.25);
+    \draw[dashed] plot[domain=0:360, samples=144]
+          (\x:{0.13/sqrt(0.01*cos(\x)*cos(\x) + 0.002*cos(\x)*sin(\x) + 0.04*sin(\x)*sin(\x))}) -- cycle;
+  \end{scope}
+  \draw[->] (-0.15,0) -- (1.25,0) node[right] {$x_1$};
+  \draw[->] (0,-0.15) -- (0,1.25) node[above] {$x_2$};
+  \node[below] at (0.55,-0.22) {convex};
+\end{tikzpicture}
+\end{center}
+\vspace{14pt}
 
 \qquad \textbf{Example:} \ portfolio, minimum variance
 \vspace{2pt}
@@ -471,32 +516,9 @@ $\begin{aligned}
                    & x \ge 0 && \iff\ x \in \mathbb{R}^N_+
 \end{aligned}$
 \end{center}
-\vspace{6pt}
-
-\qquad {$\sqrt{\,\cdot\,}$ is increasing: \ $\min\, x^{\top}\Sigma\, x$ \ and \ $\min\, \sqrt{x^{\top}\Sigma\, x}$ \
-  have the same minimizer $x^\star$}
-\vspace{3pt}
-
-\qquad {$t$ is a new variable: \ at the optimum \ $t^\star = \sqrt{x^{\star\top}\Sigma\, x^\star}$,
-  \ the standard deviation of the return}
 \vspace{10pt}
 
 \qquad $\Rightarrow$ \ {$C = \mathbb{R}^{N+2}_+ \times \mathrm{SOC}_{\Sigma}^{N+1}$} \ --- a SOCP in $(x, t)$
-\vspace{16pt}
-
-\qquad the coding session, $N = 2$: \quad
-$\mu = \begin{bmatrix} 0.10 \\ 0.15 \end{bmatrix}$, \quad
-$\Sigma = \begin{bmatrix} 0.01 & 0.001 \\ 0.001 & 0.04 \end{bmatrix}$, \quad
-$r = 0.13$
-\vspace{8pt}
-
-\begin{center}
-$\underbrace{\begin{bmatrix} 0.10\,x_1 + 0.15\,x_2 - 0.13 \\ 1 - x_1 - x_2 \\ x_1 \\ x_2 \end{bmatrix}}_{\in\ \mathbb{R}^4_+}
-\qquad
-\underbrace{\begin{bmatrix} x_1 \\ x_2 \\ t \end{bmatrix}}_{\in\ \mathrm{SOC}_{\Sigma}^3}
-\qquad \Longrightarrow \qquad
-x^\star = (0.4,\ 0.6), \quad t^\star = 0.128$
-\end{center}
 \end{board}
 
 \newpage
