@@ -22,8 +22,8 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 | 4 | 9/19 | Probability review — events and conditioning, scenarios, expectation; Markowitz portfolio | [week04](lecture-notes/OUU_week04_note.pdf) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week03_markowitz.ipynb) *markowitz* | | 1. [Seeing Theory](https://seeing-theory.brown.edu/probability-distributions/index.html) — 1D distributions<br>2. [Bivariate Gaussian](https://mtalebi.github.io/Bivariate-Gaussian-Distribution/) — 2D distributions |
 | 5 | 9/26 | *No class* | | | | **[HW#1 solution](homework/hw01-sol.pdf)** |
 | 6 | 10/3 | Duality; conic programming | [week06](lecture-notes/OUU_week06_note.pdf) | | | |
-| 7 | 10/10 | **Project topic pitch** — discussion of draft final-project ideas | [Sign-up sheet](https://claude.ai/artifact/62jhyeCrjKovCeMhFxVc9s) | | | **Project topic pitch** (oral) on [Zoom](https://illinois.zoom.us/j/9545298219?pwd=RmpzSG5SYmJNUEx4SWNwQVhLL3BaZz09)<br>**HW#2 out** (due 10/17) |
-| 8 | 10/17 | Risk measures — mean-variance, Value at Risk (VaR), Conditional Value at Risk (CVaR) | | | | |
+| 7 | 10/10 | **Project topic pitch** — discussion of draft final-project ideas | [Sign-up sheet](https://claude.ai/artifact/62jhyeCrjKovCeMhFxVc9s) | | | **Project topic pitch** (oral) on [Zoom](https://illinois.zoom.us/j/9545298219?pwd=RmpzSG5SYmJNUEx4SWNwQVhLL3BaZz09) |
+| 8 | 10/17 | Risk measures — mean-variance, Value at Risk (VaR), Conditional Value at Risk (CVaR) | | | | **HW#2 out** (due 10/31) |
 | 9 | 10/24 | One-stage models 1 — robust optimization, distributionally robust optimization | | | | |
 | 10 | 10/31 | One-stage models 2 — distributionally robust optimization; midterm review | | | | |
 | 11 | 11/7 | **Midterm** | | | | Written exam |
