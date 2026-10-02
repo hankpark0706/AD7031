@@ -454,7 +454,8 @@ $\begin{aligned}
 \ --- convex $\cap$ convex $=$ convex
 \vspace{8pt}
 
-\hspace{0.7cm}the coding session, \ $x = (x_1, x_2)$:
+\hspace{0.7cm}the coding session, \ $x = (x_1, x_2)$: \ sets of $x$ --- convex, but \textbf{not} cones;
+\ $C_1, C_2$ live in the space of $b - Ax$
 \vspace{6pt}
 
 \begin{center}
@@ -463,7 +464,7 @@ $\begin{aligned}
   \draw[thick] (0,0) -- (1,0) -- (0,1) -- cycle;
   \draw[->] (-0.15,0) -- (1.25,0) node[right] {$x_1$};
   \draw[->] (0,-0.15) -- (0,1.25) node[above] {$x_2$};
-  \node[below, align=center] at (0.55,-0.22) {$x_1 + x_2 \le 1, \ \ x \ge 0$\\[1pt] $(\in \mathbb{R}^3_+)$};
+  \node[below, align=center] at (0.55,-0.22) {$\{x : b_1 - A_1 x \in \mathbb{R}^3_+\}$\\[1pt] $x_1 + x_2 \le 1, \ \ x \ge 0$};
 \end{tikzpicture}
 \quad\raisebox{0.9cm}{\Large$\cap$}\quad
 \begin{tikzpicture}[scale=1.9, font=\small, baseline=0]
@@ -473,7 +474,7 @@ $\begin{aligned}
         (\x:{0.13/sqrt(0.01*cos(\x)*cos(\x) + 0.002*cos(\x)*sin(\x) + 0.04*sin(\x)*sin(\x))}) -- cycle;
   \draw[->] (-1.45,0) -- (1.5,0) node[right] {$x_1$};
   \draw[->] (0,-0.8) -- (0,1.25) node[above] {$x_2$};
-  \node[below, align=center] at (0,-0.85) {$\sqrt{x^{\top}\Sigma\, x} \le 0.13$\\[1pt] $(\in \mathrm{SOC}_{\Sigma}^3)$};
+  \node[below, align=center] at (0,-0.85) {$\{x : b_2 - A_2 x \in \mathrm{SOC}_{\Sigma}^3\}$\\[1pt] $\sqrt{x^{\top}\Sigma\, x} \le 0.13$};
 \end{tikzpicture}
 \quad\raisebox{0.9cm}{\Large$=$}\quad
 \begin{tikzpicture}[scale=1.9, font=\small, baseline=0]
@@ -490,7 +491,7 @@ $\begin{aligned}
   \end{scope}
   \draw[->] (-0.15,0) -- (1.25,0) node[right] {$x_1$};
   \draw[->] (0,-0.15) -- (0,1.25) node[above] {$x_2$};
-  \node[below] at (0.55,-0.22) {convex};
+  \node[below] at (0.55,-0.22) {feasible set: convex};
 \end{tikzpicture}
 \end{center}
 \vspace{14pt}
