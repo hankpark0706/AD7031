@@ -13,6 +13,9 @@
 %   p.3   conic programming -- cone, proper cone, generic conic program, LP
 %   p.4   SDP, second-order cone, dual cone, self-dual cones
 %   p.5   primal / dual conic program
+% Changes from the handwritten order: second-order cone listed before SDP (in
+% Section 4 and in the self-dual list); added 4) several cones at once, with the
+% coding session's portfolio as a conic program over R^{N+1}_+ x SOC^{N+1}.
 % Same house style as OUU_week02_note.tex; self-contained -- no \input.
 % ============================================================================
 \documentclass[10pt]{article}
@@ -374,7 +377,26 @@ $\begin{aligned}
 \end{center}
 \vspace{14pt}
 
-\quad 2) \textbf{Semidefinite program:} \quad $C = \mathbb{S}^K_+$
+\quad 2) \textbf{Second-order cone:} \quad
+$C = \mathrm{SOC}^{N+1} = \big\{ (x,t) \in \mathbb{R}^N \times \mathbb{R} \;:\; \|x\|_2 \le t \big\}$
+\qquad ``ice-cream'' cone
+\vspace{6pt}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95, font=\small]
+  \fill[sandink] (0,0) -- (-0.95,2.35) -- (0.95,2.35) -- cycle;
+  \fill[sandink] (0,2.35) ellipse (0.95 and 0.26);
+  \draw[->] (0,0) -- (0,3.0) node[above] {$t$};
+  \draw[->] (0,0) -- (2.55,1.35) node[right] {$x_2$};
+  \draw[->] (0,0) -- (3.1,0) node[right] {$x_1$};
+  \draw[thick] (0,2.35) ellipse (0.95 and 0.26);
+  \draw[thick] (0,0) -- (-0.95,2.35);
+  \draw[thick] (0,0) -- (0.95,2.35);
+\end{tikzpicture}
+\end{center}
+\newpage
+
+\quad 3) \textbf{Semidefinite program:} \quad $C = \mathbb{S}^K_+$
 \vspace{8pt}
 
 \hspace{0.7cm}{\color{redink}$\mathbb{S}^K$ : set of symmetric matrices in $\mathbb{R}^{K \times K}$ \quad $(A^{\top} = A)$}
@@ -398,25 +420,9 @@ $\begin{aligned}
 \end{aligned}$
 \hspace{0.8cm}{\color{redink}\small $\rightarrow$ usually ignored}
 \end{center}
-\newpage
-
-\quad 3) \textbf{Second-order cone:} \quad
-$C = \big\{ (x,t) \in \mathbb{R}^N \times \mathbb{R} \;:\; \|x\|_2 \le t \big\}$
-\qquad ``ice-cream'' cone
-\vspace{6pt}
+\vspace{10pt}
 
 \begin{center}
-\begin{tikzpicture}[scale=0.95, font=\small]
-  \fill[sandink] (0,0) -- (-0.95,2.35) -- (0.95,2.35) -- cycle;
-  \fill[sandink] (0,2.35) ellipse (0.95 and 0.26);
-  \draw[->] (0,0) -- (0,3.0) node[above] {$t$};
-  \draw[->] (0,0) -- (2.55,1.35) node[right] {$x_2$};
-  \draw[->] (0,0) -- (3.1,0) node[right] {$x_1$};
-  \draw[thick] (0,2.35) ellipse (0.95 and 0.26);
-  \draw[thick] (0,0) -- (-0.95,2.35);
-  \draw[thick] (0,0) -- (0.95,2.35);
-\end{tikzpicture}
-\hspace{18mm}
 \begin{tikzpicture}[scale=0.95, font=\small]
   \draw (0,0) circle (1.45);
   \draw (0,-0.45) circle (0.85);
@@ -430,7 +436,61 @@ $C = \big\{ (x,t) \in \mathbb{R}^N \times \mathbb{R} \;:\; \|x\|_2 \le t \big\}$
   \node[redink, anchor=west] at (0.80,3.06) {polynomial time solvable};
 \end{tikzpicture}
 \end{center}
+\vspace{14pt}
+
+\quad 4) \textbf{Several cones at once:} \quad $C = C_1 \times C_2$ \ is again a proper cone
+\vspace{8pt}
+
+\hspace{0.7cm}{\color{redink}$b_1 - A_1 x \in C_1$ \ and \ $b_2 - A_2 x \in C_2
+\quad \iff \quad
+\begin{bmatrix} b_1 \\ b_2 \end{bmatrix} - \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} x \in C_1 \times C_2$}
+\vspace{16pt}
+
+\qquad \textbf{Example:} \ portfolio
+\vspace{2pt}
+
+\begin{center}
+$\begin{aligned}
+  \max\quad & \mu^{\top}x \\
+  \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                   & e^{\top}x \le 1 && \iff\ 1 - e^{\top}x \in \mathbb{R}_+
+                     && \text{budget} \\
+                   & x^{\top}\Sigma\, x \le \bar\sigma^2 && \iff\ \big(L^{\top}x,\ \bar\sigma\big) \in \mathrm{SOC}^{N+1}
+                     && \text{variance bound} \\
+                   & x \ge 0 && \iff\ x \in \mathbb{R}^N_+
+                     && \text{nonnegative weights}
+\end{aligned}$
+\end{center}
+\vspace{6pt}
+
+\qquad {\color{redink}$\Sigma = LL^{\top}$ \ (Cholesky) \ $\Rightarrow$ \ $x^{\top}\Sigma\, x = \|L^{\top}x\|_2^2$, \ so
+  \ $x^{\top}\Sigma\, x \le \bar\sigma^2 \iff \|L^{\top}x\|_2 \le \bar\sigma$}
+\vspace{10pt}
+
+\qquad $\Rightarrow$ \ {\color{redink}$C = \mathbb{R}^{N+1}_+ \times \mathrm{SOC}^{N+1}$} \ --- a SOCP
+\qquad ($\max\, \mu^{\top}x = -\min\, (-\mu)^{\top}x$, \ so $c = -\mu$)
+\vspace{16pt}
+
+\qquad the coding session, $N = 2$: \quad
+$\mu = \begin{bmatrix} 0.10 \\ 0.15 \end{bmatrix}$, \quad
+$\Sigma = \begin{bmatrix} 0.01 & 0.001 \\ 0.001 & 0.04 \end{bmatrix}$, \quad
+$\bar\sigma = 0.13$
+\vspace{8pt}
+
+\qquad $L = \begin{bmatrix} 0.1 & 0 \\ 0.01 & 0.19975 \end{bmatrix}$, \quad
+$L^{\top}x = \begin{bmatrix} 0.1\,x_1 + 0.01\,x_2 \\ 0.19975\,x_2 \end{bmatrix}$, \quad
+$\|L^{\top}x\|_2^2 = 0.01x_1^2 + 0.002x_1x_2 + 0.04x_2^2 \ \checkmark$
+\vspace{10pt}
+
+\begin{center}
+$\underbrace{\begin{bmatrix} 1 - x_1 - x_2 \\ x_1 \\ x_2 \end{bmatrix}}_{\in\ \mathbb{R}^3_+}
+\qquad
+\underbrace{\begin{bmatrix} 0.1\,x_1 + 0.01\,x_2 \\ 0.19975\,x_2 \\ 0.13 \end{bmatrix}}_{\in\ \mathrm{SOC}^3}
+\qquad \Longrightarrow \qquad b - Ax \in \mathbb{R}^3_+ \times \mathrm{SOC}^3$
+\end{center}
 \end{board}
+
+\newpage
 
 % ---------------------------------------------------------------- 5
 \beat{5}{Conic programming duality}
@@ -447,10 +507,13 @@ $C = \big\{ (x,t) \in \mathbb{R}^N \times \mathbb{R} \;:\; \|x\|_2 \le t \big\}$
 \quad --- $C = \hl{\mathbb{R}^K_+}$
 \vspace{5pt}
 
+\quad --- $C = $ \colorbox{hlyel}{second-order cone}
+\vspace{5pt}
+
 \quad --- $C = \hl{\mathbb{S}^K_+}$
 \vspace{5pt}
 
-\quad --- $C = $ \colorbox{hlyel}{second-order cone}
+\quad --- products of these: \quad $C = C_1 \times C_2$, \quad $C^* = C_1^* \times C_2^* = C$
 \vspace{16pt}
 
 \textbf{Primal conic program:}
