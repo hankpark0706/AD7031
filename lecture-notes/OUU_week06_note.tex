@@ -214,28 +214,12 @@ $\begin{aligned}
 \vspace{3pt}
 
 \hspace{4.2cm}{\color{redink}$\exists\, x \in \mathbb{R}^N$, \ s.t. \ $f_i(x) < 0 \quad \forall i \in [I]$}
-\newpage
-
-\begin{center}
-\begin{tikzpicture}[scale=1.15, font=\small]
-  \draw[grnink, very thick] plot[domain=-1.25:1.25, samples=60]
-        ({0.62 - 0.36*\x*\x}, {\x});
-  \draw[grnink, very thick] plot[domain=-1.40:0.85, samples=60]
-        ({\x}, {-0.60 + 0.30*\x*\x});
-  \fill[grnink] (0.505,-0.518) circle (1.7pt);
-  \draw[grnink, ->, thick] (-0.58,-0.52) -- (0.28,-0.52);
-  \node[grnink, above] at (-0.15,-0.50) {$c$};
-  \node[grnink, anchor=east] at (-0.90,0.62) {$f_0(x) = c^{\top}x$};
-  \node[grnink, anchor=south west] at (0.20,1.02) {$f_1(x)$};
-  \node[grnink, below] at (-0.45,-0.92) {$f_2(x)$};
-  \node[grnink, anchor=west] at (1.30,0.28) {$f_1(x^\star) = 0$};
-  \node[grnink, anchor=west] at (1.30,-0.28) {$f_2(x^\star) = 0$};
-\end{tikzpicture}
-\end{center}
-\vspace{6pt}
+\vspace{16pt}
 
 {\color{redink}\textbf{In this course, we assume that strong duality holds for convex problem!!}}
 \end{board}
+
+\newpage
 
 % ---------------------------------------------------------------- 3
 \beat{3}{Example: linear program}
