@@ -15,7 +15,8 @@
 %   p.5   primal / dual conic program
 % Changes from the handwritten order: second-order cone listed before SDP (in
 % Section 4 and in the self-dual list); added 4) several cones at once, with the
-% coding session's portfolio as a conic program over R^{N+1}_+ x SOC_Sigma^{N+1};
+% minimum-variance portfolio in epigraph form, min t s.t. (x, t) in SOC_Sigma,
+% a conic program over R^{N+2}_+ x SOC_Sigma^{N+1} (coding-session assets, r = 0.13);
 % the second-order cone is stated with a general Q > 0, sqrt(x'Qx) <= t.
 % Same house style as OUU_week02_note.tex; self-contained -- no \input.
 % ============================================================================
@@ -451,47 +452,53 @@ $\begin{aligned}
 \begin{bmatrix} b_1 \\ b_2 \end{bmatrix} - \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} x \in C_1 \times C_2$}
 \vspace{16pt}
 
-\qquad \textbf{Example:} \ portfolio
+\qquad \textbf{Example:} \ portfolio, minimum variance
 \vspace{2pt}
 
 \begin{center}
 $\begin{aligned}
-  \max\quad & \mu^{\top}x \\
+  \min\quad & x^{\top}\Sigma\, x \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
-                   & e^{\top}x \le 1 && \iff\ 1 - e^{\top}x \in \mathbb{R}_+
-                     && \text{budget} \\
-                   & x^{\top}\Sigma\, x \le \bar\sigma^2 && \iff\ \big(x,\ \bar\sigma\big) \in \mathrm{SOC}_{\Sigma}^{N+1}
-                     && \text{variance bound} \\
+                   & \mu^{\top}x \ge r \\
+                   & e^{\top}x \le 1 \\
+                   & x \ge 0
+\end{aligned}$
+\qquad $\iff$ \qquad
+$\begin{aligned}
+  \min\quad & t \\
+  \text{s.t.}\quad & (x, t) \in \mathbb{R}^N \times \mathbb{R} \\
+                   & \sqrt{x^{\top}\Sigma\, x} \le t && \iff\ (x,\ t) \in \mathrm{SOC}_{\Sigma}^{N+1} \\
+                   & \mu^{\top}x \ge r && \iff\ \mu^{\top}x - r \in \mathbb{R}_+ \\
+                   & e^{\top}x \le 1 && \iff\ 1 - e^{\top}x \in \mathbb{R}_+ \\
                    & x \ge 0 && \iff\ x \in \mathbb{R}^N_+
-                     && \text{nonnegative weights}
 \end{aligned}$
 \end{center}
 \vspace{6pt}
 
-\qquad {\color{redink}$x^{\top}\Sigma\, x \le \bar\sigma^2 \iff \sqrt{x^{\top}\Sigma\, x} \le \bar\sigma$
-  \quad --- standard deviation of the return $\le \bar\sigma$}
+\qquad {\color{redink}$\sqrt{\,\cdot\,}$ is increasing: \ $\min\, x^{\top}\Sigma\, x$ \ and \ $\min\, \sqrt{x^{\top}\Sigma\, x}$ \
+  have the same minimizer $x^\star$}
+\vspace{3pt}
+
+\qquad {\color{redink}$t$ is a new variable: \ at the optimum \ $t^\star = \sqrt{x^{\star\top}\Sigma\, x^\star}$,
+  \ the standard deviation of the return}
 \vspace{10pt}
 
-\qquad $\Rightarrow$ \ {\color{redink}$C = \mathbb{R}^{N+1}_+ \times \mathrm{SOC}_{\Sigma}^{N+1}$} \ --- a SOCP
-\qquad ($\max\, \mu^{\top}x = -\min\, (-\mu)^{\top}x$, \ so $c = -\mu$)
+\qquad $\Rightarrow$ \ {\color{redink}$C = \mathbb{R}^{N+2}_+ \times \mathrm{SOC}_{\Sigma}^{N+1}$} \ --- a SOCP in $(x, t)$
 \vspace{16pt}
 
 \qquad the coding session, $N = 2$: \quad
 $\mu = \begin{bmatrix} 0.10 \\ 0.15 \end{bmatrix}$, \quad
 $\Sigma = \begin{bmatrix} 0.01 & 0.001 \\ 0.001 & 0.04 \end{bmatrix}$, \quad
-$\bar\sigma = 0.13$
+$r = 0.13$
 \vspace{8pt}
 
 \begin{center}
-$\underbrace{\begin{bmatrix} 1 - x_1 - x_2 \\ x_1 \\ x_2 \end{bmatrix}}_{\in\ \mathbb{R}^3_+}
+$\underbrace{\begin{bmatrix} 0.10\,x_1 + 0.15\,x_2 - 0.13 \\ 1 - x_1 - x_2 \\ x_1 \\ x_2 \end{bmatrix}}_{\in\ \mathbb{R}^4_+}
 \qquad
-\underbrace{\begin{bmatrix} x_1 \\ x_2 \\ 0.13 \end{bmatrix}}_{\in\ \mathrm{SOC}_{\Sigma}^3}
-\qquad \Longrightarrow \qquad b - Ax \in \mathbb{R}^3_+ \times \mathrm{SOC}_{\Sigma}^3$
+\underbrace{\begin{bmatrix} x_1 \\ x_2 \\ t \end{bmatrix}}_{\in\ \mathrm{SOC}_{\Sigma}^3}
+\qquad \Longrightarrow \qquad
+x^\star = (0.4,\ 0.6), \quad t^\star = 0.128$
 \end{center}
-\vspace{6pt}
-
-\hspace{5.4cm}{\color{redink}$(x_1, x_2, 0.13) \in \mathrm{SOC}_{\Sigma}^3
-  \iff \sqrt{0.01x_1^2 + 0.04x_2^2 + 0.002x_1x_2} \le 0.13$}
 \end{board}
 
 \newpage
