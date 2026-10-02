@@ -8,7 +8,7 @@
 % i.i.d. N(mu, Sigma) daily returns (week 4 mu and Sigma), seed 0.
 %
 % Sections 2-5 -- straight conversion of the handwritten "OUU Lecture 3" (5 pp.):
-%   p.1   duality theory -- (P), (D), the sup-trick, weak/strong duality, Slater
+%   p.1   duality theory -- (P), (D), the max-trick, weak/strong duality, Slater
 %   p.2   LP example -- primal LP to dual LP, LP strong duality
 %   p.3   conic programming -- cone, proper cone, generic conic program, LP
 %   p.4   SDP, second-order cone, dual cone, self-dual cones
@@ -149,7 +149,7 @@ in this course, we focus on \textbf{convex} functions.
 
 \begin{center}
 $\begin{aligned}
-  \inf\quad & f_0(x) \\
+  \min\quad & f_0(x) \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
                    & f_i(x) \le 0 \qquad \forall i \in [I]
 \end{aligned}$
@@ -162,7 +162,7 @@ $\begin{aligned}
 
 \begin{center}
 $\begin{aligned}
-  \sup_{\theta}\ \inf_{x \in \mathbb{R}^N}\quad & f_0(x) + \sum_{i \in [I]} \theta_i f_i(x) \\
+  \max_{\theta}\ \min_{x \in \mathbb{R}^N}\quad & f_0(x) + \sum_{i \in [I]} \theta_i f_i(x) \\
   \text{s.t.}\quad & \theta \in \mathbb{R}^I \\
                    & \theta \ge 0
 \end{aligned}$
@@ -177,15 +177,15 @@ $\begin{aligned}
 \hline
 \rule{0pt}{4.6em}
  & \color{redink}$\begin{aligned}
-      \inf\quad & f_0(x) \\
+      \min\quad & f_0(x) \\
       \text{s.t.}\quad & x \in \mathbb{R}^N \\
                        & f_i(x) \le 0 \qquad \forall i \in [I]
    \end{aligned}$ \\[1.4em]
 \hline
 \rule{0pt}{3.6em}
 \color{redink}$=$ &
- \color{redink}$\displaystyle \inf_{x \in \mathbb{R}^N}\ f_0(x)
-   \;+\; \underbrace{\ \sup_{\theta \in \mathbb{R}^I_+}\ \sum_{i \in [I]} \theta_i f_i(x)\ }_{\textstyle \color{purpink}\le\, 0}$ \\[2.6em]
+ \color{redink}$\displaystyle \min_{x \in \mathbb{R}^N}\ f_0(x)
+   \;+\; \underbrace{\ \max_{\theta \in \mathbb{R}^I_+}\ \sum_{i \in [I]} \theta_i f_i(x)\ }_{\textstyle \color{purpink}\le\, 0}$ \\[2.6em]
 \hline
 \end{tabular}}
 \end{center}
@@ -197,17 +197,17 @@ $\begin{aligned}
 \hspace{3.0cm}{\color{purpink}if \ $\exists\, i : f_i(x) > 0$, \quad then \quad $= +\infty$}
 \vspace{8pt}
 
-{\color{redink}$\displaystyle \ \ \ge\ \ \sup_{\theta \in \mathbb{R}^I_+}\ \inf_{x \in \mathbb{R}^N}\ f_0(x)
+{\color{redink}$\displaystyle \ \ \ge\ \ \max_{\theta \in \mathbb{R}^I_+}\ \min_{x \in \mathbb{R}^N}\ f_0(x)
   + \sum_{i \in [I]} \theta_i f_i(x)$}
 \vspace{14pt}
 
 \textbf{Properties:}
 \vspace{4pt}
 
-\quad --- \textbf{weak duality} \qquad $\inf\,(P) \ \ge\ \sup\,(D)$ \qquad always holds.
+\quad --- \textbf{weak duality} \qquad $\min\,(P) \ \ge\ \max\,(D)$ \qquad always holds.
 \vspace{6pt}
 
-\quad --- \textbf{strong duality:} \qquad $\inf\,(P) \ =\ \sup\,(D)$ \ holds
+\quad --- \textbf{strong duality:} \qquad $\min\,(P) \ =\ \max\,(D)$ \ holds
 \vspace{3pt}
 
 \qquad\quad when the problem $(P)$ is convex and the \underline{Slater's condition} holds
@@ -229,7 +229,7 @@ $\begin{aligned}
 
 \begin{center}
 $\begin{aligned}
-  \inf\quad & c^{\top}x \\
+  \min\quad & c^{\top}x \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
                    & Ax \le b
 \end{aligned}$
@@ -253,16 +253,16 @@ $\begin{aligned}
 \textbf{Dual LP:}
 \vspace{4pt}
 
-\quad $\displaystyle \sup_{\theta \in \mathbb{R}^I_+}\ \inf_{x \in \mathbb{R}^N}\
+\quad $\displaystyle \max_{\theta \in \mathbb{R}^I_+}\ \min_{x \in \mathbb{R}^N}\
   c^{\top}x + \sum_{i \in [I]} \theta_i \big(a_i^{\top}x - b_i\big)$
 \vspace{8pt}
 
-$\displaystyle =\ \sup_{\theta \in \mathbb{R}^I_+}\ \inf_{x \in \mathbb{R}^N}\
+$\displaystyle =\ \max_{\theta \in \mathbb{R}^I_+}\ \min_{x \in \mathbb{R}^N}\
   c^{\top}x + \sum_{i \in [I]} \theta_i a_i^{\top}x - \sum_{i \in [I]} \theta_i b_i$
 \vspace{8pt}
 
-$\displaystyle =\ \sup_{\theta \in \mathbb{R}^I_+}\ -\sum_{i \in [I]} \theta_i b_i
-  \ +\ \inf_{x \in \mathbb{R}^N}\ \underbrace{\Big(c + \sum_{i \in [I]} \theta_i a_i\Big)^{\!\top} x}_{}$
+$\displaystyle =\ \max_{\theta \in \mathbb{R}^I_+}\ -\sum_{i \in [I]} \theta_i b_i
+  \ +\ \min_{x \in \mathbb{R}^N}\ \underbrace{\Big(c + \sum_{i \in [I]} \theta_i a_i\Big)^{\!\top} x}_{}$
 \vspace{2pt}
 
 \hspace{5.1cm}{\color{redink}$= \begin{cases}
@@ -272,7 +272,7 @@ $\displaystyle =\ \sup_{\theta \in \mathbb{R}^I_+}\ -\sum_{i \in [I]} \theta_i b
 \vspace{10pt}
 
 $\begin{aligned}
-  =\ \sup\quad & -b^{\top}\theta \\
+  =\ \max\quad & -b^{\top}\theta \\
   \text{s.t.}\quad & \theta \in \mathbb{R}^I_+ \\
                    & A^{\top}\theta = -c
 \end{aligned}$
@@ -346,7 +346,7 @@ $\lambda x \in C \quad \forall \lambda \ge 0$
 
 \begin{center}
 $\begin{aligned}
-  \inf\quad & c^{\top}x \\
+  \min\quad & c^{\top}x \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
                    & Ax \coneleq b
 \end{aligned}$
@@ -391,7 +391,7 @@ $\begin{aligned}
 
 \begin{center}
 $\begin{aligned}
-  \inf\quad & c^{\top}x \\
+  \min\quad & c^{\top}x \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
                    & A_1 x_1 + A_2 x_2 + \cdots + A_N x_N
                      \mathrel{\preceq_{\textcolor{redink}{\mathbb{S}^K_+}}} B
@@ -458,7 +458,7 @@ $C = \big\{ (x,t) \in \mathbb{R}^N \times \mathbb{R} \;:\; \|x\|_2 \le t \big\}$
 
 \begin{center}
 $\begin{aligned}
-  \inf\quad & c^{\top}x \\
+  \min\quad & c^{\top}x \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
                    & Ax \coneleq b
 \end{aligned}$
@@ -470,7 +470,7 @@ $\begin{aligned}
 
 \begin{center}
 $\begin{aligned}
-  \sup\quad & -\theta^{\top}b \\
+  \max\quad & -\theta^{\top}b \\
   \text{s.t.}\quad & \theta \in \hl{C^*} \\
                    & A^{\top}\theta = -c
 \end{aligned}$
