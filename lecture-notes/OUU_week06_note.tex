@@ -599,8 +599,7 @@ $c = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$, \qquad $c^{\top}z = t$
 \vspace{6pt}
 
 \quad $A = \begin{bmatrix} -\mu^{\top} & 0 \\ e^{\top} & 0 \\ -I & 0 \end{bmatrix}$, \qquad
-$b = \begin{bmatrix} -r \\ 1 \\ 0 \end{bmatrix}$, \qquad
-$\theta = \begin{bmatrix} \theta_1 \\ \theta_2 \\ \lambda \end{bmatrix} \in \mathbb{R}^{N+2}_+$
+$b = \begin{bmatrix} -r \\ 1 \\ 0 \end{bmatrix}$
 \vspace{8pt}
 
 \begin{center}
@@ -613,16 +612,20 @@ $\begin{aligned}
 \end{center}
 \vspace{8pt}
 
+\quad dual: \ $\theta = \begin{bmatrix} \theta_1 \\ \theta_2 \\ \theta_3 \end{bmatrix} \in \mathbb{R}^{N+2}_+$,
+\ \ $\theta_1, \theta_2 \in \mathbb{R}_+$, \ $\theta_3 \in \mathbb{R}^N_+$ \quad --- one entry per row of $A$
+\vspace{8pt}
+
 \quad $-b^{\top}\theta = r\,\theta_1 - \theta_2$, \qquad
-$c + A^{\top}\theta = \begin{bmatrix} \theta_2 e - \theta_1 \mu - \lambda \\ 1 \end{bmatrix}
+$c + A^{\top}\theta = \begin{bmatrix} \theta_2 e - \theta_1 \mu - \theta_3 \\ 1 \end{bmatrix}
   \in \mathrm{SOC}^{N+1}$
 \vspace{10pt}
 
 \begin{center}
 $\begin{aligned}
   \max\quad & r\,\theta_1 - \theta_2 \\
-  \text{s.t.}\quad & \theta_1, \theta_2 \ge 0, \ \ \lambda \in \mathbb{R}^N_+ \\
-                   & \|\theta_2 e - \theta_1 \mu - \lambda\|_2 \le 1
+  \text{s.t.}\quad & \theta_1, \theta_2 \ge 0, \ \ \theta_3 \in \mathbb{R}^N_+ \\
+                   & \|\theta_2 e - \theta_1 \mu - \theta_3\|_2 \le 1
 \end{aligned}$
 \end{center}
 \end{board}
