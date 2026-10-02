@@ -20,8 +20,7 @@
 % minimum-variance portfolio in epigraph form, min t s.t. (x, t) in SOC_Sigma,
 % a conic program over R^{N+2}_+ x SOC_Sigma^{N+1} (coding-session assets, r = 0.13);
 % the second-order cone is stated with a general Q > 0, sqrt(x'Qx) <= t.
-% Section 5 ends with two dual examples: 1) the LP (C = R^N_+; x free gives back
-% Section 3), 2) that portfolio with Sigma = I (z = (x, t), c = (0, 1), x >= 0 moved
+% Section 5 ends with two dual examples: 1) the LP (C = R^N_+), 2) that portfolio with Sigma = I (z = (x, t), c = (0, 1), x >= 0 moved
 % to the halfspaces, C = SOC = C*). Checked numerically, mu = (0.10, 0.15),
 % r = 0.13: primal min = dual max = 0.7211 (= ||(0.4, 0.6)||_2).
 % Same house style as OUU_week02_note.tex; self-contained -- no \input.
@@ -583,10 +582,6 @@ $\begin{aligned}
                    & c + A^{\top}\theta \in \mathbb{R}^N_+ = C^*
 \end{aligned}$
 \end{center}
-\vspace{6pt}
-
-\quad $x$ free: \ $C = \mathbb{R}^N$, \ $C^* = \{0\}$ \ $\Rightarrow$ \ $c + A^{\top}\theta = 0$, \ i.e.\
-$A^{\top}\theta = -c$ \ --- the dual LP of Section 3
 \newpage
 
 \textbf{Example 2:} \ portfolio, minimum variance \ --- for simplicity, \ $\Sigma = I$
