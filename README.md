@@ -28,7 +28,7 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 | 10 | 10/31 | Two-stage models 1 — location–allocation problem (LAP) | | | | |
 | 11 | 11/7 | **Midterm** | | | | Written exam |
 | 12 | 11/14 | *TBD* | | | | |
-| 13 | 11/21 | *TBD* | | | | |
+| 13 | 11/21 | **Final project 중간점검** | | | | |
 | 14 | 11/28 | *TBD* | | | | |
 | 15 | 12/5 | *TBD* | | | | |
 | 16 | 12/12 | **Final project presentation** (Group 1) | | | | **Group 2 presentation on 12/13** (TBD)<br>Final slides & report due |
