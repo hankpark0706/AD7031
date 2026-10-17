@@ -1,0 +1,227 @@
+% ============================================================================
+% AD7031 Homework 2 -- covers Weeks 4, 6, 8 (mean and covariance of a random
+% vector, LP duality, conic duality, risk measures VaR and CVaR).
+% 100 points, 4 problems of 25.
+% Self-contained on purpose -- no \input{preamble} -- compiles with pdflatex.
+% ============================================================================
+\documentclass[10pt]{article}
+
+\usepackage[a4paper, margin=2.2cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ruleink}{RGB}{18, 68, 140}
+\definecolor{keyink}{RGB}{20, 90, 20}
+
+\setlength{\parindent}{0pt}
+\pagestyle{plain}
+
+\AtBeginDocument{%
+  \abovedisplayskip=5pt plus 1pt
+  \belowdisplayskip=5pt plus 1pt
+  \abovedisplayshortskip=3pt
+  \belowdisplayshortskip=3pt}
+
+% ---- one problem -----------------------------------------------------------
+\newcommand{\problem}[2]{%   points, title
+  \par\bigskip
+  {\color{ruleink}\rule{\textwidth}{1pt}}\par\nobreak\vspace{3pt}
+  {\large\bfseries #2}\hfill{\normalsize\bfseries(#1 points)}\par\nobreak\vspace{4pt}}
+
+% ---- one-line hint, blue italic --------------------------------------------
+\newcommand{\hint}[1]{%
+  \par\vspace{3pt}{\color{ruleink}\emph{hint:\ #1}}\par}
+
+\newlist{parts}{enumerate}{1}
+\setlist[parts]{label=(\alph*), leftmargin=2.2em, itemsep=5pt}
+
+\begin{document}
+
+\begin{center}
+  {\large AD7031 Optimization Under Uncertainty}\\[3pt]
+  {\Large\bfseries Homework 2}\\[4pt]
+  {\small \textbf{Due Oct 31, start of class}}
+\end{center}
+\medskip\hrule\medskip
+
+Write down your solutions and submit them as a single PDF to
+\texttt{lossof0706@gmail.com}.\\
+\textbf{\underline{Your solutions must be handwritten.}}
+
+% ================================================================ Problem 1
+\problem{25}{Problem 1. Mean and covariance of a random vector}
+
+Three months of returns are observed, each equally likely ($p_s = \tfrac13$):
+
+\begin{center}
+\begin{tabular}{c|ccc}
+           & Tech   & Energy & Bond   \\ \hline
+ $\xi^1$   & $0.00$ & $0.04$ & $0.03$ \\
+ $\xi^2$   & $0.06$ & $0.10$ & $0.03$ \\
+ $\xi^3$   & $0.12$ & $0.07$ & $0.03$ \\
+\end{tabular}
+\end{center}
+
+\begin{parts}
+\item \textbf{(10 pts)} \textbf{By hand}, compute the mean $\mu = \mathbb{E}[\tilde\xi]$ and the
+  covariance matrix $\Sigma = \mathrm{Cov}(\tilde\xi)$, and state the dimensions of $\mu$ and $\Sigma$.
+
+\item \textbf{(10 pts)} Suppose your optimal portfolio is $x^{\star} = (x_1^{\star}, x_2^{\star}, x_3^{\star})^{\top}$.
+  From the table, compute, in terms of $x^{\star}$,
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item the mean $\mathbb{E}[\tilde\xi^{\top}x^{\star}]$;
+    \item the variance $\mathrm{Var}[\tilde\xi^{\top}x^{\star}]$.
+  \end{itemize}
+
+\item \textbf{(5 pts)} Show that
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item $\mathbb{E}[\tilde\xi^{\top}x^{\star}] = \mu^{\top}x^{\star}$;
+    \item $\mathrm{Var}[\tilde\xi^{\top}x^{\star}] = x^{\star\top}\Sigma\, x^{\star}$.
+  \end{itemize}
+  \hint{we discussed this in class.}
+\end{parts}
+
+% ================================================================ Problem 2
+\problem{25}{Problem 2. Linear program duality}
+
+Consider the following primal linear program and its dual, in the canonical form of the lecture note:
+\[
+\text{(P)} \quad
+\begin{aligned}
+  \min_{x \in \mathbb{R}^n} \quad & c^{\top}x \\
+  \text{s.t.} \quad & Ax \le b
+\end{aligned}
+\qquad\qquad
+\text{(D)} \quad
+\begin{aligned}
+  \max_{\theta \in \mathbb{R}^m} \quad & -b^{\top}\theta \\
+  \text{s.t.} \quad & c + A^{\top}\theta = 0 \\
+                    & \theta \ge 0
+\end{aligned}
+\]
+
+\begin{parts}
+\item \textbf{(8 pts)} Derive the dual problem (D) from the primal problem (P). \textbf{Show all the steps clearly.}
+
+\item \textbf{(7 pts)} Consider the primal problem
+\[
+\begin{aligned}
+  \min_{x \in \mathbb{R}^2} \quad & -4x_1 - 5x_2 \\
+  \text{s.t.} \quad & 3x_1 + 2x_2 \le 60 \\
+                    & x_1 + 3x_2 \le 48 \\
+                    & x_1 \ge 3 \\
+                    & x_1,\ x_2 \ge 0 .
+\end{aligned}
+\]
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item Give $c$, $A$, $b$.
+    \item Write the dual problem (D) numerically.
+  \end{itemize}
+
+\item \textbf{(7 pts)} Derive the primal problem (P) from the dual problem (D). \textbf{Show all the steps clearly.}
+  \hint{nothing really changes from the derivation in (a).}
+
+\item \textbf{(3 pts)} Let $x^{\star}$ and $\theta^{\star}$ be optimal solutions of the primal problem (P) and the dual problem (D),
+  respectively. What can you say about $c^{\top}x^{\star}$ and $b^{\top}\theta^{\star}$?
+\end{parts}
+
+% ================================================================ Problem 3
+\problem{25}{Problem 3. Conic program duality}
+
+Consider
+\[
+\begin{aligned}
+  \max_{x \in \mathbb{R}^n} \quad & \mu^{\top}x \\
+  \text{s.t.} \quad & x^{\top}\Sigma x \le \sigma^2 \\
+                    & e^{\top}x \le 1 \\
+                    & x \ge 0
+\end{aligned}
+\]
+where $e = [1, 1, \dots, 1]^{\top}$ is the all-ones vector and $\sigma$ is the risk cap.
+
+\begin{parts}
+\item \textbf{(10 pts)} Recall the second-order cone
+  \[
+    \mathrm{SOC}_Q^{n+1} = \big\{ (x, t) \in \mathbb{R}^n \times \mathbb{R} \;:\; \sqrt{x^{\top}Q\,x} \le t \big\},
+    \qquad Q \succ 0 .
+  \]
+  Write the model in the conic form $\min c^{\top}z$ s.t.\ $Az \le b$, $z \in C$.
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item Give $z$ (the decision variable), $c$, $A$, $b$.
+    \item Write $C$.
+  \end{itemize}
+  \hint{use $z = [x,\ t]^{\top} \in \mathbb{R}^{n+1}$, then write out $c^{\top}z$ and $Az \le b$ to check that you recover the original problem.}
+
+\item \textbf{(10 pts)} With $\Sigma = I$, the dual problem of the second-order cone program in (a) is
+  \[
+  \begin{aligned}
+    \max \quad & -\theta_1 - \sigma\, \theta_2 \\
+    \text{s.t.} \quad & \theta_1,\ \theta_2 \ge 0, \quad \theta_3 \in \mathbb{R}^n_+ \\
+                      & \|\theta_1 e - \mu - \theta_3\|_2 \;\le\; \theta_2 .
+  \end{aligned}
+  \]
+  Derive it. \textbf{Show all the steps clearly.}
+
+\item \textbf{(5 pts)} State a sufficient condition for strong duality. For which values of
+  $\sigma$ does it hold for the primal problem in (a)?
+\end{parts}
+
+% ================================================================ Problem 4
+\problem{25}{Problem 4. Risk measures}
+
+Recall the general stochastic program
+\[
+\text{(SP)} \quad
+\begin{aligned}
+  \min_{x \in \mathbb{R}^n} \quad & \mathcal{R}_{\mathbb{P}}\big[f_0(x, \tilde\xi)\big] \\
+  \text{s.t.} \quad & \mathcal{R}_{\mathbb{P}}\big[f_i(x, \tilde\xi)\big] \le 0 \qquad \forall i \in [I],
+\end{aligned}
+\]
+where $\tilde\xi \sim \mathbb{P}$ and $\mathcal{R}_{\mathbb{P}}$ is a risk measure of our choice.
+
+\begin{parts}
+\item \textbf{(5 pts)} Suppose we choose $\mathcal{R}_{\mathbb{P}} = \mathrm{VaR}_{\varepsilon}$, i.e., the objective function in (SP) is
+  \[
+  \begin{aligned}
+    \mathrm{VaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big] \;=\; \min_{t \in \mathbb{R}} \quad & t \\
+    \text{s.t.} \quad & \mathbb{P}\big(f_0(x, \tilde\xi) \le t\big) \ge 1 - \varepsilon .
+  \end{aligned}
+  \]
+  Using this minimization problem, explain in plain Korean what $\mathrm{VaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big]$ means.
+
+\item \textbf{(5 pts)} Show the reformulation of the constraint $\mathrm{VaR}_{\varepsilon}\big[f_i(x, \tilde\xi)\big] \le 0$.
+  \hint{use
+    \[
+      \mathrm{VaR}_{\varepsilon}\big[f_i(x, \tilde\xi)\big] \le 0
+      \quad \Longleftrightarrow \quad
+      \left[\begin{aligned}
+        \min_{t_i \in \mathbb{R}} \quad & t_i \\
+        \textnormal{s.t.} \quad & \mathbb{P}\big(f_i(x, \tilde\xi) \le t_i\big) \ge 1 - \varepsilon
+      \end{aligned}\right] \le 0
+      \quad \Longleftrightarrow \quad
+      \begin{aligned}
+        & t_i \le 0 \\
+        & \mathbb{P}\big(f_i(x, \tilde\xi) \le t_i\big) \ge 1 - \varepsilon .
+      \end{aligned}
+    \]}
+
+\item \textbf{(5 pts)} Suppose we choose $\mathcal{R}_{\mathbb{P}} = \mathrm{CVaR}_{\varepsilon}$, i.e., the objective function in (SP) is
+  \[
+    \mathrm{CVaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big] \;=\; \min_{\beta \in \mathbb{R}}\
+      \beta + \frac{1}{\varepsilon}\, \mathbb{E}_{\mathbb{P}}\big[\max\{f_0(x, \tilde\xi) - \beta,\ 0\}\big] .
+  \]
+  Using this minimization problem, explain in plain Korean what $\mathrm{CVaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big]$ means.
+
+\item \textbf{(5 pts)} Write the reformulation of (SP) with $\mathcal{R}_{\mathbb{P}} = \mathrm{CVaR}_{\varepsilon}$.
+  \textbf{Clearly show the reformulation of the objective
+  $\mathrm{CVaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big]$ and of every constraint
+  $\mathrm{CVaR}_{\varepsilon}\big[f_i(x, \tilde\xi)\big] \le 0$, $i \in [I]$.}
+  \hint{do the same as in (b).}
+
+\item \textbf{(5 pts)} For computational tractability, we may prefer CVaR over VaR. Explain why.
+\end{parts}
+
+\end{document}
