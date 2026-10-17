@@ -72,6 +72,14 @@ estimates, to distinguish them from their true counterparts $\mathbb{E}[\cdot]$,
 \item \textbf{(8 pts)} \textbf{By hand}, compute the empirical mean $\widehat{\mu} = \widehat{\mathbb{E}}[\tilde\xi]$ and the
   empirical covariance matrix $\widehat{\Sigma} = \widehat{\mathrm{Cov}}[\tilde\xi]$, and state the dimensions of $\widehat{\mu}$ and $\widehat{\Sigma}$.
 
+\item \textbf{(5 pts)} We used only three data points. In general, with $N$ i.i.d.\ samples of $\tilde\xi$, the empirical mean and
+  covariance matrix can be written $\widehat{\mu}_N$ and $\widehat{\Sigma}_N$. Consider the claim
+  \[
+    \lim_{N \to \infty} \widehat{\mu}_N = \mathbb{E}[\tilde\xi] = \mu, \qquad
+    \lim_{N \to \infty} \widehat{\Sigma}_N = \mathrm{Cov}[\tilde\xi] = \Sigma .
+  \]
+  What does it mean? Explain in plain Korean. Is it true? If so, why?
+
 \item \textbf{(7 pts)} Suppose your optimal portfolio is $x^{\star} = (x_1^{\star}, x_2^{\star}, x_3^{\star})^{\top}$.
   From the table, compute, in terms of $x^{\star}$,
   \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
@@ -85,14 +93,6 @@ estimates, to distinguish them from their true counterparts $\mathbb{E}[\cdot]$,
     \item $\widehat{\mathrm{Var}}[\tilde\xi^{\top}x^{\star}] = x^{\star\top}\widehat{\Sigma}\, x^{\star}$.
   \end{itemize}
   \hint{we discussed this in class.}
-
-\item \textbf{(5 pts)} We used only three data points. In general, with $N$ i.i.d.\ samples of $\tilde\xi$, the empirical mean and
-  covariance matrix can be written $\widehat{\mu}_N$ and $\widehat{\Sigma}_N$. Consider the claim
-  \[
-    \lim_{N \to \infty} \widehat{\mu}_N = \mathbb{E}[\tilde\xi] = \mu, \qquad
-    \lim_{N \to \infty} \widehat{\Sigma}_N = \mathrm{Cov}[\tilde\xi] = \Sigma .
-  \]
-  What does it mean? Explain in plain Korean. Is it true? If so, why?
 \end{parts}
 
 % ================================================================ Problem 2
