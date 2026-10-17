@@ -32,8 +32,8 @@
   {\large\bfseries #2}\hfill{\normalsize\bfseries(#1 points)}\par\nobreak\vspace{4pt}}
 
 % ---- one-line hint, blue italic --------------------------------------------
-\newcommand{\hint}[1]{%
-  \par\vspace{3pt}{\color{ruleink}\emph{hint:\ #1}}\par}
+\newcommand{\hint}[2][]{%   optional number: \hint[1]{...} -> "hint 1:"
+  \par\vspace{3pt}{\color{ruleink}\emph{hint\if\relax\detokenize{#1}\relax\else\ #1\fi:\ #2}}\par}
 
 \newlist{parts}{enumerate}{1}
 \setlist[parts]{label=(\alph*), leftmargin=2.2em, itemsep=5pt}
@@ -54,7 +54,7 @@ Write down your solutions and submit them as a single PDF to
 % ================================================================ Problem 1
 \problem{25}{Problem 1. Mean and covariance of a random vector}
 
-Three months of returns are observed, each equally likely ($p_s = \tfrac13$):
+We have three independent identically distributed (i.i.d.) return data points:
 
 \begin{center}
 \begin{tabular}{c|ccc}
@@ -65,23 +65,34 @@ Three months of returns are observed, each equally likely ($p_s = \tfrac13$):
 \end{tabular}
 \end{center}
 
-\begin{parts}
-\item \textbf{(10 pts)} \textbf{By hand}, compute the mean $\mu = \mathbb{E}[\tilde\xi]$ and the
-  covariance matrix $\Sigma = \mathrm{Cov}(\tilde\xi)$, and state the dimensions of $\mu$ and $\Sigma$.
+Note that we use $\widehat{\mathbb{E}}[\cdot]$, $\widehat{\mathrm{Var}}[\cdot]$ and $\widehat{\mathrm{Cov}}[\cdot]$ for empirical
+estimates, to distinguish them from their true counterparts $\mathbb{E}[\cdot]$, $\mathrm{Var}[\cdot]$ and $\mathrm{Cov}[\cdot]$.
 
-\item \textbf{(10 pts)} Suppose your optimal portfolio is $x^{\star} = (x_1^{\star}, x_2^{\star}, x_3^{\star})^{\top}$.
+\begin{parts}
+\item \textbf{(8 pts)} \textbf{By hand}, compute the empirical mean $\widehat{\mu} = \widehat{\mathbb{E}}[\tilde\xi]$ and the
+  empirical covariance matrix $\widehat{\Sigma} = \widehat{\mathrm{Cov}}[\tilde\xi]$, and state the dimensions of $\widehat{\mu}$ and $\widehat{\Sigma}$.
+
+\item \textbf{(7 pts)} Suppose your optimal portfolio is $x^{\star} = (x_1^{\star}, x_2^{\star}, x_3^{\star})^{\top}$.
   From the table, compute, in terms of $x^{\star}$,
   \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
-    \item the mean $\mathbb{E}[\tilde\xi^{\top}x^{\star}]$;
-    \item the variance $\mathrm{Var}[\tilde\xi^{\top}x^{\star}]$.
+    \item the empirical mean $\widehat{\mathbb{E}}[\tilde\xi^{\top}x^{\star}]$;
+    \item the empirical variance $\widehat{\mathrm{Var}}[\tilde\xi^{\top}x^{\star}]$.
   \end{itemize}
 
 \item \textbf{(5 pts)} Show that
   \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
-    \item $\mathbb{E}[\tilde\xi^{\top}x^{\star}] = \mu^{\top}x^{\star}$;
-    \item $\mathrm{Var}[\tilde\xi^{\top}x^{\star}] = x^{\star\top}\Sigma\, x^{\star}$.
+    \item $\widehat{\mathbb{E}}[\tilde\xi^{\top}x^{\star}] = \widehat{\mu}^{\top}x^{\star}$;
+    \item $\widehat{\mathrm{Var}}[\tilde\xi^{\top}x^{\star}] = x^{\star\top}\widehat{\Sigma}\, x^{\star}$.
   \end{itemize}
   \hint{we discussed this in class.}
+
+\item \textbf{(5 pts)} We used only three data points. In general, with $N$ i.i.d.\ samples of $\tilde\xi$, the empirical mean and
+  covariance matrix can be written $\widehat{\mu}_N$ and $\widehat{\Sigma}_N$. Consider the claim
+  \[
+    \lim_{N \to \infty} \widehat{\mu}_N = \mathbb{E}[\tilde\xi] = \mu, \qquad
+    \lim_{N \to \infty} \widehat{\Sigma}_N = \mathrm{Cov}[\tilde\xi] = \Sigma .
+  \]
+  What does it mean? Explain in plain Korean. Is it true? If so, why?
 \end{parts}
 
 % ================================================================ Problem 2
@@ -120,6 +131,7 @@ Consider the following primal linear program and its dual, in the canonical form
     \item Give $c$, $A$, $b$.
     \item Write the dual problem (D) numerically.
   \end{itemize}
+  \hint{follow the same steps as in (a), this time with these numbers.}
 
 \item \textbf{(7 pts)} Derive the primal problem (P) from the dual problem (D). \textbf{Show all the steps clearly.}
   \hint{nothing really changes from the derivation in (a).}
@@ -134,18 +146,18 @@ Consider the following primal linear program and its dual, in the canonical form
 Consider
 \[
 \begin{aligned}
-  \max_{x \in \mathbb{R}^n} \quad & \mu^{\top}x \\
-  \text{s.t.} \quad & x^{\top}\Sigma x \le \sigma^2 \\
+  \min_{x \in \mathbb{R}^n} \quad & x^{\top}\Sigma x \\
+  \text{s.t.} \quad & \mu^{\top}x \ge r \\
                     & e^{\top}x \le 1 \\
                     & x \ge 0
 \end{aligned}
 \]
-where $e = [1, 1, \dots, 1]^{\top}$ is the all-ones vector and $\sigma$ is the risk cap.
+where $e = [1, 1, \dots, 1]^{\top}$ is the all-ones vector and $r$ is the target return.
 
 \begin{parts}
-\item \textbf{(10 pts)} Recall the second-order cone
+\item \textbf{(12 pts)} Recall the second-order cone
   \[
-    \mathrm{SOC}_Q^{n+1} = \big\{ (x, t) \in \mathbb{R}^n \times \mathbb{R} \;:\; \sqrt{x^{\top}Q\,x} \le t \big\},
+    \mathrm{SOC}_Q^{n+1} = \big\{ (x, t) \in \mathbb{R}^n \times \mathbb{R} \;:\; x^{\top}Q\,x \le t^2,\ t \ge 0 \big\},
     \qquad Q \succ 0 .
   \]
   Write the model in the conic form $\min c^{\top}z$ s.t.\ $Az \le b$, $z \in C$.
@@ -153,20 +165,19 @@ where $e = [1, 1, \dots, 1]^{\top}$ is the all-ones vector and $\sigma$ is the r
     \item Give $z$ (the decision variable), $c$, $A$, $b$.
     \item Write $C$.
   \end{itemize}
-  \hint{use $z = [x,\ t]^{\top} \in \mathbb{R}^{n+1}$, then write out $c^{\top}z$ and $Az \le b$ to check that you recover the original problem.}
+  \hint[1]{first, use the epigraph reformulation with a new decision variable $t$, then define
+    $z = [x,\ t]^{\top}$.}
+  \hint[2]{minimizing $x^{\top}\Sigma x$ and minimizing $\sqrt{x^{\top}\Sigma x}$ give the same $x$.}
 
-\item \textbf{(10 pts)} With $\Sigma = I$, the dual problem of the second-order cone program in (a) is
+\item \textbf{(13 pts)} With $\Sigma = I$, the dual problem of the second-order cone program in (a) is
   \[
   \begin{aligned}
-    \max \quad & -\theta_1 - \sigma\, \theta_2 \\
+    \max \quad & r\,\theta_1 - \theta_2 \\
     \text{s.t.} \quad & \theta_1,\ \theta_2 \ge 0, \quad \theta_3 \in \mathbb{R}^n_+ \\
-                      & \|\theta_1 e - \mu - \theta_3\|_2 \;\le\; \theta_2 .
+                      & \|\theta_2 e - \theta_1 \mu - \theta_3\|_2 \;\le\; 1 .
   \end{aligned}
   \]
   Derive it. \textbf{Show all the steps clearly.}
-
-\item \textbf{(5 pts)} State a sufficient condition for strong duality. For which values of
-  $\sigma$ does it hold for the primal problem in (a)?
 \end{parts}
 
 % ================================================================ Problem 4
