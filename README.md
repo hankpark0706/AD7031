@@ -23,14 +23,14 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 | 5 | 9/26 | *No class* | | | | **[HW#1 solution](homework/hw01-sol.pdf)** |
 | 6 | 10/3 | Law of large numbers; duality; conic programming | [week06](lecture-notes/OUU_week06_note.pdf) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hankpark0706/AD7031/blob/main/notebooks/week06_markowitz_max_return.ipynb) *markowitz, max return* | 1. [Newton's Method in Optimization](https://www.youtube.com/watch?v=W7S94pq5Xuo)<br>2. [Dual problem](https://www.youtube.com/watch?v=uh1Dk68cfWs) | |
 | 7 | 10/10 | **Project topic pitch** — discussion of draft final-project ideas | 1. [Sign-up sheet](https://docs.google.com/spreadsheets/d/1tJ84bbIaPR2J5Y_F0ocXhTwKVYQEOGXXVd-yIYQU66Y/edit?gid=258135268#gid=258135268)<br>2. [발표참고자료](final-project/AD7031_project_template.pdf) | | | **Project topic pitch** (oral) on [Zoom](https://illinois.zoom.us/j/9545298219?pwd=RmpzSG5SYmJNUEx4SWNwQVhLL3BaZz09) |
-| 8 | 10/17 | Risk measures — mean-variance, Value at Risk (VaR), Conditional Value at Risk (CVaR) | | | | **[HW#2](homework/hw02.pdf) out** (due 10/31) |
-| 9 | 10/24 | One-stage models 1 — robust optimization, distributionally robust optimization | | | | |
-| 10 | 10/31 | One-stage models 2 — distributionally robust optimization; midterm review | | | | |
+| 8 | 10/17 | Duality; conic programming (cont.) | | | | **[HW#2](homework/hw02.pdf) out** (due 10/31) |
+| 9 | 10/24 | Risk measures — mean-variance, Value at Risk (VaR), Conditional Value at Risk (CVaR) | | | | |
+| 10 | 10/31 | **Midterm review** | | | | |
 | 11 | 11/7 | **Midterm** | | | | Written exam |
-| 12 | 11/14 | Two-stage models 1 — two-stage location–allocation problem (LAP) | | | | |
-| 13 | 11/21 | Two-stage models 2 — sample average approximation | | | | |
-| 14 | 11/28 | Two-stage models 3 — machine learning, contextual two-stage model | | | | |
-| 15 | 12/5 | Monte Carlo sampling — convergence, optimizer's curse, estimating solution quality | | | | |
+| 12 | 11/14 | One-stage models 1 | | | | |
+| 13 | 11/21 | One-stage models 2 | | | | |
+| 14 | 11/28 | Two-stage models 1 | | | | |
+| 15 | 12/5 | Two-stage models 2 | | | | |
 | 16 | 12/12 | **Final project presentation** | | | | Final slides & report due |
 
 Lecture notes, notebooks, and demos are posted week by week — check back after each lecture.
