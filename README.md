@@ -30,8 +30,8 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 | 12 | 11/14 | *TBD* | | | | |
 | 13 | 11/21 | **Final project 중간점검** | | | | |
 | 14 | 11/28 | *TBD* | | | | |
-| 15 | 12/5 | *TBD* | | | | |
-| 16 | 12/12 | **Final project presentation** (Group 1) | | | | **Group 2 presentation on 12/13** (TBD)<br>Final slides & report due |
+| 15 | 12/5 | **Final project presentation** (Group 2) | | | | |
+| 16 | 12/12 | **Final project presentation** (Group 1) | | | | Final slides & report due |
 
 Lecture notes, notebooks, and demos are posted week by week — check back after each lecture.
 
