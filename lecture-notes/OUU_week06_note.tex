@@ -20,9 +20,19 @@
 % minimum-variance portfolio in epigraph form, min t s.t. (x, t) in SOC_Sigma,
 % a conic program over R^{N+2}_+ x SOC_Sigma^{N+1} (coding-session assets, r = 0.13);
 % the second-order cone is stated with a general Q > 0, sqrt(x'Qx) <= t.
-% Section 5 ends with two dual examples: 1) the LP (C = R^N_+), 2) that portfolio with Sigma = I (z = (x, t), c = (0, 1), x >= 0 moved
-% to the halfspaces, C = SOC = C*). Checked numerically, mu = (0.10, 0.15),
-% r = 0.13: primal min = dual max = 0.7211 (= ||(0.4, 0.6)||_2).
+% Section 5 ends with three dual examples: 1) the LP (C = R^N_+); 2) the QP min x'Qx s.t.
+% Ax <= b, Q > 0, in epigraph form as a SOCP (z = (x, t), c = (0, 1), A-bar = [A 0],
+% C = SOC_Q), dual max -b'theta s.t. theta >= 0, theta'A Q^-1 A'theta <= 1, Q = I remark;
+% 3) that portfolio as Example 2 with Q = Sigma (x >= 0 moved to the halfspaces).
+% Section 5 beyond the handwritten p.5: after the dual-cone def, a numerical example
+% (C = wedge between a = (1,0), b = (1,1), defined in the figure; C* = {y1 >= 0, y1 + y2 >= 0};
+% five test y's, table + figure); the self-dual list became three examples: R^n_+ and SOC^n,
+% (SOC_Q)* = SOC_{Q^-1} stated without proof, then a note that R^n_+ and SOC^n have C = C*;
+% S^K_+ and products dropped. Added the
+% derivation of the dual conic program (dualize Ax <= b only; min over x in C of
+% y'x is 0 if y in C*, else -inf). Checked (cvxpy), mu = (0.10, 0.15), r = 0.13:
+% Sigma = [0.04 0.006; 0.006 0.09]: sqrt(min x'Sigma x) = SOCP primal = dual = 0.2042;
+% Sigma = I: 0.7211 (= ||(0.4, 0.6)||_2); a random QP also matches.
 % Same house style as OUU_week02_note.tex; self-contained -- no \input.
 % ============================================================================
 \documentclass[10pt]{article}
@@ -278,7 +288,7 @@ $\displaystyle =\ \max_{\theta \in \mathbb{R}^I_+}\ -\sum_{i \in [I]} \theta_i b
 \vspace{10pt}
 
 $\begin{aligned}
-  =\ \max\quad & -b^{\top}\theta \\
+  =\ \max\quad & {-b^{\top}\theta} \\
   \text{s.t.}\quad & \theta \in \mathbb{R}^I_+ \\
                    & A^{\top}\theta = -c
 \end{aligned}$
@@ -521,24 +531,66 @@ $\begin{aligned}
 \textbf{Def} (\emph{dual cone})
 \vspace{4pt}
 
-\quad $C^* = \big\{\, y \in \mathbb{R}^K \;:\; y^{\top}x \ge 0 \quad \forall x \in C \,\big\}$
+\quad $C^* = \big\{\, y \in \mathbb{R}^n \;:\; y^{\top}x \ge 0 \quad \forall x \in C \,\big\}$
 \vspace{14pt}
 
-\textbf{Self dual cones} \ $(C = C^*)$
+\quad $C^* = \big\{\, y \in \mathbb{R}^2 : y_1 \ge 0, \ \ y_1 + y_2 \ge 0 \,\big\}$
+\vspace{10pt}
+
+\begin{center}
+\begin{tabular}{@{}c|c|c|c@{}}
+ $y$ & $y^{\top}a = y_1$ & $y^{\top}b = y_1 + y_2$ & $y \in C^*$? \\ \hline
+ \rule{0pt}{2.6ex}$(1, 2)$ & $1$  & $3$  & {\color{grnink}yes} \\
+ $(0, 1)$  & $0$  & $1$  & {\color{grnink}yes} \\
+ $(1, -1)$ & $1$  & $0$  & {\color{grnink}yes} \\
+ $(-1, 2)$ & {\color{redink}$-1$} & $1$  & {\color{redink}no} \\
+ $(1, -2)$ & $1$  & {\color{redink}$-1$} & {\color{redink}no} \\
+\end{tabular}
+\hspace{1.2cm}
+\begin{tikzpicture}[scale=0.95, font=\small, baseline=(current bounding box.center)]
+  \fill[lineA!12] (0,0) -- (0,2.5) -- (2.5,2.5) -- (2.5,-2.5) -- cycle;
+  \fill[sandink] (0,0) -- (2.5,0) -- (2.5,2.5) -- cycle;
+  \draw[->] (-1.7,0) -- (2.9,0) node[right] {$x_1, y_1$};
+  \draw[->] (0,-2.6) -- (0,2.9) node[above] {$x_2, y_2$};
+  \draw[thick, lineA] (0,2.5) -- (0,0) -- (2.5,-2.5);
+  \draw[thick] (2.5,0) -- (0,0) -- (2.5,2.5);
+  \draw[->, very thick] (0,0) -- (1,0) node[below] {$a$};
+  \draw[->, very thick] (0,0) -- (1,1) node[above left] {$b$};
+  \node at (2.0,0.8) {$C$};
+  \node[anchor=south west, align=left] at (0.75,2.6)
+    {$C = \big\{\, x \in \mathbb{R}^2 : 0 \le x_2 \le x_1 \,\big\}$ \\ between the edges \\ $a = (1, 0)$, \ $b = (1, 1)$};
+  \node[lineA] at (1.7,-0.75) {$C^*$};
+  \fill[grnink] (1,2) circle (2pt) node[right] {$(1,2)$};
+  \fill[grnink] (0,1) circle (2pt) node[left] {$(0,1)$};
+  \fill[grnink] (1,-1) circle (2pt) node[left] {$(1,-1)$};
+  \fill[redink] (-1,2) circle (2pt) node[left] {$(-1,2)$};
+  \fill[redink] (1,-2) circle (2pt) node[below] {$(1,-2)$};
+\end{tikzpicture}
+\end{center}
+\vspace{14pt}
+
+\textbf{Example:}
+\vspace{8pt}
+
+\quad 1) \ $C = \mathbb{R}^n_+$ \ : \ $x \ge 0$
+\quad $\Longrightarrow$ \quad $C^* = \mathbb{R}^n_+ = C$
 \vspace{5pt}
 
-\quad --- $C = \mathbb{R}^K_+$
+\hspace{0.7cm}$n = 2$: \ edges $(1, 0)$, $(0, 1)$ \ $\Rightarrow$ \ $C^* = \{\, y : y_1 \ge 0, \ y_2 \ge 0 \,\} = C$
+\vspace{12pt}
+
+\quad 2) \ $C = \mathrm{SOC}^n$ \ : \ $\|x\|_2 \le t$ \ \ (second-order cone, $Q = I$)
+\quad $\Longrightarrow$ \quad $C^* = \mathrm{SOC}^n = C$
+\vspace{12pt}
+
+\quad 3) \ $C = \mathrm{SOC}_Q^n$ \ : \ $\sqrt{x^{\top}Q\,x} \le t$, \ \ $Q \succ 0$
 \vspace{5pt}
 
-\quad --- $C = \mathrm{SOC}^{K}$ \ (second-order cone, $Q = I$)
-\qquad {general $Q \succ 0$: \ $\big(\mathrm{SOC}_Q^{K}\big)^* = \mathrm{SOC}_{Q^{-1}}^{K}$ \ --- not self-dual}
-\vspace{5pt}
+\hspace{0.7cm}$\Longrightarrow$ \quad $C^* = \mathrm{SOC}_{Q^{-1}}^n$ \ : \ $\sqrt{x^{\top}Q^{-1}x} \le t$
+\vspace{14pt}
 
-\quad --- $C = \mathbb{S}^K_+$
-\vspace{5pt}
-
-\quad --- products of these: \quad $C = C_1 \times C_2$, \quad $C^* = C_1^* \times C_2^* = C$
-\vspace{16pt}
+$*$ \textbf{Note} \quad $C = \mathbb{R}^n_+ = C^*$ \ and \ $C = \mathrm{SOC}^n = C^*$
+\newpage
 
 \textbf{Primal conic program:}
 \vspace{2pt}
@@ -553,85 +605,207 @@ $\begin{aligned}
 \end{center}
 \vspace{12pt}
 
-\textbf{Dual conic program:}
+\textbf{Dual conic program:} \quad dualize only \ $Ax \le b$; \ keep \ $x \in C$ \ in the inner $\min$
+\vspace{8pt}
+
+\quad $\displaystyle \max_{\theta \in \mathbb{R}^I_+}\ \min_{x \in C}\
+  c^{\top}x + \sum_{i \in [I]} \theta_i \big(a_i^{\top}x - b_i\big)$
+\hspace{1.2cm}{$\displaystyle \sum_{i \in [I]} \theta_i a_i = A^{\top}\theta, \quad \sum_{i \in [I]} \theta_i b_i = b^{\top}\theta$}
+\vspace{8pt}
+
+$\displaystyle =\ \max_{\theta \in \mathbb{R}^I_+}\ -b^{\top}\theta
+  \ +\ \min_{x \in C}\ \underbrace{\big(c + A^{\top}\theta\big)^{\!\top} x}_{}$
 \vspace{2pt}
 
-\begin{center}
+\hspace{4.3cm}{$= \begin{cases}
+   0 & \text{if } \ c + A^{\top}\theta \in C^* \\[4pt]
+   -\infty & \text{otherwise}
+ \end{cases}$}
+\vspace{10pt}
+
+\quad $y = c + A^{\top}\theta$:
+\vspace{5pt}
+
+\qquad --- $y \in C^*$: \quad $y^{\top}x \ge 0 \ \ \forall x \in C$, \ \ and \ $x = 0 \in C$
+\quad $\Rightarrow$ \ $\min = 0$
+\vspace{5pt}
+
+\qquad --- $y \notin C^*$: \quad $\exists\, \bar x \in C : y^{\top}\bar x < 0$, \ \ and \
+$\lambda \bar x \in C \ \ \forall \lambda \ge 0$ \ (cone)
+\vspace{4pt}
+
+\hspace{3.1cm}$\Rightarrow$ \ $y^{\top}(\lambda \bar x) = \lambda\, y^{\top}\bar x \to -\infty$ \ as \ $\lambda \to \infty$
+\vspace{12pt}
+
 $\begin{aligned}
-  \max\quad & -b^{\top}\theta \\
+  =\ \max\quad & {-b^{\top}\theta} \\
   \text{s.t.}\quad & \theta \in \mathbb{R}^I_+ \\
                    & c + A^{\top}\theta \in C^*
 \end{aligned}$
-\end{center}
 \vspace{16pt}
 
 \textbf{Example 1:} \ linear program, \ $C = \mathbb{R}^N_+ = C^*$
 \vspace{6pt}
 
 \begin{center}
-$\begin{aligned}
+\begin{tabular}{@{}c@{\hspace{2.5cm}}c@{}}
+\textbf{Primal} & \textbf{Dual} \\[6pt]
+$\begin{aligned}[t]
   \min\quad & c^{\top}x \\
   \text{s.t.}\quad & x \in \mathbb{R}^N \\
                    & Ax \le b \\
                    & x \in \mathbb{R}^N_+ = C
-\end{aligned}$
-\qquad $\Longrightarrow$ \qquad
-$\begin{aligned}
-  \max\quad & -b^{\top}\theta \\
+\end{aligned}$ &
+$\begin{aligned}[t]
+  \max\quad & {-b^{\top}\theta} \\
   \text{s.t.}\quad & \theta \in \mathbb{R}^I_+ \\
                    & c + A^{\top}\theta \in \mathbb{R}^N_+ = C^*
 \end{aligned}$
+\end{tabular}
 \end{center}
 \newpage
 
-\textbf{Example 2:} \ portfolio, minimum variance \ --- for simplicity, \ $\Sigma = I$
-\vspace{8pt}
+\textbf{Example 2:} \ quadratic program, \ $Q \succ 0$
+\vspace{6pt}
 
-\quad hence \ $\sqrt{x^{\top}\Sigma\, x} = \sqrt{x^{\top}x} = \|x\|_2 \le t \iff (x, t) \in \mathrm{SOC}^{N+1} = C^*$
-\ (self-dual)
-\vspace{8pt}
+\begin{center}
+$\begin{aligned}
+  \min\quad & x^{\top}Q\,x \\
+  \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                   & Ax \le b
+\end{aligned}$
+\qquad $\iff$ \qquad
+$\begin{aligned}
+  \min\quad & t \\
+  \text{s.t.}\quad & (x, t) \in \mathbb{R}^N \times \mathbb{R} \\
+                   & Ax \le b \\
+                   & \sqrt{x^{\top}Q\,x} \le t
+\end{aligned}$
+\end{center}
+\vspace{4pt}
+
+\hspace{0.7cm}epigraph: \ same minimizer $x^*$, \ \ $t^* = \sqrt{x^{*\top}Q\,x^*}$
+\vspace{10pt}
 
 \quad decision \ $z = \begin{bmatrix} x \\ t \end{bmatrix} \in \mathbb{R}^{N+1}$, \qquad
 $c = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$, \qquad $c^{\top}z = t$
 \vspace{8pt}
 
-\quad $\mu^{\top}x \ge r, \ \ e^{\top}x \le 1, \ \ x \ge 0 \iff Az \le b$:
-\vspace{6pt}
-
-\quad $A = \begin{bmatrix} -\mu^{\top} & 0 \\ e^{\top} & 0 \\ -I & 0 \end{bmatrix}$, \qquad
-$b = \begin{bmatrix} -r \\ 1 \\ 0 \end{bmatrix}$
+\quad $Ax \le b \iff \bar A z \le b$, \ \ $\bar A = \begin{bmatrix} A & 0 \end{bmatrix}$
+\qquad\quad $\sqrt{x^{\top}Q\,x} \le t \iff z \in \mathrm{SOC}_Q^{N+1}$
 \vspace{8pt}
 
 \begin{center}
 $\begin{aligned}
   \min\quad & c^{\top}z \\
   \text{s.t.}\quad & z \in \mathbb{R}^{N+1} \\
-                   & Az \le b \\
-                   & z \in \mathrm{SOC}^{N+1}
+                   & \bar A z \le b \\
+                   & z \in \mathrm{SOC}_Q^{N+1} = C
+\end{aligned}$
+\qquad --- a SOCP
+\end{center}
+\vspace{12pt}
+
+\textbf{Dual:} \quad dualize only \ $\bar A z \le b$; \ \ $\theta \in \mathbb{R}^I_+$ \ --- one entry per row of $A$
+\vspace{8pt}
+
+\quad $\displaystyle \max_{\theta \in \mathbb{R}^I_+}\ \min_{z \in C}\
+  c^{\top}z + \theta^{\top}\big(\bar A z - b\big)$
+\vspace{8pt}
+
+$\displaystyle =\ \max_{\theta \in \mathbb{R}^I_+}\ -b^{\top}\theta
+  \ +\ \min_{z \in C}\ \big(c + \bar A^{\top}\theta\big)^{\!\top} z$
+\qquad $\Rightarrow$ \ $c + \bar A^{\top}\theta \in C^* = \mathrm{SOC}_{Q^{-1}}^{N+1}$
+\vspace{10pt}
+
+\quad $\bar A^{\top}\theta = \begin{bmatrix} A^{\top} \\ 0^{\top} \end{bmatrix} \theta
+  = \begin{bmatrix} A^{\top}\theta \\ 0 \end{bmatrix}$
+\vspace{8pt}
+
+\quad $c + \bar A^{\top}\theta = \begin{bmatrix} 0 \\ 1 \end{bmatrix} + \begin{bmatrix} A^{\top}\theta \\ 0 \end{bmatrix}
+  = \begin{bmatrix} A^{\top}\theta \\ 1 \end{bmatrix} \in \mathrm{SOC}_{Q^{-1}}^{N+1}
+  \iff \sqrt{(A^{\top}\theta)^{\top}\, Q^{-1}\, (A^{\top}\theta)} \le 1$
+\vspace{3pt}
+
+\hspace{8.5cm}{\small\color{lineA} it is just \ $\sqrt{y^{\top}Q^{-1}y} \le 1$ \ with \ $y = A^{\top}\theta$}
+\vspace{10pt}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{2.5cm}}c@{}}
+\textbf{Primal} & \textbf{Dual} \\[6pt]
+$\begin{aligned}[t]
+  \min\quad & c^{\top}z \\
+  \text{s.t.}\quad & z \in \mathbb{R}^{N+1} \\
+                   & \bar A z \le b \\
+                   & z \in \mathrm{SOC}_Q^{N+1}
+\end{aligned}$ &
+$\begin{aligned}[t]
+  \max\quad & {-b^{\top}\theta} \\
+  \text{s.t.}\quad & \theta \in \mathbb{R}^I_+ \\
+                   & \theta^{\top}A\, Q^{-1} A^{\top}\theta \le 1
+\end{aligned}$
+\end{tabular}
+\end{center}
+\vspace{14pt}
+
+\textbf{Remark} \quad $Q = I$: \quad $\sqrt{x^{\top}x} = \|x\|_2 \le t \iff z \in \mathrm{SOC}^{N+1} = C = C^*$,
+\qquad dual: \ $\|A^{\top}\theta\|_2 \le 1$
+\newpage
+
+\textbf{Example 3:} \ portfolio, minimum variance \ --- Example 2 with \ $Q = \Sigma$
+\vspace{6pt}
+
+\begin{center}
+$\begin{aligned}
+  \min\quad & x^{\top}\Sigma\, x \\
+  \text{s.t.}\quad & x \in \mathbb{R}^N \\
+                   & \mu^{\top}x \ge r \\
+                   & e^{\top}x \le 1 \\
+                   & x \ge 0
+\end{aligned}$
+\qquad $\iff$ \qquad
+$\begin{aligned}
+  \min\quad & t \\
+  \text{s.t.}\quad & (x, t) \in \mathbb{R}^N \times \mathbb{R} \\
+                   & Ax \le b \\
+                   & (x, t) \in \mathrm{SOC}_{\Sigma}^{N+1}
 \end{aligned}$
 \end{center}
 \vspace{8pt}
+
+\quad $\mu^{\top}x \ge r, \ \ e^{\top}x \le 1, \ \ x \ge 0 \iff Ax \le b$:
+\qquad $A = \begin{bmatrix} -\mu^{\top} \\ e^{\top} \\ -I \end{bmatrix}$, \qquad
+$b = \begin{bmatrix} -r \\ 1 \\ 0 \end{bmatrix}$
+\vspace{10pt}
 
 \quad dual: \ $\theta = \begin{bmatrix} \theta_1 \\ \theta_2 \\ \theta_3 \end{bmatrix} \in \mathbb{R}^{N+2}_+$,
 \ \ $\theta_1, \theta_2 \in \mathbb{R}_+$, \ $\theta_3 \in \mathbb{R}^N_+$ \quad --- one entry per row of $A$
 \vspace{8pt}
 
-\quad $-b^{\top}\theta = r\,\theta_1 - \theta_2$, \qquad
-$c + A^{\top}\theta = \begin{bmatrix} \theta_2 e - \theta_1 \mu - \theta_3 \\ 1 \end{bmatrix}
-  \in \mathrm{SOC}^{N+1}$
+\quad $A^{\top} = \begin{bmatrix} -\mu & e & -I \end{bmatrix}$, \qquad
+$A^{\top}\theta = \theta_2 e - \theta_1 \mu - \theta_3$, \qquad
+$-b^{\top}\theta = r\,\theta_1 - \theta_2$
 \vspace{10pt}
 
 \begin{center}
-$\begin{aligned}
+\begin{tabular}{@{}c@{\hspace{2.0cm}}c@{}}
+\textbf{Primal} & \textbf{Dual} \\[6pt]
+$\begin{aligned}[t]
+  \min\quad & t \\
+  \text{s.t.}\quad & (x, t) \in \mathbb{R}^N \times \mathbb{R} \\
+                   & Ax \le b \\
+                   & (x, t) \in \mathrm{SOC}_{\Sigma}^{N+1}
+\end{aligned}$ &
+$\begin{aligned}[t]
   \max\quad & r\,\theta_1 - \theta_2 \\
   \text{s.t.}\quad & \theta_1, \theta_2 \ge 0, \ \ \theta_3 \in \mathbb{R}^N_+ \\
-                   & \underbrace{\|\theta_2 e - \theta_1 \mu - \theta_3\|_2}_{\mathclap{\textstyle
-                       \left\| \, \theta_2 \begin{bmatrix} 1 \\ \vdots \\ 1 \end{bmatrix}
-                       - \theta_1 \begin{bmatrix} \mu_1 \\ \vdots \\ \mu_N \end{bmatrix}
-                       - \begin{bmatrix} \theta_{3,1} \\ \vdots \\ \theta_{3,N} \end{bmatrix} \right\|_2}}
-                     \le 1
+                   & (\theta_2 e - \theta_1 \mu - \theta_3)^{\top}\,\Sigma^{-1}\,(\theta_2 e - \theta_1 \mu - \theta_3) \le 1
 \end{aligned}$
+\end{tabular}
 \end{center}
+\vspace{10pt}
+
+\quad $\Sigma = I$: \quad $\|\theta_2 e - \theta_1 \mu - \theta_3\|_2 \le 1$
 \end{board}
 
 \end{document}
