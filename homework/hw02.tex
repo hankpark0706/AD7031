@@ -1,7 +1,7 @@
 % ============================================================================
 % AD7031 Homework 2 -- covers Weeks 4, 6, 8 (mean and covariance of a random
-% vector, LP duality, conic duality, risk measures VaR and CVaR).
-% 100 points, 4 problems of 25.
+% vector, LP duality, conic duality).
+% 75 points, 3 problems of 25.
 % Self-contained on purpose -- no \input{preamble} -- compiles with pdflatex.
 % ============================================================================
 \documentclass[10pt]{article}
@@ -178,61 +178,6 @@ where $e = [1, 1, \dots, 1]^{\top}$ is the all-ones vector and $r$ is the target
   \end{aligned}
   \]
   Derive it. \textbf{Show all the steps clearly.}
-\end{parts}
-
-% ================================================================ Problem 4
-\problem{25}{Problem 4. Risk measures}
-
-Recall the general stochastic program
-\[
-\text{(SP)} \quad
-\begin{aligned}
-  \min_{x \in \mathbb{R}^n} \quad & \mathcal{R}_{\mathbb{P}}\big[f_0(x, \tilde\xi)\big] \\
-  \text{s.t.} \quad & \mathcal{R}_{\mathbb{P}}\big[f_i(x, \tilde\xi)\big] \le 0 \qquad \forall i \in [I],
-\end{aligned}
-\]
-where $\tilde\xi \sim \mathbb{P}$ and $\mathcal{R}_{\mathbb{P}}$ is a risk measure of our choice.
-
-\begin{parts}
-\item \textbf{(5 pts)} Suppose we choose $\mathcal{R}_{\mathbb{P}} = \mathrm{VaR}_{\varepsilon}$, i.e., the objective function in (SP) is
-  \[
-  \begin{aligned}
-    \mathrm{VaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big] \;=\; \min_{t \in \mathbb{R}} \quad & t \\
-    \text{s.t.} \quad & \mathbb{P}\big(f_0(x, \tilde\xi) \le t\big) \ge 1 - \varepsilon .
-  \end{aligned}
-  \]
-  Using this minimization problem, explain in plain Korean what $\mathrm{VaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big]$ means.
-
-\item \textbf{(5 pts)} Show the reformulation of the constraint $\mathrm{VaR}_{\varepsilon}\big[f_i(x, \tilde\xi)\big] \le 0$.
-  \hint{use
-    \[
-      \mathrm{VaR}_{\varepsilon}\big[f_i(x, \tilde\xi)\big] \le 0
-      \quad \Longleftrightarrow \quad
-      \left[\begin{aligned}
-        \min_{t_i \in \mathbb{R}} \quad & t_i \\
-        \textnormal{s.t.} \quad & \mathbb{P}\big(f_i(x, \tilde\xi) \le t_i\big) \ge 1 - \varepsilon
-      \end{aligned}\right] \le 0
-      \quad \Longleftrightarrow \quad
-      \begin{aligned}
-        & t_i \le 0 \\
-        & \mathbb{P}\big(f_i(x, \tilde\xi) \le t_i\big) \ge 1 - \varepsilon .
-      \end{aligned}
-    \]}
-
-\item \textbf{(5 pts)} Suppose we choose $\mathcal{R}_{\mathbb{P}} = \mathrm{CVaR}_{\varepsilon}$, i.e., the objective function in (SP) is
-  \[
-    \mathrm{CVaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big] \;=\; \min_{\beta \in \mathbb{R}}\
-      \beta + \frac{1}{\varepsilon}\, \mathbb{E}_{\mathbb{P}}\big[\max\{f_0(x, \tilde\xi) - \beta,\ 0\}\big] .
-  \]
-  Using this minimization problem, explain in plain Korean what $\mathrm{CVaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big]$ means.
-
-\item \textbf{(5 pts)} Write the reformulation of (SP) with $\mathcal{R}_{\mathbb{P}} = \mathrm{CVaR}_{\varepsilon}$.
-  \textbf{Clearly show the reformulation of the objective
-  $\mathrm{CVaR}_{\varepsilon}\big[f_0(x, \tilde\xi)\big]$ and of every constraint
-  $\mathrm{CVaR}_{\varepsilon}\big[f_i(x, \tilde\xi)\big] \le 0$, $i \in [I]$.}
-  \hint{do the same as in (b).}
-
-\item \textbf{(5 pts)} For computational tractability, we may prefer CVaR over VaR. Explain why.
 \end{parts}
 
 \end{document}
