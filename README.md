@@ -25,7 +25,7 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 | 7 | 10/10 | **Project topic pitch** — discussion of draft final-project ideas | 1. [Sign-up sheet](https://docs.google.com/spreadsheets/d/1tJ84bbIaPR2J5Y_F0ocXhTwKVYQEOGXXVd-yIYQU66Y/edit?gid=258135268#gid=258135268)<br>2. [발표참고자료](final-project/AD7031_project_template.pdf) | | | **Project topic pitch** (oral) on [Zoom](https://illinois.zoom.us/j/9545298219?pwd=RmpzSG5SYmJNUEx4SWNwQVhLL3BaZz09) |
 | 8 | 10/17 | Duality; conic programming (cont.) | | | | **[HW#2](homework/hw02.pdf) out** (due 10/31) |
 | 9 | 10/24 | Risk measures 1 | [week09](lecture-notes/OUU_week09_note.pdf) | | | |
-| 10 | 10/31 | Chance constraints | | | | **HW#2 due** |
+| 10 | 10/31 | Chance constraints | | | | **HW#2 due** · 복습: [OL7014 week04](lecture-notes/OL7014_week04_slide.pdf) — classification as MILP, big-M |
 | 11 | 11/7 | Risk measures 2 | | | | |
 | 12 | 11/14 | Two-stage models 1 | | | | **HW#3 out** (due 12/5) |
 | 13 | 11/21 | Two-stage models 2 | | | | |
