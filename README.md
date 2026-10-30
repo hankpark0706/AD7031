@@ -43,11 +43,11 @@ remaining material is spread over the rest of the semester.
 
 |  | syllabus | revised |
 |---|:---:|:---:|
-| Homework | 20% (2 problem sets) | **30%** (3 problem sets) |
+| Homework | 20% (2 problem sets) | **45%** (3 problem sets) |
 | Midterm | 30% | — |
 | Final project | 40% | — |
-| Final exam | — | **60%** |
-| Attendance | 10% | **10%** |
+| Final exam | — | **35%** |
+| Attendance | 10% | **20%** |
 
 - **HW#3** — out 11/14, due 12/5
 - **Final exam** — week 16 (12/12), covering weeks 1–15
