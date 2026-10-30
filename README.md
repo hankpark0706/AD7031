@@ -30,7 +30,7 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 | 12 | 11/14 | Two-stage models 1 | | | | **HW#3 out** (due 12/5) |
 | 13 | 11/21 | Two-stage models 2 | | | | |
 | 14 | 11/28 | Two-stage models 3 | | | | |
-| 15 | 12/5 | Distributionally robust optimization | | | | **HW#3 due** · 기말고사 review |
+| 15 | 12/5 | *TBD* | | | | |
 | 16 | 12/12 | **Final exam** | | | | Written exam |
 
 Lecture notes, notebooks, and demos are posted week by week — check back after each lecture.
