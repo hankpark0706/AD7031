@@ -42,6 +42,7 @@ Close the plot window to end a demo (or to return to the menu).
 | QP, graphical method — circles instead of lines | `demo1d_qp_app.py` | `QP-Graphical-Demo.exe` |
 | Classification — draw your own line vs the min-error MILP | `module_classify_app.py` | `Classify-Dashboard.exe` |
 | Two-stage stochastic LAP (SAA) — solve, then simulate a disaster | `lap_app.py` | `LAP-Dashboard.exe` |
+| Portfolio under four risk measures — mean–variance, CVaR, VaR, chance constraint | `portfolio_dashboard.py` | — |
 
 Each `*_app.py` is the entry point: it picks the right GUI backend for your OS
 (`macosx` on a Mac, `TkAgg` elsewhere) and then imports the demo itself —

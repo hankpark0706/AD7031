@@ -49,6 +49,7 @@ DEMOS = [
     ("demo1d_qp_app.py",      "QP, graphical method -- circles instead of lines"),
     ("module_classify_app.py", "Classification -- draw your own line vs the min-error MILP"),
     ("lap_app.py",            "Two-stage stochastic LAP (SAA) -- solve, then simulate a disaster"),
+    ("portfolio_dashboard.py", "Portfolio under four risk measures -- mean-variance, CVaR, VaR, chance constraint"),
 ]
 
 
