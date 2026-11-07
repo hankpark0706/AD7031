@@ -1,0 +1,487 @@
+% ============================================================================
+% AD7031 Homework 2 -- Solutions.  Same preamble as hw02.tex plus kotex for
+% the plain-Korean answers, and a blue `solution' environment.
+% Problem 3's dual was checked against Gurobi on random instances.
+% Self-contained; compiles with pdflatex.
+% ============================================================================
+\documentclass[10pt]{article}
+
+\usepackage[a4paper, margin=2.2cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{kotex}
+\usepackage{bm}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ruleink}{RGB}{18, 68, 140}
+\definecolor{solink}{RGB}{20, 60, 170}
+
+\setlength{\parindent}{0pt}
+\pagestyle{plain}
+
+\AtBeginDocument{%
+  \abovedisplayskip=5pt plus 1pt
+  \belowdisplayskip=5pt plus 1pt
+  \abovedisplayshortskip=3pt
+  \belowdisplayshortskip=3pt}
+
+% ---- one problem -----------------------------------------------------------
+\newcommand{\problem}[2]{%   points, title
+  \par\bigskip
+  {\color{ruleink}\rule{\textwidth}{1pt}}\par\nobreak\vspace{3pt}
+  {\large\bfseries #2}\hfill{\normalsize\bfseries(#1 points)}\par\nobreak\vspace{4pt}}
+
+\newlist{parts}{enumerate}{1}
+\setlist[parts]{label=(\alph*), leftmargin=2.2em, itemsep=3pt}
+
+\newlist{steps}{enumerate}{1}
+\setlist[steps]{label=\arabic*., leftmargin=1.6em, itemsep=2pt, topsep=3pt}
+
+% ---- solution block ----------------------------------------------------------
+\newenvironment{solution}
+  {\par\smallskip\begingroup\color{solink}\textbf{Solution.}\ }
+  {\par\endgroup}
+
+\begin{document}
+
+\begin{center}
+  {\large AD7031 Optimization Under Uncertainty}\\[3pt]
+  {\Large\bfseries Homework 2 --- Solutions}\\[4pt]
+  {\small \textbf{Due Oct 31, start of class}}
+\end{center}
+\medskip\hrule\medskip
+
+% ================================================================ Problem 1
+\problem{25}{Problem 1. Mean and covariance of a random vector}
+
+We have three independent identically distributed (i.i.d.) return data points:
+
+\begin{center}
+\begin{tabular}{c|ccc}
+           & Tech   & Energy & Bond   \\ \hline
+ $\bm{\xi}^1$   & $0.00$ & $0.04$ & $0.03$ \\
+ $\bm{\xi}^2$   & $0.06$ & $0.10$ & $0.03$ \\
+ $\bm{\xi}^3$   & $0.12$ & $0.07$ & $0.03$ \\
+\end{tabular}
+\end{center}
+
+Note that we use $\widehat{\mathbb{E}}[\cdot]$, $\widehat{\mathrm{Var}}[\cdot]$ and $\widehat{\mathrm{Cov}}[\cdot]$ for empirical
+estimates, to distinguish them from their true counterparts $\mathbb{E}[\cdot]$, $\mathrm{Var}[\cdot]$ and $\mathrm{Cov}[\cdot]$.
+
+\begin{parts}
+\item \textbf{(8 pts)} \textbf{By hand}, compute the empirical mean $\widehat{\bm{\mu}} = \widehat{\mathbb{E}}[\tilde{\bm{\xi}}]$ and the
+  empirical covariance matrix $\widehat{\Sigma} = \widehat{\mathrm{Cov}}[\tilde{\bm{\xi}}]$, and state the dimensions of $\widehat{\bm{\mu}}$ and $\widehat{\Sigma}$.
+
+\begin{solution}
+$\widehat{\mathbb{E}}$ averages over the three data points:
+\[
+  \widehat{\bm{\mu}} = \tfrac13\big(\bm{\xi}^1 + \bm{\xi}^2 + \bm{\xi}^3\big)
+      = \begin{pmatrix} 0.06 \\ 0.07 \\ 0.03 \end{pmatrix} \in \mathbb{R}^3 .
+\]
+The deviations $\bm{\xi}^s - \widehat{\bm{\mu}}$ are $(-0.06,\, -0.03,\, 0)$, $(0,\, 0.03,\, 0)$ and $(0.06,\, 0,\, 0)$, so
+$\widehat{\Sigma} = \tfrac13 \sum_s (\bm{\xi}^s - \widehat{\bm{\mu}})(\bm{\xi}^s - \widehat{\bm{\mu}})^{\top}$ is
+\[
+  \widehat{\Sigma} = \begin{pmatrix}
+    0.0024 & 0.0006 & 0 \\
+    0.0006 & 0.0006 & 0 \\
+    0      & 0      & 0
+  \end{pmatrix} \in \mathbb{R}^{3 \times 3},
+\]
+e.g.\ $\widehat{\Sigma}_{11} = \tfrac13(0.06^2 + 0 + 0.06^2) = 0.0024$ and
+$\widehat{\Sigma}_{12} = \tfrac13\big((-0.06)(-0.03) + 0 + 0\big) = 0.0006$.
+The Bond never moves, so its row and column are zero.
+(Dividing by $3 - 1 = 2$ instead, the unbiased sample covariance, is also accepted.)
+\end{solution}
+
+\item \textbf{(5 pts)} We used only three data points. In general, with $N$ i.i.d.\ samples of $\tilde{\bm{\xi}}$, the empirical mean and
+  covariance matrix can be written $\widehat{\bm{\mu}}_N$ and $\widehat{\Sigma}_N$. Consider the claim
+  \[
+    \lim_{N \to \infty} \widehat{\bm{\mu}}_N = \mathbb{E}[\tilde{\bm{\xi}}] = \bm{\mu}, \qquad
+    \lim_{N \to \infty} \widehat{\Sigma}_N = \mathrm{Cov}[\tilde{\bm{\xi}}] = \Sigma .
+  \]
+  What does it mean? Explain in plain Korean. Is it true? If so, why?
+
+\begin{solution}
+데이터를 많이 모을수록, 데이터로 계산한 평균과 공분산이 진짜 평균과 공분산에 점점 가까워진다는 뜻이다.
+데이터가 무한히 많으면 둘은 같아진다.
+\par\smallskip
+It is true, with probability one, as long as $\bm{\mu}$ and $\Sigma$ are finite. The reason is the
+\textbf{law of large numbers}: the average of i.i.d.\ samples converges to their expectation.
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt, topsep=3pt]
+  \item $\widehat{\bm{\mu}}_N = \frac1N \sum_{s=1}^{N} \bm{\xi}^s \to \mathbb{E}[\tilde{\bm{\xi}}] = \bm{\mu}$.
+  \item $\widehat{\Sigma}_N = \frac1N \sum_{s=1}^{N} \bm{\xi}^s\bm{\xi}^{s\top} - \widehat{\bm{\mu}}_N\widehat{\bm{\mu}}_N^{\top}$. The law of large
+    numbers applied to $\tilde{\bm{\xi}}\tilde{\bm{\xi}}^{\top}$ gives
+    $\frac1N \sum_s \bm{\xi}^s\bm{\xi}^{s\top} \to \mathbb{E}[\tilde{\bm{\xi}}\tilde{\bm{\xi}}^{\top}]$, and
+    $\widehat{\bm{\mu}}_N\widehat{\bm{\mu}}_N^{\top} \to \bm{\mu}\bm{\mu}^{\top}$, so
+    $\widehat{\Sigma}_N \to \mathbb{E}[\tilde{\bm{\xi}}\tilde{\bm{\xi}}^{\top}] - \bm{\mu}\bm{\mu}^{\top} = \Sigma$.
+\end{itemize}
+\end{solution}
+
+\item \textbf{(7 pts)} Suppose your portfolio is $\bar{\bm{x}} = (\bar{x}_1, \bar{x}_2, \bar{x}_3)^{\top}$.
+  From the table, compute, in terms of $\bar{\bm{x}}$,
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item the empirical mean $\widehat{\mathbb{E}}[\tilde{\bm{\xi}}^{\top}\bar{\bm{x}}]$;
+    \item the empirical variance $\widehat{\mathrm{Var}}[\tilde{\bm{\xi}}^{\top}\bar{\bm{x}}]$.
+  \end{itemize}
+
+\begin{solution}
+Write $x_j$ for $\bar{x}_j$. The portfolio return for each data point is
+\[
+  \bm{\xi}^{1\top}\bm{x} = 0.04x_2 + 0.03x_3, \qquad
+  \bm{\xi}^{2\top}\bm{x} = 0.06x_1 + 0.10x_2 + 0.03x_3, \qquad
+  \bm{\xi}^{3\top}\bm{x} = 0.12x_1 + 0.07x_2 + 0.03x_3 .
+\]
+Averaging the three,
+\[
+  \widehat{\mathbb{E}}[\tilde{\bm{\xi}}^{\top}\bm{x}] = 0.06x_1 + 0.07x_2 + 0.03x_3 .
+\]
+The deviations from the mean are $-0.06x_1 - 0.03x_2$, $\ 0.03x_2$ and $\ 0.06x_1$, so
+\[
+  \widehat{\mathrm{Var}}[\tilde{\bm{\xi}}^{\top}\bm{x}]
+  = \tfrac13\big[(0.06x_1 + 0.03x_2)^2 + (0.03x_2)^2 + (0.06x_1)^2\big]
+  = 0.0024x_1^2 + 0.0012x_1x_2 + 0.0006x_2^2 .
+\]
+$x_3$ drops out of the variance: the Bond adds no risk.
+\end{solution}
+
+\item \textbf{(5 pts)} Show that
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item $\widehat{\mathbb{E}}[\tilde{\bm{\xi}}^{\top}\bar{\bm{x}}] = \widehat{\bm{\mu}}^{\top}\bar{\bm{x}}$;
+    \item $\widehat{\mathrm{Var}}[\tilde{\bm{\xi}}^{\top}\bar{\bm{x}}] = \bar{\bm{x}}^{\top}\widehat{\Sigma}\, \bar{\bm{x}}$.
+  \end{itemize}
+
+\begin{solution}
+Write $\bm{x}$ for $\bar{\bm{x}}$. $\widehat{\mathbb{E}}$ is an average, so it is linear:
+\[
+  \widehat{\mathbb{E}}[\tilde{\bm{\xi}}^{\top}\bm{x}] = \widehat{\mathbb{E}}\Big[\sum_j \tilde{\xi}_j x_j\Big]
+  = \sum_j x_j\, \widehat{\mathbb{E}}[\tilde{\xi}_j] = \widehat{\bm{\mu}}^{\top}\bm{x} .
+\]
+Since $\tilde{\bm{\xi}}^{\top}\bm{x} - \widehat{\bm{\mu}}^{\top}\bm{x} = (\tilde{\bm{\xi}} - \widehat{\bm{\mu}})^{\top}\bm{x}$ is a number, its square is
+$\bm{x}^{\top}(\tilde{\bm{\xi}} - \widehat{\bm{\mu}})(\tilde{\bm{\xi}} - \widehat{\bm{\mu}})^{\top}\bm{x}$, so
+\[
+  \widehat{\mathrm{Var}}[\tilde{\bm{\xi}}^{\top}\bm{x}]
+  = \widehat{\mathbb{E}}\big[\bm{x}^{\top}(\tilde{\bm{\xi}} - \widehat{\bm{\mu}})(\tilde{\bm{\xi}} - \widehat{\bm{\mu}})^{\top}\bm{x}\big]
+  = \bm{x}^{\top}\,\widehat{\mathbb{E}}\big[(\tilde{\bm{\xi}} - \widehat{\bm{\mu}})(\tilde{\bm{\xi}} - \widehat{\bm{\mu}})^{\top}\big]\,\bm{x}
+  = \bm{x}^{\top}\widehat{\Sigma}\, \bm{x} .
+\]
+The same steps hold with $\mathbb{E}$, $\bm{\mu}$, $\Sigma$ for any distribution.
+Check: with $\widehat{\Sigma}$ from (a),
+$\bm{x}^{\top}\widehat{\Sigma} \bm{x} = 0.0024x_1^2 + 2(0.0006)x_1x_2 + 0.0006x_2^2$, the same as (c).
+\end{solution}
+\end{parts}
+
+% ================================================================ Problem 2
+\problem{25}{Problem 2. Linear program duality}
+
+Consider the following primal linear program and its dual, in the canonical form of the lecture note:
+\[
+\text{(P)} \quad
+\begin{aligned}
+  \min_{\bm{x} \in \mathbb{R}^n} \quad & \bm{c}^{\top}\bm{x} \\
+  \text{s.t.} \quad & A\bm{x} \le \bm{b}
+\end{aligned}
+\qquad\qquad
+\text{(D)} \quad
+\begin{aligned}
+  \max_{\bm{\theta} \in \mathbb{R}^m} \quad & -\bm{b}^{\top}\bm{\theta} \\
+  \text{s.t.} \quad & \bm{c} + A^{\top}\bm{\theta} = \bm{0} \\
+                    & \bm{\theta} \ge \bm{0}
+\end{aligned}
+\]
+
+\begin{parts}
+\item \textbf{(8 pts)} Derive the dual problem (D) from the primal problem (P). \textbf{Show all the steps clearly.}
+
+\begin{solution}
+Attach $\bm{\theta} \ge \bm{0}$ to $A\bm{x} \le \bm{b}$:
+\[
+  L(\bm{x}, \bm{\theta}) = \bm{c}^{\top}\bm{x} + \bm{\theta}^{\top}(A\bm{x} - \bm{b}).
+\]
+\begin{steps}
+\item For fixed $\bm{x}$, $\max_{\bm{\theta} \ge \bm{0}} \bm{\theta}^{\top}(A\bm{x} - \bm{b})$ is $0$ if $A\bm{x} \le \bm{b}$ (take $\bm{\theta} = \bm{0}$)
+  and $+\infty$ otherwise (let $\theta_i \to \infty$ on a violated row). So
+  \[
+    \text{(P)} = \min_{\bm{x}} \max_{\bm{\theta} \ge \bm{0}} L(\bm{x}, \bm{\theta}).
+  \]
+\item Swapping the operators can only lower the value (weak duality):
+  \[
+    \min_{\bm{x}} \max_{\bm{\theta} \ge \bm{0}} L(\bm{x}, \bm{\theta}) \;\ge\; \max_{\bm{\theta} \ge \bm{0}} \min_{\bm{x}} L(\bm{x}, \bm{\theta}).
+  \]
+\item For fixed $\bm{\theta}$, $L = (\bm{c} + A^{\top}\bm{\theta})^{\top}\bm{x} - \bm{b}^{\top}\bm{\theta}$. Its minimum over
+  $\bm{x} \in \mathbb{R}^n$ is $-\bm{b}^{\top}\bm{\theta}$ if $\bm{c} + A^{\top}\bm{\theta} = \bm{0}$, and $-\infty$ otherwise.
+\item The outer max never picks a $\bm{\theta}$ with value $-\infty$, so $\bm{c} + A^{\top}\bm{\theta} = \bm{0}$ becomes
+  a constraint. This is (D):
+  \[
+  \begin{aligned}
+    \max_{\bm{\theta}} \quad & -\bm{b}^{\top}\bm{\theta} \\
+    \text{s.t.} \quad & \bm{c} + A^{\top}\bm{\theta} = \bm{0} \\
+                      & \bm{\theta} \ge \bm{0} .
+  \end{aligned}
+  \]
+\end{steps}
+\end{solution}
+
+\item \textbf{(7 pts)} Consider the primal problem
+\[
+\begin{aligned}
+  \min_{\bm{x} \in \mathbb{R}^2} \quad & -4x_1 - 5x_2 \\
+  \text{s.t.} \quad & 3x_1 + 2x_2 \le 60 \\
+                    & x_1 + 3x_2 \le 48 \\
+                    & x_1 \ge 3 \\
+                    & x_1,\ x_2 \ge 0 .
+\end{aligned}
+\]
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item Give $\bm{c}$, $A$, $\bm{b}$.
+    \item Write the dual problem (D) numerically.
+  \end{itemize}
+
+\begin{solution}
+$x_1 \ge 3$ becomes $-x_1 \le -3$ and $x_2 \ge 0$ becomes $-x_2 \le 0$; $x_1 \ge 0$ is implied by
+$x_1 \ge 3$ and dropped:
+\[
+  \bm{c} = \begin{pmatrix} -4 \\ -5 \end{pmatrix}, \qquad
+  A = \begin{pmatrix} 3 & 2 \\ 1 & 3 \\ -1 & 0 \\ 0 & -1 \end{pmatrix}, \qquad
+  \bm{b} = \begin{pmatrix} 60 \\ 48 \\ -3 \\ 0 \end{pmatrix}.
+\]
+With $\bm{\theta} \in \mathbb{R}^4$, $-\bm{b}^{\top}\bm{\theta} = -60\theta_1 - 48\theta_2 + 3\theta_3$ and
+$\bm{c} + A^{\top}\bm{\theta} = \bm{0}$ gives two equations:
+\[
+\begin{aligned}
+  \max_{\bm{\theta} \in \mathbb{R}^4} \quad & -60\theta_1 - 48\theta_2 + 3\theta_3 \\
+  \text{s.t.} \quad & 3\theta_1 + \theta_2 - \theta_3 = 4 \\
+                    & 2\theta_1 + 3\theta_2 - \theta_4 = 5 \\
+                    & \theta_1, \theta_2, \theta_3, \theta_4 \ge 0 .
+\end{aligned}
+\]
+(Keeping the redundant row $-x_1 \le 0$ adds a $\theta_5 \ge 0$ with $-\theta_5$ in the first
+equation; also correct.)
+\end{solution}
+
+\item \textbf{(7 pts)} Derive the primal problem (P) from the dual problem (D). \textbf{Show all the steps clearly.}
+
+\begin{solution}
+The same four steps, now for the max problem (D). Attach $\bm{x} \in \mathbb{R}^n$ (free) to the equality
+$\bm{c} + A^{\top}\bm{\theta} = \bm{0}$ and $\bm{s} \ge \bm{0}$ to $\bm{\theta} \ge \bm{0}$:
+\[
+  L(\bm{\theta}, \bm{x}, \bm{s}) = -\bm{b}^{\top}\bm{\theta} + \bm{x}^{\top}(\bm{c} + A^{\top}\bm{\theta}) + \bm{s}^{\top}\bm{\theta}.
+\]
+\begin{steps}
+\item For fixed $\bm{\theta}$, $\min_{\bm{x},\, \bm{s} \ge \bm{0}} L$ is $-\bm{b}^{\top}\bm{\theta}$ if $\bm{c} + A^{\top}\bm{\theta} = \bm{0}$ and
+  $\bm{\theta} \ge \bm{0}$, and $-\infty$ otherwise. So
+  \[
+    \text{(D)} = \max_{\bm{\theta}} \min_{\bm{x},\, \bm{s} \ge \bm{0}} L(\bm{\theta}, \bm{x}, \bm{s}).
+  \]
+\item Weak duality:
+  \[
+    \max_{\bm{\theta}} \min_{\bm{x},\, \bm{s} \ge \bm{0}} L(\bm{\theta}, \bm{x}, \bm{s}) \;\le\; \min_{\bm{x},\, \bm{s} \ge \bm{0}} \max_{\bm{\theta}} L(\bm{\theta}, \bm{x}, \bm{s}).
+  \]
+\item For fixed $(\bm{x}, \bm{s})$, $L = \bm{c}^{\top}\bm{x} + (A\bm{x} + \bm{s} - \bm{b})^{\top}\bm{\theta}$. Its maximum over
+  $\bm{\theta} \in \mathbb{R}^m$ is $\bm{c}^{\top}\bm{x}$ if $A\bm{x} + \bm{s} = \bm{b}$, and $+\infty$ otherwise.
+\item What survives is
+  \[
+  \begin{aligned}
+    \min_{\bm{x},\, \bm{s}} \quad & \bm{c}^{\top}\bm{x} \\
+    \text{s.t.} \quad & A\bm{x} + \bm{s} = \bm{b} \\
+                      & \bm{s} \ge \bm{0} .
+  \end{aligned}
+  \]
+  Here $\bm{s}$ is just the slack, so this is (P):
+  \[
+  \begin{aligned}
+    \min_{\bm{x}} \quad & \bm{c}^{\top}\bm{x} \\
+    \text{s.t.} \quad & A\bm{x} \le \bm{b} .
+  \end{aligned}
+  \]
+\end{steps}
+\end{solution}
+
+\item \textbf{(3 pts)} Let $\bm{x}^{\star}$ and $\bm{\theta}^{\star}$ be optimal solutions of the primal problem (P) and the dual problem (D),
+  respectively. What can you say about $\bm{c}^{\top}\bm{x}^{\star}$ and $\bm{b}^{\top}\bm{\theta}^{\star}$?
+
+\begin{solution}
+For any feasible $\bm{x}$ and $\bm{\theta}$,
+$\bm{c}^{\top}\bm{x} = -\bm{\theta}^{\top}A\bm{x} \ge -\bm{\theta}^{\top}\bm{b}$ (weak duality). For linear programs strong duality
+holds, so at the optimum
+\[
+  \bm{c}^{\top}\bm{x}^{\star} = -\bm{b}^{\top}\bm{\theta}^{\star} .
+\]
+In (b): $\bm{x}^{\star} = (12, 12)$ and $\bm{\theta}^{\star} = (1, 1, 0, 0)$, and both values are $-108$.
+\end{solution}
+\end{parts}
+
+% ================================================================ Problem 3
+\problem{25}{Problem 3. Conic program duality}
+
+Consider
+\[
+\begin{aligned}
+  \min_{\bm{x} \in \mathbb{R}^n} \quad & \bm{x}^{\top}\Sigma \bm{x} \\
+  \text{s.t.} \quad & \bm{\mu}^{\top}\bm{x} \ge r \\
+                    & \bm{e}^{\top}\bm{x} \le 1 \\
+                    & \bm{x} \ge \bm{0}
+\end{aligned}
+\]
+where $\bm{e} = [1, 1, \dots, 1]^{\top}$ is the all-ones vector and $r$ is the target return.
+
+\begin{parts}
+\item \textbf{(12 pts)} Recall the second-order cone
+  \[
+    \mathrm{SOC}_Q^{n+1} = \big\{ (\bm{x}, t) \in \mathbb{R}^n \times \mathbb{R} \;:\; \bm{x}^{\top}Q\,\bm{x} \le t^2,\ t \ge 0 \big\},
+    \qquad Q \succ 0 .
+  \]
+  Write the model in the conic form
+  \[
+  \begin{aligned}
+    \min \quad & \bm{c}^{\top}\bm{z} \\
+    \text{s.t.} \quad & A\bm{z} \le \bm{b} \\
+                      & \bm{z} \in C .
+  \end{aligned}
+  \]
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item Give $\bm{z}$ (the decision variable), $\bm{c}$, $A$, $\bm{b}$.
+    \item Write $C$.
+  \end{itemize}
+
+\begin{solution}
+Minimizing $\bm{x}^{\top}\Sigma \bm{x}$ and minimizing $\sqrt{\bm{x}^{\top}\Sigma \bm{x}}$ give the same $\bm{x}$. The epigraph
+reformulation with a new variable $t$ is
+\[
+\begin{aligned}
+  \min_{\bm{x},\, t} \quad & t \\
+  \text{s.t.} \quad & \bm{x}^{\top}\Sigma \bm{x} \le t^2,\ t \ge 0 \\
+                    & \bm{\mu}^{\top}\bm{x} \ge r \\
+                    & \bm{e}^{\top}\bm{x} \le 1 \\
+                    & \bm{x} \ge \bm{0} .
+\end{aligned}
+\]
+With $\bm{z} = [\bm{x},\ t]^{\top} \in \mathbb{R}^{n+1}$:
+\[
+  \bm{c} = \begin{pmatrix} \bm{0} \\ 1 \end{pmatrix}, \qquad
+  A = \begin{pmatrix} -\bm{\mu}^{\top} & 0 \\ \bm{e}^{\top} & 0 \\ -I_n & \bm{0} \end{pmatrix}, \qquad
+  \bm{b} = \begin{pmatrix} -r \\ 1 \\ \bm{0} \end{pmatrix}
+  \qquad
+  \begin{array}{l}
+    \scriptstyle\text{return} \\ \scriptstyle\text{budget} \\ \scriptstyle \bm{x} \ge \bm{0}
+  \end{array}
+\]
+with $\bm{c} \in \mathbb{R}^{n+1}$, $A \in \mathbb{R}^{(n+2) \times (n+1)}$ and $\bm{b} \in \mathbb{R}^{n+2}$. The cone is
+\[
+  C = \mathrm{SOC}_{\Sigma}^{n+1}
+    = \big\{ (\bm{x}, t) \in \mathbb{R}^n \times \mathbb{R} \;:\; \bm{x}^{\top}\Sigma\, \bm{x} \le t^2,\ t \ge 0 \big\}.
+\]
+Check: $\bm{c}^{\top}\bm{z} = t$, and $A\bm{z} \le \bm{b}$ reads $\bm{\mu}^{\top}\bm{x} \ge r$, $\bm{e}^{\top}\bm{x} \le 1$, $\bm{x} \ge \bm{0}$.
+\end{solution}
+
+\item \textbf{(13 pts)} With $\Sigma = I$, the dual problem of the second-order cone program in (a) is
+  \[
+  \begin{aligned}
+    \max \quad & r\,\theta_1 - \theta_2 \\
+    \text{s.t.} \quad & \theta_1,\ \theta_2 \ge 0, \quad \bm{\theta}_3 \in \mathbb{R}^n_+ \\
+                      & \|\theta_2 \bm{e} - \theta_1 \bm{\mu} - \bm{\theta}_3\|_2 \;\le\; 1 .
+  \end{aligned}
+  \]
+  Derive it. \textbf{Show all the steps clearly.}
+
+\begin{solution}
+In (a), we have
+\[
+  C = \mathrm{SOC}_{\Sigma}^{n+1}
+    = \big\{ (\bm{x}, t) \in \mathbb{R}^n \times \mathbb{R} \;:\; \bm{x}^{\top}\Sigma\, \bm{x} \le t^2,\ t \ge 0 \big\}.
+\]
+With $\Sigma = I$, our cone $C$ becomes
+\[
+  C = \mathrm{SOC}_{I}^{n+1}
+    = \big\{ (\bm{x}, t) \in \mathbb{R}^n \times \mathbb{R} \;:\; \bm{x}^{\top}I\,\bm{x} = \bm{x}^{\top}\bm{x} = \|\bm{x}\|_2^2 \le t^2,\ t \ge 0 \big\}.
+\]
+The primal problem from (a), with a dual variable next to each constraint in $A\bm{z} \le \bm{b}$, is
+\[
+\begin{aligned}
+  \min \quad & \bm{c}^{\top}\bm{z} \\
+  \text{s.t.} \quad & A\bm{z} \le \bm{b} \\
+                    & \bm{z} \in C
+\end{aligned}
+\qquad = \qquad
+\begin{aligned}
+  \min_{\bm{x},\, t} \quad & t \\
+  \text{s.t.} \quad & \bm{\mu}^{\top}\bm{x} \ge r & & ({:}\ \theta_1 \in \mathbb{R}_+) \\
+                    & \bm{e}^{\top}\bm{x} \le 1 & & ({:}\ \theta_2 \in \mathbb{R}_+) \\
+                    & \bm{x} \ge \bm{0} & & ({:}\ \bm{\theta}_3 \in \mathbb{R}^n_+) \\
+                    & (\bm{x}, t) \in C .
+\end{aligned}
+\]
+Together, $\bm{\theta} = (\theta_1, \theta_2, \bm{\theta}_3) \in \mathbb{R}^{n+2}_+$.
+The steps of Problem 2(a), keeping $\bm{z} \in C$ as a constraint:
+\[
+  L(\bm{z}, \bm{\theta}) = \bm{c}^{\top}\bm{z} + \bm{\theta}^{\top}(A\bm{z} - \bm{b}).
+\]
+\begin{steps}
+\item The primal problem is written as
+  \[
+    \min_{\bm{z} \in C} \max_{\bm{\theta} \in \mathbb{R}^{n+2}_+} L(\bm{z}, \bm{\theta}).
+  \]
+  Switching min and max, the dual problem is
+  \[
+    \max_{\bm{\theta} \in \mathbb{R}^{n+2}_+} \min_{\bm{z} \in C} L(\bm{z}, \bm{\theta}).
+  \]
+\item Collecting the terms in $\bm{z}$,
+  \[
+    \max_{\bm{\theta} \in \mathbb{R}^{n+2}_+} \min_{\bm{z} \in C} L(\bm{z}, \bm{\theta})
+    = \max_{\bm{\theta} \in \mathbb{R}^{n+2}_+} \; -\bm{b}^{\top}\bm{\theta} + \min_{\bm{z} \in C} \, (\bm{c} + A^{\top}\bm{\theta})^{\top}\bm{z} ,
+  \]
+  where
+  \[
+    \min_{\bm{z} \in C} \, (\bm{c} + A^{\top}\bm{\theta})^{\top}\bm{z} =
+    \begin{cases}
+      0 & \text{if } \bm{c} + A^{\top}\bm{\theta} \in C^{*} \\
+      -\infty & \text{otherwise.}
+    \end{cases}
+  \]
+  With $\bm{y} = \bm{c} + A^{\top}\bm{\theta}$:
+  \begin{itemize}[leftmargin=1.6em, itemsep=2pt, topsep=3pt, beginpenalty=10000]
+    \item $\bm{y} \in C^{*}$: $\bm{y}^{\top}\bm{z} \ge 0$ for all $\bm{z} \in C$, and $\bm{z} = \bm{0} \in C$, so the min is $0$.
+    \item $\bm{y} \notin C^{*}$: there is $\bar{\bm{z}} \in C$ with $\bm{y}^{\top}\bar{\bm{z}} < 0$, and $\lambda \bar{\bm{z}} \in C$ for all
+      $\lambda \ge 0$ (cone), so $\lambda\, \bm{y}^{\top}\bar{\bm{z}} \to -\infty$ as $\lambda \to \infty$.
+  \end{itemize}
+  Therefore, the dual problem is
+  \[
+  \begin{aligned}
+    \max \quad & -\bm{b}^{\top}\bm{\theta} \\
+    \text{s.t.} \quad & \bm{\theta} \in \mathbb{R}^{n+2}_+ \\
+                      & \bm{c} + A^{\top}\bm{\theta} \in C^{*} .
+  \end{aligned}
+  \]
+\end{steps}
+Substituting $\bm{c}$, $A$, $\bm{b}$ from (a),
+\[
+\begin{aligned}
+  -\bm{b}^{\top}\bm{\theta} &= -\begin{pmatrix} -r & 1 & \bm{0}^{\top} \end{pmatrix}
+      \begin{pmatrix} \theta_1 \\ \theta_2 \\ \bm{\theta}_3 \end{pmatrix}
+    = r\theta_1 - \theta_2, \\[4pt]
+  \bm{c} + A^{\top}\bm{\theta} &= \begin{pmatrix} \bm{0} \\ 1 \end{pmatrix}
+    + \begin{pmatrix} -\bm{\mu} & \bm{e} & -I_n \\ 0 & 0 & \bm{0}^{\top} \end{pmatrix}
+      \begin{pmatrix} \theta_1 \\ \theta_2 \\ \bm{\theta}_3 \end{pmatrix}
+    = \begin{pmatrix} \theta_2 \bm{e} - \theta_1 \bm{\mu} - \bm{\theta}_3 \\ 1 \end{pmatrix}.
+\end{aligned}
+\]
+With $\Sigma = I$, the second-order cone is self-dual (week 6), so
+\[
+  \bm{c} + A^{\top}\bm{\theta}
+  = \begin{pmatrix} \theta_2 \bm{e} - \theta_1 \bm{\mu} - \bm{\theta}_3 \\ 1 \end{pmatrix}
+  \in C^{*} = \big\{ (\theta_2 \bm{e} - \theta_1 \bm{\mu} - \bm{\theta}_3,\ 1) \in \mathbb{R}^n \times \mathbb{R} \;:\;
+      \|\theta_2 \bm{e} - \theta_1 \bm{\mu} - \bm{\theta}_3\|_2 \le 1 \big\},
+\]
+and the dual is
+\[
+\begin{aligned}
+  \max_{\theta_1,\, \theta_2,\, \bm{\theta}_3} \quad & r\,\theta_1 - \theta_2 \\
+  \text{s.t.} \quad & \theta_1,\ \theta_2 \ge 0, \quad \bm{\theta}_3 \in \mathbb{R}^n_+ \\
+                    & \|\theta_2 \bm{e} - \theta_1 \bm{\mu} - \bm{\theta}_3\|_2 \;\le\; 1 .
+\end{aligned}
+\]
+\end{solution}
+\end{parts}
+
+\end{document}
