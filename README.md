@@ -27,7 +27,7 @@ dashboards, and Colab-ready notebooks, updated weekly as the course progresses.
 | 9 | 10/24 | Risk measures 1 | [week09](lecture-notes/OUU_week09_note.pdf) | | | |
 | 10 | 10/31 | Chance constraints — ML is optimization under uncertainty | [week10](lecture-notes/OUU_week10_slide.pdf) | | | [TensorFlow Playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.11962&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false) |
 | 11 | 11/7 | Risk measures 1 | [week11](lecture-notes/OUU_week11_note.pdf) | [portfolio dashboard](demos/portfolio_dashboard.py) | | **[HW#2 solution](homework/hw02-sol.pdf)** |
-| 12 | 11/14 | Risk measures 2 | [week11](lecture-notes/OUU_week11_note.pdf) | | | **HW#3 out** (due 12/5) |
+| 12 | 11/14 | Risk measures 2 | [week11](lecture-notes/OUU_week11_note.pdf) | | | **[HW#3](homework/hw03.pdf) out** (due 11/28) |
 | 13 | 11/21 | Two-stage models 1 | | | | |
 | 14 | 11/28 | Two-stage models 2 | | | | |
 | 15 | 12/5 | Two-stage models 3 | | | | |
@@ -49,7 +49,7 @@ remaining material is spread over the rest of the semester.
 | Final exam | — | **35%** |
 | Attendance | 10% | **20%** |
 
-- **HW#3** — out 11/14, due 12/5
+- **HW#3** — out 11/14, due 11/28
 - **Final exam** — week 16 (12/12), covering weeks 1–15
 - The week 7 topic pitches count towards attendance.
 

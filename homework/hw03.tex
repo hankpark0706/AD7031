@@ -1,0 +1,313 @@
+% ============================================================================
+% AD7031 Homework 3 -- covers Weeks 9-13 (chance constraints, classification
+% as a MILP with gurobipy, risk measures VaR and CVaR in the objective
+% and in a constraint).
+% 80 points, 4 problems of 20.
+% Problem 1 starts from Week 10's chance constraint program: its scenario MIP
+% and the OR-vs-ML notation table. Problem 2 is the coding problem:
+% classification in the slide deck's theta/(x,y) notation as the training
+% MILP (OL7014 midterm Problem 2), with a gurobipy skeleton whose blanks are
+% marked in red. Problems 3-4 grow out of the risk-measures problem dropped
+% from HW2 (not yet covered then): Problem 3 is VaR, Problem 4 is CVaR, and
+% each one asks the same five things -- meaning, by-hand values at three
+% epsilons, reformulation in the objective, reformulation in a constraint,
+% the full (SP). The two-stage LAP problem was dropped (Nov 14).
+% Self-contained on purpose -- no \input{preamble} -- compiles with pdflatex.
+% ============================================================================
+\documentclass[10pt]{article}
+
+\usepackage[a4paper, margin=2.2cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ruleink}{RGB}{18, 68, 140}
+\definecolor{keyink}{RGB}{20, 90, 20}
+\definecolor{codeink}{RGB}{190, 30, 30}
+
+% ---- "write your code here" marker inside a Verbatim block ------------------
+\newcommand{\yourcode}[1]{\textcolor{codeink}{\textbf{#1}}}
+
+\setlength{\parindent}{0pt}
+\pagestyle{plain}
+
+\AtBeginDocument{%
+  \abovedisplayskip=5pt plus 1pt
+  \belowdisplayskip=5pt plus 1pt
+  \abovedisplayshortskip=3pt
+  \belowdisplayshortskip=3pt}
+
+% ---- one problem -----------------------------------------------------------
+\newcommand{\problem}[2]{%   points, title
+  \par\bigskip
+  {\color{ruleink}\rule{\textwidth}{1pt}}\par\nobreak\vspace{3pt}
+  {\large\bfseries #2}\hfill{\normalsize\bfseries(#1 points)}\par\nobreak\vspace{4pt}}
+
+% ---- one-line hint, blue italic --------------------------------------------
+\newcommand{\hint}[2][]{%   optional number: \hint[1]{...} -> "hint 1:"
+  \par\vspace{3pt}{\color{ruleink}\emph{hint\if\relax\detokenize{#1}\relax\else\ #1\fi:\ #2}}\par}
+
+\newlist{parts}{enumerate}{1}
+\setlist[parts]{label=(\alph*), leftmargin=2.2em, itemsep=5pt}
+
+\newcommand{\VaR}{\mathrm{VaR}}
+\newcommand{\CVaR}{\mathrm{CVaR}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+
+\begin{document}
+
+\begin{center}
+  {\large AD7031 Optimization Under Uncertainty}\\[3pt]
+  {\Large\bfseries Homework 3}\\[4pt]
+  {\small \textbf{Due Nov 28, start of class}}
+\end{center}
+\medskip\hrule\medskip
+
+Write down your solutions and submit them as a single PDF to
+\texttt{lossof0706@gmail.com}.\\
+\textbf{\underline{Your solutions must be handwritten.}}
+
+% ================================================================ Problem 1
+\problem{20}{Problem 1. Chance constraints}
+
+Recall the chance-constrained program of Weeks 10--11:
+\begin{equation}
+\label{eq:ccp}
+\text{(CCP)} \quad
+\begin{aligned}
+  \min_{x} \quad & f(x) \\
+  \text{s.t.} \quad & x \in \mathcal{X} \\
+                    & \Prob\big[\, g(x, \tilde\xi) \le 0 \,\big] \;\ge\; 1 - \varepsilon ,
+\end{aligned}
+\end{equation}
+where $x$ is the decision, $\mathcal{X}$ collects the constraints with no uncertainty, $\tilde\xi \sim \mathbb{P}$ is the
+uncertain data, $g$ is the one constraint that involves it, and $\varepsilon \in (0,1)$ is a tolerance.
+Throughout this homework, ``$S$ scenarios'' means $\tilde\xi$ takes the values $\xi^1, \dots, \xi^S$ with
+probabilities $p_1, \dots, p_S$; with data, $p_s = \tfrac1S$ (the empirical distribution of $S$ data points, as in Week 10).
+
+\begin{parts}
+\item \textbf{(6 pts)} Explain in plain Korean what the constraint $\Prob[\, g(x, \tilde\xi) \le 0 \,] \ge 1 - \varepsilon$
+  means. Give one potential example of a chance constraint in military applications.
+
+\item \textbf{(8 pts)} With $S$ scenarios, reformulate \eqref{eq:ccp} as a mixed-integer program,
+  with one binary $z_s$ per scenario. \textbf{Show the derivation clearly.}
+  \hint{$z_s = 1$ must force $g(x, \xi^s) \le 0$; $z_s = 0$ must leave the row saying nothing.}
+
+\item \textbf{(6 pts)} \textbf{One problem, two languages.} The slide deck of Week 10 writes the same program in the
+  language of machine learning (ML). Fill in the ML column:
+  \begin{center}
+  \begin{tabular}{l|c|c}
+     & OR & ML \\ \hline
+    decision variable & $x$ & \rule{2.5cm}{0.4pt} \\
+    uncertain data & $\tilde\xi$ & $\tilde\xi = ($\rule{1.2cm}{0.4pt}$,\ $\rule{1.2cm}{0.4pt}$)$ \\
+    model & --- & $f_{\theta}(x)$ \\
+    objective function & $f(x, \tilde\xi)$ & \rule{2.5cm}{0.4pt} \\
+  \end{tabular}
+  \end{center}
+\end{parts}
+
+% ================================================================ Problem 2
+\problem{20}{Problem 2. Classification as a MILP}
+
+\textbf{Classification, in the ML language.} $N = 5$ samples $\xi_i = (x_i, y_i)$: an input
+$x_i \in \mathbb{R}^3$ whose last entry is the constant $1$ (the bias term), and a label $y_i \in \{-1, +1\}$:
+\[
+\begin{array}{c|cc}
+  i & x_i^{\top} & y_i \\ \hline
+  1 & (1,\,2,\,1) & +1 \\
+  2 & (2,\,3,\,1) & +1 \\
+  3 & (3,\,1,\,1) & +1 \\
+  4 & (0,\,0,\,1) & -1 \\
+  5 & (2,\,2,\,1) & -1
+\end{array}
+\]
+The linear model $f_{\theta}(x) = \theta^{\top}x$, $\theta \in \mathbb{R}^3$, predicts $+1$ when $\theta^{\top}x > 0$ and
+$-1$ otherwise. As in Week 10, sample $i$ is classified correctly \emph{with margin} when
+$y_i\,\theta^{\top}x_i \ge 1$, i.e., when $g(\theta, \xi_i) := 1 - y_i\,\theta^{\top}x_i \le 0$. Use $M = 10$.
+
+\begin{parts}
+\item \textbf{(10 pts)} Write the binary classification problem as a mixed-integer program. For $x_i$ and $y_i$,
+  use the numbers given in the table.
+  \hint{OL7014's midterm Problem 2, with the margin: $z_i = 1$ forces $1 - y_i\,\theta^{\top}x_i \le 0$.}
+
+\item \textbf{(10 pts)} Implement (a) with \texttt{gurobipy}
+  and \textbf{paste a screenshot of your code and of its printed output}.
+  Following is skeleton code with the data typed in; write your code where it says so, in
+  \textcolor{codeink}{\textbf{red}}:
+\begin{Verbatim}[commandchars=\\\{\}, fontsize=\small]
+import gurobipy as gp
+from gurobipy import GRB
+
+X = [[1, 2, 1], [2, 3, 1], [3, 1, 1], [0, 0, 1], [2, 2, 1]]   # inputs x_i (bias 1 last)
+y = [+1, +1, +1, -1, -1]                                       # labels y_i
+N, M = 5, 10
+
+model = gp.Model("classifier")           # on Colab: gp.Model("classifier", env=env)
+
+# variables
+theta = \yourcode{...   # three free continuous variables}
+z     = \yourcode{...   # one binary per sample}
+
+# constraints
+\yourcode{...   # one big-M row per sample}
+
+# objective
+\yourcode{...}
+
+model.optimize()
+print(f"optimal theta is \{[theta[j].X for j in range(3)]\}")
+print(f"z is \{[int(round(z[i].X)) for i in range(N)]\}")
+print(f"optimal objective value is \{model.ObjVal\}")
+\end{Verbatim}
+\end{parts}
+
+% ================================================================ Problem 3
+\problem{20}{Problem 3. Value at Risk}
+
+Recall the general stochastic program of Week 11,
+\[
+\text{(SP)} \quad
+\begin{aligned}
+  \min_{x} \quad & \mathcal{R}_{\mathbb{P}}\big[f(x, \tilde\xi)\big] \\
+  \text{s.t.} \quad & x \in \mathcal{X} \\
+                    & \mathcal{R}_{\mathbb{P}}\big[g(x, \tilde\xi)\big] \le 0 ,
+\end{aligned}
+\]
+where $\tilde\xi \sim \mathbb{P}$ and $\mathcal{R}_{\mathbb{P}}$ is a risk measure of our choice. Problems 3 and 4 take
+the two risk measures of the course in turn, and ask the same questions of each: what it means, how to compute it,
+how to reformulate it \emph{in the objective}, and how to reformulate it \emph{in a constraint}.
+
+\begin{parts}
+\item \textbf{(3 pts)} Suppose we choose $\mathcal{R}_{\mathbb{P}} = \VaR_{\varepsilon}$, i.e., the objective function in (SP) is
+  \[
+  \begin{aligned}
+    \VaR_{\varepsilon}\big[f(x, \tilde\xi)\big] \;=\; \min_{t \in \mathbb{R}} \quad & t \\
+    \text{s.t.} \quad & \Prob\big(f(x, \tilde\xi) \le t\big) \ge 1 - \varepsilon .
+  \end{aligned}
+  \]
+  Using this minimization problem, explain in plain Korean what $\VaR_{\varepsilon}\big[f(x, \tilde\xi)\big]$ means.
+
+\item \textbf{(3 pts)} Fix your decision at $x = \bar x$ and write $\tilde Z = f(\bar x, \tilde\xi)$ for the
+  random objective value --- a random \emph{loss} (negative means a gain). Suppose $\tilde\xi$ takes only ten
+  scenarios, so $\tilde Z$ takes the ten values below with the given probabilities:
+  \begin{center}
+  \begin{tabular}{c|cccccccccc}
+    scenario $s$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+    $Z^s = f(\bar x, \xi^s)$ & $-12$ & $-8$ & $-5$ & $-3$ & $-1$ & $0$ & $2$ & $5$ & $9$ & $18$ \\
+    $p_s = \Prob(\tilde Z = Z^s)$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ \\
+  \end{tabular}
+  \end{center}
+  \textbf{By hand}, what is $\VaR_{\varepsilon}[\tilde Z]$ when
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item $\varepsilon = 0.2$;
+    \item $\varepsilon = 0.5$;
+    \item $\varepsilon = 1.0$?
+  \end{itemize}
+  \hint{the $\VaR$ is the smallest value $t$ with $\Prob(\tilde Z \le t) \ge 1 - \varepsilon$; for $\varepsilon = 1.0$,
+    ask what the constraint still requires.}
+
+\item \textbf{(5 pts)} \textbf{VaR in the objective.} Recall
+  \begin{equation}
+  \label{eq:var-obj}
+    \min_{x \in \mathcal{X}}\ \VaR_{\varepsilon}\big[f(x, \tilde\xi)\big]
+    \qquad\Longleftrightarrow\qquad
+    \begin{aligned}
+      \min_{x \in \mathcal{X},\ t \in \mathbb{R}} \quad & t \\
+      \text{s.t.} \quad & \Prob\big(f(x, \tilde\xi) \le t\big) \ge 1 - \varepsilon .
+    \end{aligned}
+  \end{equation}
+  With $S$ scenarios, reformulate \eqref{eq:var-obj} as a mixed-integer program.
+  \textbf{Show the derivation clearly.}
+  \hint{the right-hand side of \eqref{eq:var-obj} is a CCP: Problem 1(b) with $f(x, \xi) - t$ in the role of $g$ ---
+    only now $t$ is a decision variable too.}
+
+\item \textbf{(5 pts)} \textbf{VaR in a constraint.} (For (d) and (e), you do not need to use the numbers in the
+  table.) Show the reformulation of the constraint
+  $\VaR_{\varepsilon}\big[g(x, \tilde\xi)\big] \le 0$, and conclude that it is \emph{exactly} the chance constraint of
+  Problem 1, $\Prob\big(g(x, \tilde\xi) \le 0\big) \ge 1 - \varepsilon$. Then, with $S$ scenarios, write it as big-$M$
+  rows with binaries $z_s$.
+  \hint{use
+    \[
+      \VaR_{\varepsilon}\big[g(x, \tilde\xi)\big] \le 0
+      \quad \Longleftrightarrow \quad
+      \left[\begin{aligned}
+        \min_{t \in \mathbb{R}} \quad & t \\
+        \textnormal{s.t.} \quad & \Prob\big(g(x, \tilde\xi) \le t\big) \ge 1 - \varepsilon
+      \end{aligned}\right] \le 0
+      \quad \Longleftrightarrow \quad
+      \begin{aligned}
+        & t \le 0 \\
+        & \Prob\big(g(x, \tilde\xi) \le t\big) \ge 1 - \varepsilon .
+      \end{aligned}
+    \]}
+
+\item \textbf{(4 pts)} \textbf{Putting it together.} Write (SP) with $\mathcal{R}_{\mathbb{P}} = \VaR_{\varepsilon}$ and $S$
+  scenarios as one mixed-integer program, using (c) for the objective and (d) for the constraint.
+  How many binaries does it have? Explain in plain Korean why this problem is hard to solve even when $f$ and $g$
+  are convex in $x$.
+  \hint{the objective and the constraint each need their own binaries --- call them $z^f_s$ and $z^g_s$.}
+\end{parts}
+
+% ================================================================ Problem 4
+\problem{20}{Problem 4. Conditional Value at Risk}
+
+Same (SP) and the same ten-scenario table as Problem 3, now with $\mathcal{R}_{\mathbb{P}} = \CVaR_{\varepsilon}$.
+
+\begin{parts}
+\item \textbf{(3 pts)} The objective function in (SP) is now
+  \[
+    \CVaR_{\varepsilon}\big[f(x, \tilde\xi)\big] \;=\; \min_{\beta \in \mathbb{R}}\
+      \beta + \frac{1}{\varepsilon}\, \E_{\mathbb{P}}\big[\max\{f(x, \tilde\xi) - \beta,\ 0\}\big] .
+  \]
+  Using this minimization problem, explain in plain Korean what $\CVaR_{\varepsilon}\big[f(x, \tilde\xi)\big]$ means.
+
+\item \textbf{(3 pts)} The same ten scenarios as Problem 3(b), $\tilde Z = f(\bar x, \tilde\xi)$:
+  \begin{center}
+  \begin{tabular}{c|cccccccccc}
+    scenario $s$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+    $Z^s = f(\bar x, \xi^s)$ & $-12$ & $-8$ & $-5$ & $-3$ & $-1$ & $0$ & $2$ & $5$ & $9$ & $18$ \\
+    $p_s = \Prob(\tilde Z = Z^s)$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ & $0.1$ \\
+  \end{tabular}
+  \end{center}
+  \textbf{By hand}, what is $\CVaR_{\varepsilon}[\tilde Z]$ when
+  \begin{itemize}[leftmargin=2.2em, itemsep=2pt, topsep=3pt]
+    \item $\varepsilon = 0.2$;
+    \item $\varepsilon = 0.5$;
+    \item $\varepsilon = 1.0$?
+  \end{itemize}
+  For each $\varepsilon$, compare $\CVaR_{\varepsilon}[\tilde Z]$ with $\VaR_{\varepsilon}[\tilde Z]$ from Problem 3(b), and
+  explain in plain Korean the relation between the two.
+  \hint{evaluate $\beta + \frac{1}{\varepsilon}\E[\max\{\tilde Z - \beta, 0\}]$ at $\beta = \VaR_{\varepsilon}[\tilde Z]$
+    from Problem 3(b) --- that is where the minimum is attained; for $\varepsilon = 1.0$, compare with $\E[\tilde Z]$.}
+
+\item \textbf{(5 pts)} \textbf{CVaR in the objective.} Recall
+  \begin{equation}
+  \label{eq:cvar-obj}
+    \min_{x \in \mathcal{X}}\ \CVaR_{\varepsilon}\big[f(x, \tilde\xi)\big]
+    \qquad\Longleftrightarrow\qquad
+    \min_{x \in \mathcal{X},\ \beta \in \mathbb{R}}\ \
+      \beta + \frac{1}{\varepsilon}\, \E_{\mathbb{P}}\big[\max\{f(x, \tilde\xi) - \beta,\ 0\}\big] .
+  \end{equation}
+  With $S$ scenarios, reformulate \eqref{eq:cvar-obj} with one variable $u_s \ge 0$ per scenario in place of each
+  $\max\{\cdot, 0\}$ --- no binaries. \textbf{Show the derivation clearly.}
+  \hint{$u_s \ge f(x, \xi^s) - \beta$ and $u_s \ge 0$ replace $\max\{f(x, \xi^s) - \beta,\ 0\}$ --- why is that
+    allowed in a minimization?}
+
+\item \textbf{(5 pts)} \textbf{CVaR in a constraint.} Show the reformulation of the constraint
+  $\CVaR_{\varepsilon}\big[g(x, \tilde\xi)\big] \le 0$ with its own variable $\beta_g$. Then, with $S$ scenarios,
+  write it as rows with variables $u^g_s \ge 0$.
+  \hint{do the same as in Problem 3(d): $[\min_{\beta_g} \cdots] \le 0 \iff \exists\, \beta_g$ with $\cdots \le 0$.}
+
+\item \textbf{(4 pts)} \textbf{Putting it together.} Write (SP) with $\mathcal{R}_{\mathbb{P}} = \CVaR_{\varepsilon}$ and $S$
+  scenarios as one optimization problem, using (c) for the objective and (d) for the constraint.
+  Compare with Problem 3(e): is this problem convex when $f$ and $g$ are convex in $x$? Explain in plain Korean
+  why, for computational tractability, we may prefer $\CVaR$ over $\VaR$.
+  \hint{one $\beta$ per risk term: $\beta_f$ for the objective and $\beta_g$ for the constraint; both join the outer
+    $\min$, with $u^f_s$ and $u^g_s$.}
+\end{parts}
+
+\end{document}
